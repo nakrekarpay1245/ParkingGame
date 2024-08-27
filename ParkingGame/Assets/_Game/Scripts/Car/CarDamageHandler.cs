@@ -1,4 +1,5 @@
 using _Game.Scripts._Abstracts;
+using UnityEngine;
 
 namespace _Game.Scripts.Car
 {
@@ -32,6 +33,13 @@ namespace _Game.Scripts.Car
         public override void Die()
         {
             base.Die();
+            FailParking();
+        }
+
+        public void FailParking()
+        {
+            Debug.Log("Parking Failed!");
+            //GlobalBinder.singleton.LevelManager.FailGame();
         }
 
         /// <summary>

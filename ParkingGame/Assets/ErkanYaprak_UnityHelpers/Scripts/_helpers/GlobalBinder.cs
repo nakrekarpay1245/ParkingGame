@@ -30,6 +30,9 @@ namespace _Game.Scripts._helpers
         [Tooltip("Handles damage and health functionalities for the vehicle.")]
         [SerializeField] private CarDamageHandler _carDamageHandler;
 
+        [Tooltip("Handles parking detection and logic for the car.")]
+        [SerializeField] private CarParkingChecker _carParkingChecker;
+
         [Tooltip("Handles UI functionalities, such as displaying vehicle speed.")]
         [SerializeField] private UIManager _uiManager;
 
@@ -57,6 +60,11 @@ namespace _Game.Scripts._helpers
         /// Provides public access to the CarDamageHandler instance.
         /// </summary>
         public CarDamageHandler CarDamageHandler => _carDamageHandler;
+
+        /// <summary>
+        /// Provides public access to the CarParkingChecker instance.
+        /// </summary>
+        public CarParkingChecker CarParkingChecker => _carParkingChecker;
 
         /// <summary>
         /// Provides public access to the UIManager instance.

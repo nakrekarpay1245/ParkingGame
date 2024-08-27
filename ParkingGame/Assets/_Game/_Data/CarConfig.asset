@@ -17,7 +17,7 @@ MonoBehaviour:
   _accelerationMultiplier: 6
   _maxSteeringAngle: 30
   _steeringSpeed: 0.5
-  _brakeForce: 350
-  _decelerationMultiplier: 1
+  _brakeForce: 600
+  _decelerationMultiplier: 10
   _handbrakeDriftMultiplier: 5
   _bodyMassCenter: {x: 0, y: 0, z: 0}
