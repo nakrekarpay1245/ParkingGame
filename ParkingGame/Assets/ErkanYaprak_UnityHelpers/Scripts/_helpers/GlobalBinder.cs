@@ -27,6 +27,9 @@ namespace _Game.Scripts._helpers
         [Tooltip("Manages vehicle functionalities including controls and physics.")]
         [SerializeField] private CarController _carController;
 
+        [Tooltip("Handles damage and health functionalities for the vehicle.")]
+        [SerializeField] private CarDamageHandler _carDamageHandler;
+
         [Tooltip("Handles UI functionalities, such as displaying vehicle speed.")]
         [SerializeField] private UIManager _uiManager;
 
@@ -49,6 +52,11 @@ namespace _Game.Scripts._helpers
         /// Provides public access to the CarController instance.
         /// </summary>
         public CarController CarController => _carController;
+
+        /// <summary>
+        /// Provides public access to the CarDamageHandler instance.
+        /// </summary>
+        public CarDamageHandler CarDamageHandler => _carDamageHandler;
 
         /// <summary>
         /// Provides public access to the UIManager instance.
