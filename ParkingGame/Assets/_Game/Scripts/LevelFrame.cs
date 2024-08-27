@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using _Game.Scripts.Obstacles;
+using _Game.Scripts._helpers;
 
 namespace _Game.Scripts.LevelSystem
 {
@@ -64,6 +65,11 @@ namespace _Game.Scripts.LevelSystem
 
         [Tooltip("The size of the gizmos representing the obstacles.")]
         [SerializeField] private float _obstacleGizmoSize = 0.1f;
+
+        [Header("Effects")]
+        [Header("Audio Effects")]
+        [Tooltip("The sound play when spawn an obtacle.")]
+        [SerializeField] private string _spawnSoundKey = "spawn_obstacle";
 
         private List<Transform> _nodes = new List<Transform>();
         private List<Vector3> _obstaclePositions = new List<Vector3>();
@@ -167,6 +173,8 @@ namespace _Game.Scripts.LevelSystem
             instance.transform
                 .DOMove(position, _animationDuration)
                 .SetEase(_animationEase);
+
+            GlobalBinder.singleton.AudioManager.PlaySound(_spawnSoundKey);
 
             // Wait for animation to complete
             yield return new WaitForSeconds(_spawnInterval);
