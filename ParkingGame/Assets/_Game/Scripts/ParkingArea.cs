@@ -105,5 +105,16 @@ namespace _Game.Scripts
             _parkingAreaNoSuccessParticle?.Stop();
             _parkingAreaSuccessParticle?.Stop();
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = new Color(255f, 255f, 0f, 0.25f);
+            Gizmos.DrawCube(transform.GetChild(0).transform.position,
+                transform.GetChild(0).transform.lossyScale);
+
+            Gizmos.color = new Color(255f, 125f, 0f, 0.5f);
+            Gizmos.DrawWireCube(transform.GetChild(0).transform.position,
+                transform.GetChild(0).transform.lossyScale);
+        }
     }
 }
