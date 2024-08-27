@@ -415,7 +415,7 @@ MonoBehaviour:
   - ParticleName: parking_area_not_success
     ParticleCount: 1
     _particleSystemList:
-    - {fileID: 5438288598739070507, guid: b7d83566126fc964bb78848a3a9b0965, type: 3}
+    - {fileID: 4642697694234666607, guid: 36d84366b975d7247850630d9a487f50, type: 3}
   - ParticleName: parking_area_success
     ParticleCount: 1
     _particleSystemList:
