@@ -60,13 +60,15 @@ namespace _Game.Scripts._helpers.Particles
         /// <param name="position">The position to play the particle at.</param>
         /// <param name="rotation">The rotation to apply to the particle.</param>
         /// <param name="parent">The parent transform to attach the particle to (optional).</param>
-        public void PlayParticleAtPoint(string particleName, Vector3 position, Quaternion rotation, Transform parent = null)
+        public ParticleSystem PlayParticleAtPoint(string particleName, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             var particle = GetAvailableParticle(particleName);
             if (particle != null)
             {
                 ActivateParticle(particle, position, rotation, parent);
             }
+
+            return particle;
         }
 
         /// <summary>
@@ -75,13 +77,15 @@ namespace _Game.Scripts._helpers.Particles
         /// <param name="particleName">The name of the particle effect to play.</param>
         /// <param name="position">The position to play the particle at.</param>
         /// <param name="parent">The parent transform to attach the particle to (optional).</param>
-        public void PlayParticleAtPoint(string particleName, Vector3 position, Transform parent = null)
+        public ParticleSystem PlayParticleAtPoint(string particleName, Vector3 position, Transform parent = null)
         {
             var particle = GetAvailableParticle(particleName);
             if (particle != null)
             {
                 ActivateParticle(particle, position, Quaternion.identity, parent);
             }
+
+            return particle;
         }
 
         /// <summary>

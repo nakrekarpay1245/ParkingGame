@@ -27,10 +27,12 @@ namespace _Game.Scripts.Car
         private float _minimumVelocityForParking = 0.01f;
 
         private bool _isParkingSuccessful = false;
+        private bool _isInParkingArea = false;
 
-        // Actions to subscribe to for external event handling
+        // Actions for external event handling
         public Action OnEnterParkingAreaWithoutSuccess;
         public Action OnParkingSuccessful;
+        public Action OnExitParkingArea;
 
         /// <summary>
         /// Initializes the required components.
@@ -74,6 +76,7 @@ namespace _Game.Scripts.Car
 
             if (other.CompareTag("ParkingArea") && !_isParkingSuccessful)
             {
+                _isInParkingArea = true;
                 Debug.Log("Entered parking area but parking not successful yet.");
 
                 // Trigger the action for entering the parking area without success
@@ -102,6 +105,15 @@ namespace _Game.Scripts.Car
             if (other.CompareTag("ParkingFrame"))
             {
                 RemoveObstacle(other.gameObject);
+            }
+
+            if (other.CompareTag("ParkingArea"))
+            {
+                _isInParkingArea = false;
+                Debug.Log("Exited parking area.");
+
+                // Trigger the action for exiting the parking area
+                OnExitParkingArea?.Invoke();
             }
         }
 
@@ -136,7 +148,8 @@ namespace _Game.Scripts.Car
         private bool CanPark()
         {
             return _parkingObstacleList.Count == 0 &&
-                _carRigidbody.velocity.magnitude <= _minimumVelocityForParking;
+                _carRigidbody.velocity.magnitude <= _minimumVelocityForParking &&
+                _isInParkingArea;
         }
     }
 }
