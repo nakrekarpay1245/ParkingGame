@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82cb8119d86d38246bd62152f2897d1e, type: 3}
+  m_Name: PlayerInput
+  m_EditorClassIdentifier: 
+  OnThrottlePressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReversePressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTurnLeftPressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTurnRightPressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHandbrakePressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnThrottleReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReverseReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTurnLeftReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTurnRightReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHandbrakeReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDecelerate:
+    m_PersistentCalls:
+      m_Calls: []

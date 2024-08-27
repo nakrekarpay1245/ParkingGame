@@ -661,6 +661,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410860270}
   m_CullTransparentMesh: 1
+--- !u!1 &448148569
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 448148571}
+  - component: {fileID: 448148570}
+  m_Layer: 0
+  m_Name: InputHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &448148570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448148569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43fb152d5f1cbd745b53901396966a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 11400000, guid: e2dfa22de8dbba340b7014f8cd1f1211, type: 2}
+  _touchControlsSetup: 0
+  _throttleButton: {fileID: 2077402138038446087}
+  _reverseButton: {fileID: 1310102880}
+  _turnLeftButton: {fileID: 732695311}
+  _turnRightButton: {fileID: 410860272}
+  _handbrakeButton: {fileID: 786202607}
+--- !u!4 &448148571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448148569}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &510085373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4121091811543137509, guid: ddf4ea2625767fd4bb4153e7e4009ad5,
@@ -3667,17 +3718,7 @@ MonoBehaviour:
   useSounds: 1
   carEngineSound: {fileID: 1109746025}
   tireScreechSound: {fileID: 1079542301}
-  useTouchControls: 0
-  throttleButton: {fileID: 2077402138038446082}
-  throttlePTI: {fileID: 0}
-  reverseButton: {fileID: 1310102878}
-  reversePTI: {fileID: 0}
-  turnRightButton: {fileID: 410860270}
-  turnRightPTI: {fileID: 0}
-  turnLeftButton: {fileID: 732695309}
-  turnLeftPTI: {fileID: 0}
-  handbrakeButton: {fileID: 786202605}
-  handbrakePTI: {fileID: 0}
+  _playerInput: {fileID: 11400000, guid: e2dfa22de8dbba340b7014f8cd1f1211, type: 2}
   carSpeed: 0
   isDrifting: 0
   isTractionLocked: 0
@@ -3689,6 +3730,7 @@ SceneRoots:
   - {fileID: 744076041}
   - {fileID: 1864723210}
   - {fileID: 1552634015}
+  - {fileID: 448148571}
   - {fileID: 1635823077}
   - {fileID: 1492462695}
   - {fileID: 4206450808650576917}

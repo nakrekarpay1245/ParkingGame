@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using _Game.Scripts.UI;
+using _Game.Scripts.Inputs;
 
 namespace _Game.Scripts.Car
 {
@@ -95,27 +96,9 @@ namespace _Game.Scripts.Car
         float initialCarEngineSoundPitch; // Used to store the initial pitch of the car engine sound.
 
         //CONTROLS
-
-        [Space(20)]
-        //[Header("CONTROLS")]
-        [Space(10)]
-        //The following variables lets you to set up touch controls for mobile devices.
-        public bool useTouchControls = false;
-        public GameObject throttleButton;
-        [SerializeField]
-        private CustomButton throttlePTI;
-        public GameObject reverseButton;
-        [SerializeField]
-        private CustomButton reversePTI;
-        public GameObject turnRightButton;
-        [SerializeField]
-        private CustomButton turnRightPTI;
-        public GameObject turnLeftButton;
-        [SerializeField]
-        private CustomButton turnLeftPTI;
-        public GameObject handbrakeButton;
-        [SerializeField]
-        private CustomButton handbrakePTI;
+        [Header("Car Input Settings")]
+        [Tooltip("ScriptableObject that holds player input events.")]
+        [SerializeField] private PlayerInputSO _playerInput;
 
         //CAR DATA
 
@@ -132,13 +115,13 @@ namespace _Game.Scripts.Car
         IMPORTANT: The following variables should not be modified manually since their values are automatically given via script.
         */
         Rigidbody carRigidbody; // Stores the car's rigidbody.
-        float steeringAxis; // Used to know whether the steering wheel has reached the maximum value. It goes from -1 to 1.
+        float _steeringAxis; // Used to know whether the steering wheel has reached the maximum value. It goes from -1 to 1.
         float throttleAxis; // Used to know whether the throttle has reached the maximum value. It goes from -1 to 1.
         float driftingAxis;
         float localVelocityZ;
         float localVelocityX;
-        bool deceleratingCar;
-        bool touchControlsSetup = false;
+        private bool _deceleratingCar;
+
         /*
         The following variables are used to store information about sideways friction of the wheels (such as
         extremumSlip,extremumValue, asymptoteSlip, asymptoteValue and stiffness). We change this values to
@@ -250,30 +233,6 @@ namespace _Game.Scripts.Car
                     RRWTireSkid.emitting = false;
                 }
             }
-
-            if (useTouchControls)
-            {
-                if (throttleButton != null && reverseButton != null &&
-                turnRightButton != null && turnLeftButton != null
-                && handbrakeButton != null)
-                {
-
-                    throttlePTI = throttleButton.GetComponent<CustomButton>();
-                    reversePTI = reverseButton.GetComponent<CustomButton>();
-                    turnLeftPTI = turnLeftButton.GetComponent<CustomButton>();
-                    turnRightPTI = turnRightButton.GetComponent<CustomButton>();
-                    handbrakePTI = handbrakeButton.GetComponent<CustomButton>();
-                    touchControlsSetup = true;
-
-                }
-                else
-                {
-                    String ex = "Touch controls are not completely set up. You must drag and drop your scene buttons in the" +
-                    " PrometeoCarController component.";
-                    Debug.LogWarning(ex);
-                }
-            }
-
         }
 
         // Update is called once per frame
@@ -301,105 +260,49 @@ namespace _Game.Scripts.Car
             In this part of the code we specify what the car needs to do if the user presses W (throttle), S (reverse),
             A (turn left), D (turn right) or Space bar (handbrake).
             */
-            if (useTouchControls && touchControlsSetup)
+            if (_playerInput.IsAccelerating)
             {
-
-                if (throttlePTI.ButtonPressed)
-                {
-                    CancelInvoke("DecelerateCar");
-                    deceleratingCar = false;
-                    GoForward();
-                }
-                if (reversePTI.ButtonPressed)
-                {
-                    CancelInvoke("DecelerateCar");
-                    deceleratingCar = false;
-                    GoReverse();
-                }
-
-                if (turnLeftPTI.ButtonPressed)
-                {
-                    TurnLeft();
-                }
-                if (turnRightPTI.ButtonPressed)
-                {
-                    TurnRight();
-                }
-                if (handbrakePTI.ButtonPressed)
-                {
-                    CancelInvoke("DecelerateCar");
-                    deceleratingCar = false;
-                    Handbrake();
-                }
-                if (!handbrakePTI.ButtonPressed)
-                {
-                    RecoverTraction();
-                }
-                if ((!throttlePTI.ButtonPressed && !reversePTI.ButtonPressed))
-                {
-                    ThrottleOff();
-                }
-                if ((!reversePTI.ButtonPressed && !throttlePTI.ButtonPressed) && !handbrakePTI.ButtonPressed && !deceleratingCar)
-                {
-                    InvokeRepeating("DecelerateCar", 0f, 0.1f);
-                    deceleratingCar = true;
-                }
-                if (!turnLeftPTI.ButtonPressed && !turnRightPTI.ButtonPressed && steeringAxis != 0f)
-                {
-                    ResetSteeringAngle();
-                }
-
+                CancelInvoke("DecelerateCar");
+                _deceleratingCar = false;
+                GoForward();
             }
-            else
+            if (_playerInput.IsReversing)
             {
-
-                if (Input.GetKey(KeyCode.W))
-                {
-                    CancelInvoke("DecelerateCar");
-                    deceleratingCar = false;
-                    GoForward();
-                }
-                if (Input.GetKey(KeyCode.S))
-                {
-                    CancelInvoke("DecelerateCar");
-                    deceleratingCar = false;
-                    GoReverse();
-                }
-
-                if (Input.GetKey(KeyCode.A))
-                {
-                    TurnLeft();
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    TurnRight();
-                }
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    CancelInvoke("DecelerateCar");
-                    deceleratingCar = false;
-                    Handbrake();
-                }
-                if (Input.GetKeyUp(KeyCode.Space))
-                {
-                    RecoverTraction();
-                }
-                if ((!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)))
-                {
-                    ThrottleOff();
-                }
-                if ((!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W)) && !Input.GetKey(KeyCode.Space) && !deceleratingCar)
-                {
-                    InvokeRepeating("DecelerateCar", 0f, 0.1f);
-                    deceleratingCar = true;
-                }
-                if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && steeringAxis != 0f)
-                {
-                    ResetSteeringAngle();
-                }
-
+                CancelInvoke("DecelerateCar");
+                _deceleratingCar = false;
+                GoReverse();
             }
-
+            if (_playerInput.IsTurningLeft)
+            {
+                TurnLeft();
+            }
+            if (_playerInput.IsTurningRight)
+            {
+                TurnRight();
+            }
+            if (_playerInput.IsHandbraking)
+            {
+                CancelInvoke("DecelerateCar");
+                _deceleratingCar = false;
+                Handbrake();
+            }
+            if (!_playerInput.IsHandbraking)
+            {
+                RecoverTraction();
+            }
+            if (!_playerInput.IsAccelerating && !_playerInput.IsReversing)
+            {
+                ThrottleOff();
+            }
+            if (!_playerInput.IsReversing && !_playerInput.IsAccelerating && !_playerInput.IsHandbraking && !_deceleratingCar)
+            {
+                InvokeRepeating("DecelerateCar", 0f, 0.1f);
+                _deceleratingCar = true;
+            }
+            if (!_playerInput.IsTurningLeft && !_playerInput.IsTurningRight && _steeringAxis != 0f)
+            {
+                ResetSteeringAngle();
+            }
 
             // We call the method AnimateWheelMeshes() in order to match the wheel collider movements with the 3D meshes of the wheels.
             AnimateWheelMeshes();
@@ -479,12 +382,12 @@ namespace _Game.Scripts.Car
         //The following method turns the front car wheels to the left. The speed of this movement will depend on the steeringSpeed variable.
         public void TurnLeft()
         {
-            steeringAxis = steeringAxis - (Time.deltaTime * 10f * steeringSpeed);
-            if (steeringAxis < -1f)
+            _steeringAxis = _steeringAxis - (Time.deltaTime * 10f * steeringSpeed);
+            if (_steeringAxis < -1f)
             {
-                steeringAxis = -1f;
+                _steeringAxis = -1f;
             }
-            var steeringAngle = steeringAxis * maxSteeringAngle;
+            var steeringAngle = _steeringAxis * maxSteeringAngle;
             frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, steeringSpeed);
             frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
         }
@@ -492,12 +395,12 @@ namespace _Game.Scripts.Car
         //The following method turns the front car wheels to the right. The speed of this movement will depend on the steeringSpeed variable.
         public void TurnRight()
         {
-            steeringAxis = steeringAxis + (Time.deltaTime * 10f * steeringSpeed);
-            if (steeringAxis > 1f)
+            _steeringAxis = _steeringAxis + (Time.deltaTime * 10f * steeringSpeed);
+            if (_steeringAxis > 1f)
             {
-                steeringAxis = 1f;
+                _steeringAxis = 1f;
             }
-            var steeringAngle = steeringAxis * maxSteeringAngle;
+            var steeringAngle = _steeringAxis * maxSteeringAngle;
             frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, steeringSpeed);
             frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
         }
@@ -506,19 +409,19 @@ namespace _Game.Scripts.Car
         // on the steeringSpeed variable.
         public void ResetSteeringAngle()
         {
-            if (steeringAxis < 0f)
+            if (_steeringAxis < 0f)
             {
-                steeringAxis = steeringAxis + (Time.deltaTime * 10f * steeringSpeed);
+                _steeringAxis = _steeringAxis + (Time.deltaTime * 10f * steeringSpeed);
             }
-            else if (steeringAxis > 0f)
+            else if (_steeringAxis > 0f)
             {
-                steeringAxis = steeringAxis - (Time.deltaTime * 10f * steeringSpeed);
+                _steeringAxis = _steeringAxis - (Time.deltaTime * 10f * steeringSpeed);
             }
             if (Mathf.Abs(frontLeftCollider.steerAngle) < 1f)
             {
-                steeringAxis = 0f;
+                _steeringAxis = 0f;
             }
-            var steeringAngle = steeringAxis * maxSteeringAngle;
+            var steeringAngle = _steeringAxis * maxSteeringAngle;
             frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, steeringSpeed);
             frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, steeringSpeed);
         }
