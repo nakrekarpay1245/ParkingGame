@@ -363,6 +363,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13612613}
   m_CullTransparentMesh: 1
+--- !u!1 &52675479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 52675480}
+  - component: {fileID: 52675481}
+  m_Layer: 0
+  m_Name: ParticleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &52675480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52675479}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 882700479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &52675481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52675479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6334b2efae431d4439823891dd2d7364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParticleDataList:
+  - ParticleName: parking_area
+    ParticleCount: 1
+    _particleSystemList:
+    - {fileID: 0}
+  ParticleList: []
 --- !u!1 &58243174
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,6 +1461,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 52675480}
   - {fileID: 1855773101}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2689,6 +2740,27 @@ Transform:
   - {fileID: 795361279}
   m_Father: {fileID: 1635823077}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2145441087 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2724220136726899597, guid: af7b7d90a02a8204885103efcb8062ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 635679343342828292}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2145441089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145441087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9424e52cb567d540aa9bde938d97b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parkingAreaParticleKey: parking_area
+  _parkingAreaWithoutSuccessParticleKey: parking_area_no_success
+  _parkingAreaSuccessParkingParticleKey: parking_area_success
 --- !u!1001 &635679343342828292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2755,7 +2827,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2724220136726899597, guid: af7b7d90a02a8204885103efcb8062ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2145441089}
   m_SourcePrefab: {fileID: 100100000, guid: af7b7d90a02a8204885103efcb8062ed, type: 3}
 --- !u!114 &2077402138038446081
 MonoBehaviour:

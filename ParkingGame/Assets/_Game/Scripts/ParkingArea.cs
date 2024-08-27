@@ -16,6 +16,9 @@ namespace _Game.Scripts
         {
             GlobalBinder.singleton.CarParkingChecker.OnEnterParkingAreaWithoutSuccess += HandleEnterParkingAreaWithoutSuccess;
             GlobalBinder.singleton.CarParkingChecker.OnParkingSuccessful += HandleParkingSuccessful;
+
+            GlobalBinder.singleton.ParticleManager.PlayParticleAtPoint(_parkingAreaParticleKey,
+                transform.position, Quaternion.identity, transform);
         }
 
         private void HandleEnterParkingAreaWithoutSuccess()
