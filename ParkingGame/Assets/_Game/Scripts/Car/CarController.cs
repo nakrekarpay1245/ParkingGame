@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using _Game.Scripts.Inputs;
 
@@ -7,93 +6,84 @@ namespace _Game.Scripts.Car
 {
     public class CarController : MonoBehaviour
     {
-        // Car SetUp
+        //CAR SETUP
         [Header("Car Configuration")]
         [Tooltip("Reference to the CarConfig ScriptableObject which contains all car parameters.")]
-        [SerializeField] private CarConfigSO _carConfig;
-
-        //WHEELS
-
-        [Header("WHEELS")]
-        /*
-        The following variables are used to store the wheels' data of the car. We need both the mesh-only game objects and wheel
-        collider components of the wheels. The wheel collider components and 3D meshes of the wheels cannot come from the same
-        game object; they must be separate game objects.
-        */
-        public GameObject frontLeftMesh;
-        public WheelCollider frontLeftCollider;
-        [Space(10)]
-        public GameObject frontRightMesh;
-        public WheelCollider frontRightCollider;
-        [Space(10)]
-        public GameObject rearLeftMesh;
-        public WheelCollider rearLeftCollider;
-        [Space(10)]
-        public GameObject rearRightMesh;
-        public WheelCollider rearRightCollider;
-
-        //PARTICLE SYSTEMS
-
-        [Space(20)]
-        //[Header("EFFECTS")]
-        [Space(10)]
-        //The following variable lets you to set up particle systems in your car
-        public bool useEffects = false;
-
-        // The following particle systems are used as tire smoke when the car drifts.
-        public ParticleSystem RLWParticleSystem;
-        public ParticleSystem RRWParticleSystem;
-
-        [Space(10)]
-        // The following trail renderers are used as tire skids when the car loses traction.
-        public TrailRenderer RLWTireSkid;
-        public TrailRenderer RRWTireSkid;
-
-        //SPEED TEXT (UI)
-
-        [Space(20)]
-        //[Header("UI")]
-        [Space(10)]
-        //The following variable lets you to set up a UI text to display the speed of your car.
-        public bool useUI = false;
-        public TextMeshProUGUI carSpeedText; // Used to store the UI object that is going to show the speed of the car.
-
-        //SOUNDS
-
-        [Space(20)]
-        //[Header("Sounds")]
-        [Space(10)]
-        //The following variable lets you to set up sounds for your car such as the car engine or tire screech sounds.
-        public bool useSounds = false;
-        public AudioSource carEngineSound; // This variable stores the sound of the car engine.
-        public AudioSource tireScreechSound; // This variable stores the sound of the tire screech (when the car is drifting).
-        float initialCarEngineSoundPitch; // Used to store the initial pitch of the car engine sound.
+        [SerializeField]
+        private CarConfigSO _carConfig;
 
         //CONTROLS
         [Header("Car Input Settings")]
         [Tooltip("ScriptableObject that holds player input events.")]
-        [SerializeField] private PlayerInputSO _playerInput;
+        [SerializeField]
+        private PlayerInputSO _playerInput;
+
+        //WHEELS
+        [Header("WHEELS")]
+        [SerializeField]
+        private GameObject _frontLeftWheelMesh;
+        [SerializeField]
+        private WheelCollider _frontLeftWheelCollider;
+        [Space(10)]
+        [SerializeField]
+        private GameObject _frontRightWheelMesh;
+        [SerializeField]
+        private WheelCollider _frontRightWheelCollider;
+        [Space(10)]
+        [SerializeField]
+        private GameObject _backLeftWheelMesh;
+        [SerializeField]
+        private WheelCollider _backLeftWheelCollider;
+        [Space(10)]
+        [SerializeField]
+        private GameObject _backRightWheelMesh;
+        [SerializeField]
+        private WheelCollider _backRightWheelCollider;
+
+        //PARTICLE SYSTEMS
+
+        [Space(20)]
+        [Header("EFFECTS")]
+        // The following particle systems are used as tire smoke when the car drifts.
+        [SerializeField]
+        private ParticleSystem _backLeftWheelSmokeParticle;
+        [SerializeField]
+        private ParticleSystem _backRightWheelSmokeParticle;
+
+        [Space(10)]
+        // The following trail renderers are used as tire skids when the car loses traction.
+        [SerializeField]
+        private TrailRenderer _backLeftWheelTrail;
+        [SerializeField]
+        private TrailRenderer _backRightWheelTrail;
+
+        //SOUNDS
+        [Space(20)]
+        [Header("Sounds")]
+        //The following variable lets you to set up sounds for your car such as the car engine or tire screech sounds.
+        [SerializeField]
+        private AudioSource _carEngineSound; // This variable stores the sound of the car engine.
+        [SerializeField]
+        private AudioSource _tireScreechSound; // This variable stores the sound of the tire screech (when the car is drifting).
+        private float _initialCarEngineSoundPitch; // Used to store the initial pitch of the car engine sound.
 
         //CAR DATA
-
-        [HideInInspector]
-        public float carSpeed; // Used to store the speed of the car.
-        [HideInInspector]
-        public bool isDrifting; // Used to know whether the car is drifting or not.
-        [HideInInspector]
-        public bool isTractionLocked; // Used to know whether the traction of the car is locked or not.
+        private float _carSpeed; // Used to store the speed of the car.
+        public float CarSpeed { get => _carSpeed; set => _carSpeed = value; }
+        private bool _isDrifting; // Used to know whether the car is drifting or not.
+        private bool _isTractionLocked; // Used to know whether the traction of the car is locked or not.
 
         //PRIVATE VARIABLES
 
         /*
         IMPORTANT: The following variables should not be modified manually since their values are automatically given via script.
         */
-        Rigidbody carRigidbody; // Stores the car's rigidbody.
-        float _steeringAxis; // Used to know whether the steering wheel has reached the maximum value. It goes from -1 to 1.
-        float throttleAxis; // Used to know whether the throttle has reached the maximum value. It goes from -1 to 1.
-        float driftingAxis;
-        float localVelocityZ;
-        float localVelocityX;
+        private Rigidbody _carRigidbody; // Stores the car's rigidbody.
+        private float _steeringAxis; // Used to know whether the steering wheel has reached the maximum value. It goes from -1 to 1.
+        private float throttleAxis; // Used to know whether the throttle has reached the maximum value. It goes from -1 to 1.
+        private float driftingAxis;
+        private float localVelocityZ;
+        private float localVelocityX;
         private bool _deceleratingCar;
 
         /*
@@ -101,14 +91,14 @@ namespace _Game.Scripts.Car
         extremumSlip,extremumValue, asymptoteSlip, asymptoteValue and stiffness). We change this values to
         make the car to start drifting.
         */
-        WheelFrictionCurve FLwheelFriction;
-        float FLWextremumSlip;
-        WheelFrictionCurve FRwheelFriction;
-        float FRWextremumSlip;
-        WheelFrictionCurve RLwheelFriction;
-        float RLWextremumSlip;
-        WheelFrictionCurve RRwheelFriction;
-        float RRWextremumSlip;
+        private WheelFrictionCurve _fronLeftWheelFriction;
+        private float _fronLeftWheelExtremumSlip;
+        private WheelFrictionCurve _frontRightWheelFriction;
+        private float _frontRightWheelExtremumSlip;
+        private WheelFrictionCurve _backLeftWheelFriction;
+        private float _backLeftWheelExtremumSlip;
+        private WheelFrictionCurve _backRightWheelFriction;
+        private float _backRightWheelExtremumSlip;
 
         // Start is called before the first frame update
         void Start()
@@ -116,114 +106,83 @@ namespace _Game.Scripts.Car
             //In this part, we set the 'carRigidbody' value with the Rigidbody attached to this
             //gameObject. Also, we define the center of mass of the car with the Vector3 given
             //in the inspector.
-            carRigidbody = gameObject.GetComponent<Rigidbody>();
-            carRigidbody.centerOfMass = _carConfig.BodyMassCenter;
+            _carRigidbody = GetComponent<Rigidbody>();
+            _carRigidbody.centerOfMass = _carConfig.BodyMassCenter;
 
             //Initial setup to calculate the drift value of the car. This part could look a bit
             //complicated, but do not be afraid, the only thing we're doing here is to save the default
             //friction values of the car wheels so we can set an appropiate drifting value later.
-            FLwheelFriction = new WheelFrictionCurve();
-            FLwheelFriction.extremumSlip = frontLeftCollider.sidewaysFriction.extremumSlip;
-            FLWextremumSlip = frontLeftCollider.sidewaysFriction.extremumSlip;
-            FLwheelFriction.extremumValue = frontLeftCollider.sidewaysFriction.extremumValue;
-            FLwheelFriction.asymptoteSlip = frontLeftCollider.sidewaysFriction.asymptoteSlip;
-            FLwheelFriction.asymptoteValue = frontLeftCollider.sidewaysFriction.asymptoteValue;
-            FLwheelFriction.stiffness = frontLeftCollider.sidewaysFriction.stiffness;
-            FRwheelFriction = new WheelFrictionCurve();
-            FRwheelFriction.extremumSlip = frontRightCollider.sidewaysFriction.extremumSlip;
-            FRWextremumSlip = frontRightCollider.sidewaysFriction.extremumSlip;
-            FRwheelFriction.extremumValue = frontRightCollider.sidewaysFriction.extremumValue;
-            FRwheelFriction.asymptoteSlip = frontRightCollider.sidewaysFriction.asymptoteSlip;
-            FRwheelFriction.asymptoteValue = frontRightCollider.sidewaysFriction.asymptoteValue;
-            FRwheelFriction.stiffness = frontRightCollider.sidewaysFriction.stiffness;
-            RLwheelFriction = new WheelFrictionCurve();
-            RLwheelFriction.extremumSlip = rearLeftCollider.sidewaysFriction.extremumSlip;
-            RLWextremumSlip = rearLeftCollider.sidewaysFriction.extremumSlip;
-            RLwheelFriction.extremumValue = rearLeftCollider.sidewaysFriction.extremumValue;
-            RLwheelFriction.asymptoteSlip = rearLeftCollider.sidewaysFriction.asymptoteSlip;
-            RLwheelFriction.asymptoteValue = rearLeftCollider.sidewaysFriction.asymptoteValue;
-            RLwheelFriction.stiffness = rearLeftCollider.sidewaysFriction.stiffness;
-            RRwheelFriction = new WheelFrictionCurve();
-            RRwheelFriction.extremumSlip = rearRightCollider.sidewaysFriction.extremumSlip;
-            RRWextremumSlip = rearRightCollider.sidewaysFriction.extremumSlip;
-            RRwheelFriction.extremumValue = rearRightCollider.sidewaysFriction.extremumValue;
-            RRwheelFriction.asymptoteSlip = rearRightCollider.sidewaysFriction.asymptoteSlip;
-            RRwheelFriction.asymptoteValue = rearRightCollider.sidewaysFriction.asymptoteValue;
-            RRwheelFriction.stiffness = rearRightCollider.sidewaysFriction.stiffness;
+            _fronLeftWheelFriction = new WheelFrictionCurve();
+            _fronLeftWheelFriction.extremumSlip = _frontLeftWheelCollider.sidewaysFriction.extremumSlip;
+            _fronLeftWheelExtremumSlip = _frontLeftWheelCollider.sidewaysFriction.extremumSlip;
+            _fronLeftWheelFriction.extremumValue = _frontLeftWheelCollider.sidewaysFriction.extremumValue;
+            _fronLeftWheelFriction.asymptoteSlip = _frontLeftWheelCollider.sidewaysFriction.asymptoteSlip;
+            _fronLeftWheelFriction.asymptoteValue = _frontLeftWheelCollider.sidewaysFriction.asymptoteValue;
+            _fronLeftWheelFriction.stiffness = _frontLeftWheelCollider.sidewaysFriction.stiffness;
+            _frontRightWheelFriction = new WheelFrictionCurve();
+            _frontRightWheelFriction.extremumSlip = _frontRightWheelCollider.sidewaysFriction.extremumSlip;
+            _frontRightWheelExtremumSlip = _frontRightWheelCollider.sidewaysFriction.extremumSlip;
+            _frontRightWheelFriction.extremumValue = _frontRightWheelCollider.sidewaysFriction.extremumValue;
+            _frontRightWheelFriction.asymptoteSlip = _frontRightWheelCollider.sidewaysFriction.asymptoteSlip;
+            _frontRightWheelFriction.asymptoteValue = _frontRightWheelCollider.sidewaysFriction.asymptoteValue;
+            _frontRightWheelFriction.stiffness = _frontRightWheelCollider.sidewaysFriction.stiffness;
+            _backLeftWheelFriction = new WheelFrictionCurve();
+            _backLeftWheelFriction.extremumSlip = _backLeftWheelCollider.sidewaysFriction.extremumSlip;
+            _backLeftWheelExtremumSlip = _backLeftWheelCollider.sidewaysFriction.extremumSlip;
+            _backLeftWheelFriction.extremumValue = _backLeftWheelCollider.sidewaysFriction.extremumValue;
+            _backLeftWheelFriction.asymptoteSlip = _backLeftWheelCollider.sidewaysFriction.asymptoteSlip;
+            _backLeftWheelFriction.asymptoteValue = _backLeftWheelCollider.sidewaysFriction.asymptoteValue;
+            _backLeftWheelFriction.stiffness = _backLeftWheelCollider.sidewaysFriction.stiffness;
+            _backRightWheelFriction = new WheelFrictionCurve();
+            _backRightWheelFriction.extremumSlip = _backRightWheelCollider.sidewaysFriction.extremumSlip;
+            _backRightWheelExtremumSlip = _backRightWheelCollider.sidewaysFriction.extremumSlip;
+            _backRightWheelFriction.extremumValue = _backRightWheelCollider.sidewaysFriction.extremumValue;
+            _backRightWheelFriction.asymptoteSlip = _backRightWheelCollider.sidewaysFriction.asymptoteSlip;
+            _backRightWheelFriction.asymptoteValue = _backRightWheelCollider.sidewaysFriction.asymptoteValue;
+            _backRightWheelFriction.stiffness = _backRightWheelCollider.sidewaysFriction.stiffness;
 
             // We save the initial pitch of the car engine sound.
-            if (carEngineSound != null)
+            if (_carEngineSound != null)
             {
-                initialCarEngineSoundPitch = carEngineSound.pitch;
+                _initialCarEngineSoundPitch = _carEngineSound.pitch;
             }
 
             // We invoke 2 methods inside this script. CarSpeedUI() changes the text of the UI object that stores
             // the speed of the car and CarSounds() controls the engine and drifting sounds. Both methods are invoked
             // in 0 seconds, and repeatedly called every 0.1 seconds.
-            if (useUI)
-            {
-                InvokeRepeating("CarSpeedUI", 0f, 0.1f);
-            }
-            else if (!useUI)
-            {
-                if (carSpeedText != null)
-                {
-                    carSpeedText.text = "0";
-                }
-            }
 
-            if (useSounds)
-            {
-                InvokeRepeating("CarSounds", 0f, 0.1f);
-            }
-            else if (!useSounds)
-            {
-                if (carEngineSound != null)
-                {
-                    carEngineSound.Stop();
-                }
-                if (tireScreechSound != null)
-                {
-                    tireScreechSound.Stop();
-                }
-            }
+            InvokeRepeating("CarSounds", 0f, 0.1f);
 
-            if (!useEffects)
+            if (_backLeftWheelSmokeParticle != null)
             {
-                if (RLWParticleSystem != null)
-                {
-                    RLWParticleSystem.Stop();
-                }
-                if (RRWParticleSystem != null)
-                {
-                    RRWParticleSystem.Stop();
-                }
-                if (RLWTireSkid != null)
-                {
-                    RLWTireSkid.emitting = false;
-                }
-                if (RRWTireSkid != null)
-                {
-                    RRWTireSkid.emitting = false;
-                }
+                _backLeftWheelSmokeParticle.Stop();
+            }
+            if (_backRightWheelSmokeParticle != null)
+            {
+                _backRightWheelSmokeParticle.Stop();
+            }
+            if (_backLeftWheelTrail != null)
+            {
+                _backLeftWheelTrail.emitting = false;
+            }
+            if (_backRightWheelTrail != null)
+            {
+                _backRightWheelTrail.emitting = false;
             }
         }
 
         // Update is called once per frame
         void Update()
         {
-
             //CAR DATA
-
             // We determine the speed of the car.
-            carSpeed = (2 * Mathf.PI * frontLeftCollider.radius * frontLeftCollider.rpm * 60) / 1000;
+            _carSpeed = (2 * Mathf.PI * _frontLeftWheelCollider.radius * _frontLeftWheelCollider.rpm * 60) / 1000;
             // Save the local velocity of the car in the x axis. Used to know if the car is drifting.
-            localVelocityX = transform.InverseTransformDirection(carRigidbody.velocity).x;
+            localVelocityX = transform.InverseTransformDirection(_carRigidbody.velocity).x;
             // Save the local velocity of the car in the z axis. Used to know if the car is going forward or backwards.
-            localVelocityZ = transform.InverseTransformDirection(carRigidbody.velocity).z;
+            localVelocityZ = transform.InverseTransformDirection(_carRigidbody.velocity).z;
 
             //CAR PHYSICS
-
             /*
             The next part is regarding to the car controller. First, it checks if the user wants to use touch controls (for
             mobile devices) or analog input controls (WASD + Space).
@@ -280,26 +239,6 @@ namespace _Game.Scripts.Car
 
             // We call the method AnimateWheelMeshes() in order to match the wheel collider movements with the 3D meshes of the wheels.
             AnimateWheelMeshes();
-
-        }
-
-        // This method converts the car speed data from float to string, and then set the text of the UI carSpeedText with this value.
-        public void CarSpeedUI()
-        {
-
-            if (useUI)
-            {
-                try
-                {
-                    float absoluteCarSpeed = Mathf.Abs(carSpeed);
-                    carSpeedText.text = Mathf.RoundToInt(absoluteCarSpeed).ToString();
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning(ex);
-                }
-            }
-
         }
 
         // This method controls the car sounds. For example, the car engine will sound slow when the car speed is low because the
@@ -308,45 +247,29 @@ namespace _Game.Scripts.Car
         // Apart from that, the tireScreechSound will play whenever the car starts drifting or losing traction.
         public void CarSounds()
         {
-
-            if (useSounds)
+            try
             {
-                try
+                if (_carEngineSound != null)
                 {
-                    if (carEngineSound != null)
+                    float engineSoundPitch = _initialCarEngineSoundPitch + (Mathf.Abs(_carRigidbody.velocity.magnitude) / 25f);
+                    _carEngineSound.pitch = engineSoundPitch;
+                }
+                if ((_isDrifting) || (_isTractionLocked && Mathf.Abs(_carSpeed) > 12f))
+                {
+                    if (!_tireScreechSound.isPlaying)
                     {
-                        float engineSoundPitch = initialCarEngineSoundPitch + (Mathf.Abs(carRigidbody.velocity.magnitude) / 25f);
-                        carEngineSound.pitch = engineSoundPitch;
-                    }
-                    if ((isDrifting) || (isTractionLocked && Mathf.Abs(carSpeed) > 12f))
-                    {
-                        if (!tireScreechSound.isPlaying)
-                        {
-                            tireScreechSound.Play();
-                        }
-                    }
-                    else if ((!isDrifting) && (!isTractionLocked || Mathf.Abs(carSpeed) < 12f))
-                    {
-                        tireScreechSound.Stop();
+                        _tireScreechSound.Play();
                     }
                 }
-                catch (Exception ex)
+                else if ((!_isDrifting) && (!_isTractionLocked || Mathf.Abs(_carSpeed) < 12f))
                 {
-                    Debug.LogWarning(ex);
+                    _tireScreechSound.Stop();
                 }
             }
-            else if (!useSounds)
+            catch (Exception ex)
             {
-                if (carEngineSound != null && carEngineSound.isPlaying)
-                {
-                    carEngineSound.Stop();
-                }
-                if (tireScreechSound != null && tireScreechSound.isPlaying)
-                {
-                    tireScreechSound.Stop();
-                }
+                Debug.LogWarning(ex);
             }
-
         }
 
         //
@@ -362,8 +285,8 @@ namespace _Game.Scripts.Car
                 _steeringAxis = -1f;
             }
             var steeringAngle = _steeringAxis * _carConfig.MaxSteeringAngle;
-            frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
-            frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
+            _frontLeftWheelCollider.steerAngle = Mathf.Lerp(_frontLeftWheelCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
+            _frontRightWheelCollider.steerAngle = Mathf.Lerp(_frontRightWheelCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
         }
 
         //The following method turns the front car wheels to the right. The speed of this movement will depend on the steeringSpeed variable.
@@ -375,8 +298,8 @@ namespace _Game.Scripts.Car
                 _steeringAxis = 1f;
             }
             var steeringAngle = _steeringAxis * _carConfig.MaxSteeringAngle;
-            frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
-            frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
+            _frontLeftWheelCollider.steerAngle = Mathf.Lerp(_frontLeftWheelCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
+            _frontRightWheelCollider.steerAngle = Mathf.Lerp(_frontRightWheelCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
         }
 
         //The following method takes the front car wheels to their default position (rotation = 0). The speed of this movement will depend
@@ -391,13 +314,13 @@ namespace _Game.Scripts.Car
             {
                 _steeringAxis = _steeringAxis - (Time.deltaTime * 10f * _carConfig.SteeringSpeed);
             }
-            if (Mathf.Abs(frontLeftCollider.steerAngle) < 1f)
+            if (Mathf.Abs(_frontLeftWheelCollider.steerAngle) < 1f)
             {
                 _steeringAxis = 0f;
             }
             var steeringAngle = _steeringAxis * _carConfig.MaxSteeringAngle;
-            frontLeftCollider.steerAngle = Mathf.Lerp(frontLeftCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
-            frontRightCollider.steerAngle = Mathf.Lerp(frontRightCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
+            _frontLeftWheelCollider.steerAngle = Mathf.Lerp(_frontLeftWheelCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
+            _frontRightWheelCollider.steerAngle = Mathf.Lerp(_frontRightWheelCollider.steerAngle, steeringAngle, _carConfig.SteeringSpeed);
         }
 
         // This method matches both the position and rotation of the WheelColliders with the WheelMeshes.
@@ -407,27 +330,27 @@ namespace _Game.Scripts.Car
             {
                 Quaternion FLWRotation;
                 Vector3 FLWPosition;
-                frontLeftCollider.GetWorldPose(out FLWPosition, out FLWRotation);
-                frontLeftMesh.transform.position = FLWPosition;
-                frontLeftMesh.transform.rotation = FLWRotation;
+                _frontLeftWheelCollider.GetWorldPose(out FLWPosition, out FLWRotation);
+                _frontLeftWheelMesh.transform.position = FLWPosition;
+                _frontLeftWheelMesh.transform.rotation = FLWRotation;
 
                 Quaternion FRWRotation;
                 Vector3 FRWPosition;
-                frontRightCollider.GetWorldPose(out FRWPosition, out FRWRotation);
-                frontRightMesh.transform.position = FRWPosition;
-                frontRightMesh.transform.rotation = FRWRotation;
+                _frontRightWheelCollider.GetWorldPose(out FRWPosition, out FRWRotation);
+                _frontRightWheelMesh.transform.position = FRWPosition;
+                _frontRightWheelMesh.transform.rotation = FRWRotation;
 
                 Quaternion RLWRotation;
                 Vector3 RLWPosition;
-                rearLeftCollider.GetWorldPose(out RLWPosition, out RLWRotation);
-                rearLeftMesh.transform.position = RLWPosition;
-                rearLeftMesh.transform.rotation = RLWRotation;
+                _backLeftWheelCollider.GetWorldPose(out RLWPosition, out RLWRotation);
+                _backLeftWheelMesh.transform.position = RLWPosition;
+                _backLeftWheelMesh.transform.rotation = RLWRotation;
 
                 Quaternion RRWRotation;
                 Vector3 RRWPosition;
-                rearRightCollider.GetWorldPose(out RRWPosition, out RRWRotation);
-                rearRightMesh.transform.position = RRWPosition;
-                rearRightMesh.transform.rotation = RRWRotation;
+                _backRightWheelCollider.GetWorldPose(out RRWPosition, out RRWRotation);
+                _backRightWheelMesh.transform.position = RRWPosition;
+                _backRightWheelMesh.transform.rotation = RRWRotation;
             }
             catch (Exception ex)
             {
@@ -446,12 +369,12 @@ namespace _Game.Scripts.Car
             //3f, it means that the car is losing traction, then the car will start emitting particle systems.
             if (Mathf.Abs(localVelocityX) > 2.5f)
             {
-                isDrifting = true;
+                _isDrifting = true;
                 DriftCarPS();
             }
             else
             {
-                isDrifting = false;
+                _isDrifting = false;
                 DriftCarPS();
             }
             // The following part sets the throttle power to 1 smoothly.
@@ -469,27 +392,27 @@ namespace _Game.Scripts.Car
             }
             else
             {
-                if (Mathf.RoundToInt(carSpeed) < _carConfig.MaxSpeed)
+                if (Mathf.RoundToInt(_carSpeed) < _carConfig.MaxSpeed)
                 {
                     //Apply positive torque in all wheels to go forward if maxSpeed has not been reached.
-                    frontLeftCollider.brakeTorque = 0;
-                    frontLeftCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
-                    frontRightCollider.brakeTorque = 0;
-                    frontRightCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
-                    rearLeftCollider.brakeTorque = 0;
-                    rearLeftCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
-                    rearRightCollider.brakeTorque = 0;
-                    rearRightCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _frontLeftWheelCollider.brakeTorque = 0;
+                    _frontLeftWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _frontRightWheelCollider.brakeTorque = 0;
+                    _frontRightWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _backLeftWheelCollider.brakeTorque = 0;
+                    _backLeftWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _backRightWheelCollider.brakeTorque = 0;
+                    _backRightWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
                 }
                 else
                 {
                     // If the maxSpeed has been reached, then stop applying torque to the wheels.
                     // IMPORTANT: The maxSpeed variable should be considered as an approximation; the speed of the car
                     // could be a bit higher than expected.
-                    frontLeftCollider.motorTorque = 0;
-                    frontRightCollider.motorTorque = 0;
-                    rearLeftCollider.motorTorque = 0;
-                    rearRightCollider.motorTorque = 0;
+                    _frontLeftWheelCollider.motorTorque = 0;
+                    _frontRightWheelCollider.motorTorque = 0;
+                    _backLeftWheelCollider.motorTorque = 0;
+                    _backRightWheelCollider.motorTorque = 0;
                 }
             }
         }
@@ -501,12 +424,12 @@ namespace _Game.Scripts.Car
             //3f, it means that the car is losing traction, then the car will start emitting particle systems.
             if (Mathf.Abs(localVelocityX) > 2.5f)
             {
-                isDrifting = true;
+                _isDrifting = true;
                 DriftCarPS();
             }
             else
             {
-                isDrifting = false;
+                _isDrifting = false;
                 DriftCarPS();
             }
             // The following part sets the throttle power to -1 smoothly.
@@ -524,27 +447,27 @@ namespace _Game.Scripts.Car
             }
             else
             {
-                if (Mathf.Abs(Mathf.RoundToInt(carSpeed)) < _carConfig.MaxReverseSpeed)
+                if (Mathf.Abs(Mathf.RoundToInt(_carSpeed)) < _carConfig.MaxReverseSpeed)
                 {
                     //Apply negative torque in all wheels to go in reverse if maxReverseSpeed has not been reached.
-                    frontLeftCollider.brakeTorque = 0;
-                    frontLeftCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
-                    frontRightCollider.brakeTorque = 0;
-                    frontRightCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
-                    rearLeftCollider.brakeTorque = 0;
-                    rearLeftCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
-                    rearRightCollider.brakeTorque = 0;
-                    rearRightCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _frontLeftWheelCollider.brakeTorque = 0;
+                    _frontLeftWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _frontRightWheelCollider.brakeTorque = 0;
+                    _frontRightWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _backLeftWheelCollider.brakeTorque = 0;
+                    _backLeftWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
+                    _backRightWheelCollider.brakeTorque = 0;
+                    _backRightWheelCollider.motorTorque = (_carConfig.AccelerationMultiplier * 50f) * throttleAxis;
                 }
                 else
                 {
                     //If the maxReverseSpeed has been reached, then stop applying torque to the wheels.
                     // IMPORTANT: The maxReverseSpeed variable should be considered as an approximation; the speed of the car
                     // could be a bit higher than expected.
-                    frontLeftCollider.motorTorque = 0;
-                    frontRightCollider.motorTorque = 0;
-                    rearLeftCollider.motorTorque = 0;
-                    rearRightCollider.motorTorque = 0;
+                    _frontLeftWheelCollider.motorTorque = 0;
+                    _frontRightWheelCollider.motorTorque = 0;
+                    _backLeftWheelCollider.motorTorque = 0;
+                    _backRightWheelCollider.motorTorque = 0;
                 }
             }
         }
@@ -552,10 +475,10 @@ namespace _Game.Scripts.Car
         //The following function set the motor torque to 0 (in case the user is not pressing either W or S).
         public void ThrottleOff()
         {
-            frontLeftCollider.motorTorque = 0;
-            frontRightCollider.motorTorque = 0;
-            rearLeftCollider.motorTorque = 0;
-            rearRightCollider.motorTorque = 0;
+            _frontLeftWheelCollider.motorTorque = 0;
+            _frontRightWheelCollider.motorTorque = 0;
+            _backLeftWheelCollider.motorTorque = 0;
+            _backRightWheelCollider.motorTorque = 0;
         }
 
         // The following method decelerates the speed of the car according to the decelerationMultiplier variable, where
@@ -565,12 +488,12 @@ namespace _Game.Scripts.Car
         {
             if (Mathf.Abs(localVelocityX) > 2.5f)
             {
-                isDrifting = true;
+                _isDrifting = true;
                 DriftCarPS();
             }
             else
             {
-                isDrifting = false;
+                _isDrifting = false;
                 DriftCarPS();
             }
             // The following part resets the throttle power to 0 smoothly.
@@ -589,17 +512,17 @@ namespace _Game.Scripts.Car
                     throttleAxis = 0f;
                 }
             }
-            carRigidbody.velocity = carRigidbody.velocity * (1f / (1f + (0.025f * _carConfig.DecelerationMultiplier)));
+            _carRigidbody.velocity = _carRigidbody.velocity * (1f / (1f + (0.025f * _carConfig.DecelerationMultiplier)));
             // Since we want to decelerate the car, we are going to remove the torque from the wheels of the car.
-            frontLeftCollider.motorTorque = 0;
-            frontRightCollider.motorTorque = 0;
-            rearLeftCollider.motorTorque = 0;
-            rearRightCollider.motorTorque = 0;
+            _frontLeftWheelCollider.motorTorque = 0;
+            _frontRightWheelCollider.motorTorque = 0;
+            _backLeftWheelCollider.motorTorque = 0;
+            _backRightWheelCollider.motorTorque = 0;
             // If the magnitude of the car's velocity is less than 0.25f (very slow velocity), then stop the car completely and
             // also cancel the invoke of this method.
-            if (carRigidbody.velocity.magnitude < 0.25f)
+            if (_carRigidbody.velocity.magnitude < 0.25f)
             {
-                carRigidbody.velocity = Vector3.zero;
+                _carRigidbody.velocity = Vector3.zero;
                 CancelInvoke("DecelerateCar");
             }
         }
@@ -607,10 +530,10 @@ namespace _Game.Scripts.Car
         // This function applies brake torque to the wheels according to the brake force given by the user.
         public void Brakes()
         {
-            frontLeftCollider.brakeTorque = _carConfig.BrakeForce;
-            frontRightCollider.brakeTorque = _carConfig.BrakeForce;
-            rearLeftCollider.brakeTorque = _carConfig.BrakeForce;
-            rearRightCollider.brakeTorque = _carConfig.BrakeForce;
+            _frontLeftWheelCollider.brakeTorque = _carConfig.BrakeForce;
+            _frontRightWheelCollider.brakeTorque = _carConfig.BrakeForce;
+            _backLeftWheelCollider.brakeTorque = _carConfig.BrakeForce;
+            _backRightWheelCollider.brakeTorque = _carConfig.BrakeForce;
         }
 
         // This function is used to make the car lose traction. By using this, the car will start drifting. The amount of traction lost
@@ -623,11 +546,11 @@ namespace _Game.Scripts.Car
             // place. This variable will start from 0 and will reach a top value of 1, which means that the maximum
             // drifting value has been reached. It will increase smoothly by using the variable Time.deltaTime.
             driftingAxis = driftingAxis + (Time.deltaTime);
-            float secureStartingPoint = driftingAxis * FLWextremumSlip * _carConfig.HandbrakeDriftMultiplier;
+            float secureStartingPoint = driftingAxis * _fronLeftWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier;
 
-            if (secureStartingPoint < FLWextremumSlip)
+            if (secureStartingPoint < _fronLeftWheelExtremumSlip)
             {
-                driftingAxis = FLWextremumSlip / (FLWextremumSlip * _carConfig.HandbrakeDriftMultiplier);
+                driftingAxis = _fronLeftWheelExtremumSlip / (_fronLeftWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier);
             }
             if (driftingAxis > 1f)
             {
@@ -637,33 +560,33 @@ namespace _Game.Scripts.Car
             //3f, it means that the car lost its traction, then the car will start emitting particle systems.
             if (Mathf.Abs(localVelocityX) > 2.5f)
             {
-                isDrifting = true;
+                _isDrifting = true;
             }
             else
             {
-                isDrifting = false;
+                _isDrifting = false;
             }
             //If the 'driftingAxis' value is not 1f, it means that the wheels have not reach their maximum drifting
             //value, so, we are going to continue increasing the sideways friction of the wheels until driftingAxis
             // = 1f.
             if (driftingAxis < 1f)
             {
-                FLwheelFriction.extremumSlip = FLWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                frontLeftCollider.sidewaysFriction = FLwheelFriction;
+                _fronLeftWheelFriction.extremumSlip = _fronLeftWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _frontLeftWheelCollider.sidewaysFriction = _fronLeftWheelFriction;
 
-                FRwheelFriction.extremumSlip = FRWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                frontRightCollider.sidewaysFriction = FRwheelFriction;
+                _frontRightWheelFriction.extremumSlip = _frontRightWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _frontRightWheelCollider.sidewaysFriction = _frontRightWheelFriction;
 
-                RLwheelFriction.extremumSlip = RLWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                rearLeftCollider.sidewaysFriction = RLwheelFriction;
+                _backLeftWheelFriction.extremumSlip = _backLeftWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _backLeftWheelCollider.sidewaysFriction = _backLeftWheelFriction;
 
-                RRwheelFriction.extremumSlip = RRWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                rearRightCollider.sidewaysFriction = RRwheelFriction;
+                _backRightWheelFriction.extremumSlip = _backRightWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _backRightWheelCollider.sidewaysFriction = _backRightWheelFriction;
             }
 
             // Whenever the player uses the handbrake, it means that the wheels are locked, so we set 'isTractionLocked = true'
             // and, as a consequense, the car starts to emit trails to simulate the wheel skids.
-            isTractionLocked = true;
+            _isTractionLocked = true;
             DriftCarPS();
 
         }
@@ -672,71 +595,47 @@ namespace _Game.Scripts.Car
         // depending on the value of the bool variables 'isDrifting' and 'isTractionLocked'.
         public void DriftCarPS()
         {
-
-            if (useEffects)
+            try
             {
-                try
+                if (_isDrifting)
                 {
-                    if (isDrifting)
-                    {
-                        RLWParticleSystem.Play();
-                        RRWParticleSystem.Play();
-                    }
-                    else if (!isDrifting)
-                    {
-                        RLWParticleSystem.Stop();
-                        RRWParticleSystem.Stop();
-                    }
+                    _backLeftWheelSmokeParticle.Play();
+                    _backRightWheelSmokeParticle.Play();
                 }
-                catch (Exception ex)
+                else if (!_isDrifting)
                 {
-                    Debug.LogWarning(ex);
-                }
-
-                try
-                {
-                    if ((isTractionLocked || Mathf.Abs(localVelocityX) > 5f) && Mathf.Abs(carSpeed) > 12f)
-                    {
-                        RLWTireSkid.emitting = true;
-                        RRWTireSkid.emitting = true;
-                    }
-                    else
-                    {
-                        RLWTireSkid.emitting = false;
-                        RRWTireSkid.emitting = false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning(ex);
+                    _backLeftWheelSmokeParticle.Stop();
+                    _backRightWheelSmokeParticle.Stop();
                 }
             }
-            else if (!useEffects)
+            catch (Exception ex)
             {
-                if (RLWParticleSystem != null)
-                {
-                    RLWParticleSystem.Stop();
-                }
-                if (RRWParticleSystem != null)
-                {
-                    RRWParticleSystem.Stop();
-                }
-                if (RLWTireSkid != null)
-                {
-                    RLWTireSkid.emitting = false;
-                }
-                if (RRWTireSkid != null)
-                {
-                    RRWTireSkid.emitting = false;
-                }
+                Debug.LogWarning(ex);
             }
 
+            try
+            {
+                if ((_isTractionLocked || Mathf.Abs(localVelocityX) > 5f) && Mathf.Abs(_carSpeed) > 12f)
+                {
+                    _backLeftWheelTrail.emitting = true;
+                    _backRightWheelTrail.emitting = true;
+                }
+                else
+                {
+                    _backLeftWheelTrail.emitting = false;
+                    _backRightWheelTrail.emitting = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning(ex);
+            }
         }
 
         // This function is used to recover the traction of the car when the user has stopped using the car's handbrake.
         public void RecoverTraction()
         {
-            isTractionLocked = false;
+            _isTractionLocked = false;
             driftingAxis = driftingAxis - (Time.deltaTime / 1.5f);
             if (driftingAxis < 0f)
             {
@@ -746,36 +645,36 @@ namespace _Game.Scripts.Car
             //If the 'driftingAxis' value is not 0f, it means that the wheels have not recovered their traction.
             //We are going to continue decreasing the sideways friction of the wheels until we reach the initial
             // car's grip.
-            if (FLwheelFriction.extremumSlip > FLWextremumSlip)
+            if (_fronLeftWheelFriction.extremumSlip > _fronLeftWheelExtremumSlip)
             {
-                FLwheelFriction.extremumSlip = FLWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                frontLeftCollider.sidewaysFriction = FLwheelFriction;
+                _fronLeftWheelFriction.extremumSlip = _fronLeftWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _frontLeftWheelCollider.sidewaysFriction = _fronLeftWheelFriction;
 
-                FRwheelFriction.extremumSlip = FRWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                frontRightCollider.sidewaysFriction = FRwheelFriction;
+                _frontRightWheelFriction.extremumSlip = _frontRightWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _frontRightWheelCollider.sidewaysFriction = _frontRightWheelFriction;
 
-                RLwheelFriction.extremumSlip = RLWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                rearLeftCollider.sidewaysFriction = RLwheelFriction;
+                _backLeftWheelFriction.extremumSlip = _backLeftWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _backLeftWheelCollider.sidewaysFriction = _backLeftWheelFriction;
 
-                RRwheelFriction.extremumSlip = RRWextremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
-                rearRightCollider.sidewaysFriction = RRwheelFriction;
+                _backRightWheelFriction.extremumSlip = _backRightWheelExtremumSlip * _carConfig.HandbrakeDriftMultiplier * driftingAxis;
+                _backRightWheelCollider.sidewaysFriction = _backRightWheelFriction;
 
                 Invoke("RecoverTraction", Time.deltaTime);
 
             }
-            else if (FLwheelFriction.extremumSlip < FLWextremumSlip)
+            else if (_fronLeftWheelFriction.extremumSlip < _fronLeftWheelExtremumSlip)
             {
-                FLwheelFriction.extremumSlip = FLWextremumSlip;
-                frontLeftCollider.sidewaysFriction = FLwheelFriction;
+                _fronLeftWheelFriction.extremumSlip = _fronLeftWheelExtremumSlip;
+                _frontLeftWheelCollider.sidewaysFriction = _fronLeftWheelFriction;
 
-                FRwheelFriction.extremumSlip = FRWextremumSlip;
-                frontRightCollider.sidewaysFriction = FRwheelFriction;
+                _frontRightWheelFriction.extremumSlip = _frontRightWheelExtremumSlip;
+                _frontRightWheelCollider.sidewaysFriction = _frontRightWheelFriction;
 
-                RLwheelFriction.extremumSlip = RLWextremumSlip;
-                rearLeftCollider.sidewaysFriction = RLwheelFriction;
+                _backLeftWheelFriction.extremumSlip = _backLeftWheelExtremumSlip;
+                _backLeftWheelCollider.sidewaysFriction = _backLeftWheelFriction;
 
-                RRwheelFriction.extremumSlip = RRWextremumSlip;
-                rearRightCollider.sidewaysFriction = RRwheelFriction;
+                _backRightWheelFriction.extremumSlip = _backRightWheelExtremumSlip;
+                _backRightWheelCollider.sidewaysFriction = _backRightWheelFriction;
 
                 driftingAxis = 0f;
             }

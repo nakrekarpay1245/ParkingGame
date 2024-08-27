@@ -1,6 +1,8 @@
 using _Game.Scripts._helpers.Audios;
 using _Game.Scripts._helpers.Particles;
 using _Game.Scripts._helpers.TimeManagement;
+using _Game.Scripts.Car;
+using _Game.Scripts.UI;
 using UnityEngine;
 
 namespace _Game.Scripts._helpers
@@ -21,6 +23,13 @@ namespace _Game.Scripts._helpers
         [Tooltip("Handles time management including countdowns, timers, and related functions.")]
         [SerializeField] private TimeManager _timeManager;
 
+        [Header("Game Systems")]
+        [Tooltip("Manages vehicle functionalities including controls and physics.")]
+        [SerializeField] private CarController _carController;
+
+        [Tooltip("Handles UI functionalities, such as displaying vehicle speed.")]
+        [SerializeField] private UIManager _uiManager;
+
         /// <summary>
         /// Provides public access to the AudioManager instance.
         /// </summary>
@@ -35,5 +44,15 @@ namespace _Game.Scripts._helpers
         /// Provides public access to the TimeManager instance.
         /// </summary>
         public TimeManager TimeManager => _timeManager;
+
+        /// <summary>
+        /// Provides public access to the CarController instance.
+        /// </summary>
+        public CarController CarController => _carController;
+
+        /// <summary>
+        /// Provides public access to the UIManager instance.
+        /// </summary>
+        public UIManager UIManager => _uiManager;
     }
 }

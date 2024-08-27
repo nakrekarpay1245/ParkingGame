@@ -1158,6 +1158,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786202605}
   m_CullTransparentMesh: 1
+--- !u!1 &882700478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882700479}
+  m_Layer: 0
+  m_Name: Management
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &882700479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882700478}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1855773101}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &980921595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4121091811543137509, guid: ddf4ea2625767fd4bb4153e7e4009ad5,
@@ -1783,6 +1815,55 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4461635409224462883}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1474806767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1474806769}
+  - component: {fileID: 1474806768}
+  m_Layer: 0
+  m_Name: GlobalBinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1474806768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474806767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1ff28b3a9f2314f9d6fba70489fba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioManager: {fileID: 0}
+  _particleManager: {fileID: 0}
+  _timeManager: {fileID: 0}
+  _carController: {fileID: 9115814178753284621}
+  _uiManager: {fileID: 1855773102}
+--- !u!4 &1474806769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474806767}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1492462694
 GameObject:
   m_ObjectHideFlags: 0
@@ -2134,6 +2215,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807330771}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1855773100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1855773101}
+  - component: {fileID: 1855773102}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1855773101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855773100}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 882700479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1855773102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855773100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97bb484a300fd6141be23077fe4afada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedText: {fileID: 13612615}
+  speedFormat: '{0:0}'
+  transitionTime: 0.5
 --- !u!1 &1864723206
 GameObject:
   m_ObjectHideFlags: 0
@@ -2410,7 +2538,7 @@ GameObject:
   - component: {fileID: 346485689874633437}
   - component: {fileID: 7850146994786159638}
   m_Layer: 0
-  m_Name: FrontRightWheel
+  m_Name: FrontRightWheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2628,7 +2756,7 @@ GameObject:
   - component: {fileID: 2239721842621005376}
   - component: {fileID: 2798620474957274816}
   m_Layer: 0
-  m_Name: FrontLeftWheel
+  m_Name: FrontLeftWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2646,7 +2774,7 @@ GameObject:
   - component: {fileID: 2305147498674961061}
   - component: {fileID: 8729410116330538640}
   m_Layer: 0
-  m_Name: RearRightWheel
+  m_Name: BackRightWheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2759,7 +2887,7 @@ GameObject:
   - component: {fileID: 535317686268518340}
   - component: {fileID: 6093728200791156858}
   m_Layer: 0
-  m_Name: FrontRightWheel
+  m_Name: FrontRightWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2828,7 +2956,7 @@ GameObject:
   - component: {fileID: 8434381532957851425}
   - component: {fileID: 4690095560142928603}
   m_Layer: 0
-  m_Name: RearRightWheel
+  m_Name: BackRightWheelCollier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2908,7 +3036,7 @@ PrefabInstance:
     - target: {fileID: 4121091811543088291, guid: ddf4ea2625767fd4bb4153e7e4009ad5,
         type: 3}
       propertyPath: m_Name
-      value: LeftTireSmoke_PS
+      value: BackLeftWheelSmoke
       objectReference: {fileID: 0}
     - target: {fileID: 4121091811543137509, guid: ddf4ea2625767fd4bb4153e7e4009ad5,
         type: 3}
@@ -2991,7 +3119,7 @@ PrefabInstance:
     - target: {fileID: 4121091811543088291, guid: ddf4ea2625767fd4bb4153e7e4009ad5,
         type: 3}
       propertyPath: m_Name
-      value: RightTireSmoke_PS
+      value: BackRightWheelSmoke
       objectReference: {fileID: 0}
     - target: {fileID: 4121091811543137509, guid: ddf4ea2625767fd4bb4153e7e4009ad5,
         type: 3}
@@ -3149,7 +3277,7 @@ PrefabInstance:
     - target: {fileID: 7344874181333496819, guid: ab4ea67cd9337c341af0bd7182c60f92,
         type: 3}
       propertyPath: m_Name
-      value: RightTireSkid
+      value: BackRightWheelTrail
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3252,7 +3380,7 @@ PrefabInstance:
     - target: {fileID: 7344874181333496819, guid: ab4ea67cd9337c341af0bd7182c60f92,
         type: 3}
       propertyPath: m_Name
-      value: LeftTireSkid
+      value: BackLeftWheelTrail
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3318,7 +3446,7 @@ GameObject:
   - component: {fileID: 234622655240499602}
   - component: {fileID: 2844294949729578154}
   m_Layer: 0
-  m_Name: FrontLeftWheel
+  m_Name: FrontLeftWheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3442,7 +3570,7 @@ GameObject:
   - component: {fileID: 1828259375247674032}
   - component: {fileID: 5644086346139825068}
   m_Layer: 0
-  m_Name: RearLeftWheel
+  m_Name: BackLeftWheelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3581,7 +3709,7 @@ GameObject:
   - component: {fileID: 4586952846470463698}
   - component: {fileID: 778402143252392460}
   m_Layer: 0
-  m_Name: RearLeftWheel
+  m_Name: BackLeftWheelMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3692,34 +3820,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _carConfig: {fileID: 11400000, guid: 3d834e4b6b6ccb44c8ea34fd4c79d51a, type: 2}
-  frontLeftMesh: {fileID: 4739398453474249181}
-  frontLeftCollider: {fileID: 2798620474957274816}
-  frontRightMesh: {fileID: 1674468504090514458}
-  frontRightCollider: {fileID: 6093728200791156858}
-  rearLeftMesh: {fileID: 8059726640760519114}
-  rearLeftCollider: {fileID: 5644086346139825068}
-  rearRightMesh: {fileID: 2672587278822927051}
-  rearRightCollider: {fileID: 4690095560142928603}
-  useEffects: 1
-  RLWParticleSystem: {fileID: 980921597}
-  RRWParticleSystem: {fileID: 510085375}
-  RLWTireSkid: {fileID: 1663052562}
-  RRWTireSkid: {fileID: 1369486241}
-  useUI: 1
-  carSpeedText: {fileID: 13612615}
-  useSounds: 1
-  carEngineSound: {fileID: 1109746025}
-  tireScreechSound: {fileID: 1079542301}
   _playerInput: {fileID: 11400000, guid: e2dfa22de8dbba340b7014f8cd1f1211, type: 2}
-  carSpeed: 0
-  isDrifting: 0
-  isTractionLocked: 0
+  _frontLeftWheelMesh: {fileID: 4739398453474249181}
+  _frontLeftWheelCollider: {fileID: 2798620474957274816}
+  _frontRightWheelMesh: {fileID: 1674468504090514458}
+  _frontRightWheelCollider: {fileID: 6093728200791156858}
+  _backLeftWheelMesh: {fileID: 8059726640760519114}
+  _backLeftWheelCollider: {fileID: 5644086346139825068}
+  _backRightWheelMesh: {fileID: 2672587278822927051}
+  _backRightWheelCollider: {fileID: 4690095560142928603}
+  _backLeftWheelSmokeParticle: {fileID: 980921597}
+  _backRightWheelSmokeParticle: {fileID: 510085375}
+  _backLeftWheelTrail: {fileID: 1663052562}
+  _backRightWheelTrail: {fileID: 1369486241}
+  _carEngineSound: {fileID: 1109746025}
+  _tireScreechSound: {fileID: 1079542301}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 586118284}
   - {fileID: 744076041}
+  - {fileID: 1474806769}
+  - {fileID: 882700479}
   - {fileID: 1864723210}
   - {fileID: 1552634015}
   - {fileID: 448148571}
