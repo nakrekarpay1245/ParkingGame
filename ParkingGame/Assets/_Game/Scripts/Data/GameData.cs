@@ -13,9 +13,7 @@ namespace _Game.Data
         [SerializeField]
         private List<Level> _levelList;
 
-        [Tooltip("Current level index in the game.")]
-        [HideInInspector] // We are managing this through SaveManager, so it should not be editable in the inspector.
-        [SerializeField]
+        // Current level index in the game.
         private int _currentLevelIndex;
 
         /// <summary>

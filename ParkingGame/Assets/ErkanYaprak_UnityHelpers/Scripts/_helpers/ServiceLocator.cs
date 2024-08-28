@@ -16,10 +16,13 @@ public static class ServiceLocator
     public static void Register<T>(T service) where T : class
     {
         var type = typeof(T);
-        if (!_services.ContainsKey(type))
+
+        if (_services.ContainsKey(type))
         {
-            _services.Add(type, service);
+            _services.Remove(type);
         }
+
+        _services.Add(type, service);
     }
 
     /// <summary>
