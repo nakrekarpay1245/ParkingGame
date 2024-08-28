@@ -18,6 +18,8 @@ namespace _Game.Scripts._helpers.Particles
 
         private void Awake()
         {
+            ServiceLocator.Register(this);
+
             GenerateParticles();
             StopAndDeactivateAllParticles();
         }
@@ -122,12 +124,12 @@ namespace _Game.Scripts._helpers.Particles
 
             if (!particle.main.loop)
             {
-                Debug.Log($"{particle.name} is not looping");
+                //Debug.Log($"{particle.name} is not looping");
                 StartCoroutine(DeactivateAfterTime(particle, particle.main.duration));
             }
             else
             {
-                Debug.Log($"{particle.name} is looping");
+                //Debug.Log($"{particle.name} is looping");
             }
         }
 

@@ -43,6 +43,8 @@ namespace _Game.Scripts.Car
             {
                 _carRigidbody = GetComponent<Rigidbody>();
             }
+
+            ServiceLocator.Register(this);
         }
 
         /// <summary>

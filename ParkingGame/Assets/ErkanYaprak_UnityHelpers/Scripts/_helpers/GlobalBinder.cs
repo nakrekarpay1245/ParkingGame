@@ -8,67 +8,46 @@ using UnityEngine;
 namespace _Game.Scripts._helpers
 {
     /// <summary>
-    /// Acts as a central hub for accessing various managers in the game.
-    /// Inherits from MonoSingleton to ensure a single instance across the game.
+    /// GlobalBinder centralizes access to core game systems and registers them with the ServiceLocator.
     /// </summary>
-    public class GlobalBinder : MonoSingleton<GlobalBinder>
+    public class GlobalBinder : MonoBehaviour
     {
-        [Header("Managers")]
-        [Tooltip("Handles audio functionalities like playing sounds and managing music.")]
-        [SerializeField] private AudioManager _audioManager;
+        //[Header("Managers")]
+        //[Tooltip("Handles audio functionalities like playing sounds and managing music.")]
+        //[SerializeField] private AudioManager _audioManager;
 
-        [Tooltip("Manages particle effects used throughout the game.")]
-        [SerializeField] private ParticleManager _particleManager;
+        //[Tooltip("Manages particle effects used throughout the game.")]
+        //[SerializeField] private ParticleManager _particleManager;
 
-        [Tooltip("Handles time management including countdowns, timers, and related functions.")]
-        [SerializeField] private TimeManager _timeManager;
+        //[Tooltip("Handles time management including countdowns, timers, and related functions.")]
+        //[SerializeField] private TimeManager _timeManager;
 
-        [Header("Game Systems")]
-        [Tooltip("Manages vehicle functionalities including controls and physics.")]
-        [SerializeField] private CarController _carController;
+        //[Header("Game Systems")]
+        //[Tooltip("Manages vehicle functionalities including controls and physics.")]
+        //[SerializeField] private CarController _carController;
 
-        [Tooltip("Handles damage and health functionalities for the vehicle.")]
-        [SerializeField] private CarDamageHandler _carDamageHandler;
+        //[Tooltip("Handles damage and health functionalities for the vehicle.")]
+        //[SerializeField] private CarDamageHandler _carDamageHandler;
 
-        [Tooltip("Handles parking detection and logic for the car.")]
-        [SerializeField] private CarParkingChecker _carParkingChecker;
+        //[Tooltip("Handles UI functionalities, such as displaying vehicle speed.")]
+        //[SerializeField] private UIManager _uiManager;
 
-        [Tooltip("Handles UI functionalities, such as displaying vehicle speed.")]
-        [SerializeField] private UIManager _uiManager;
+        //private void Awake()
+        //{
+        //    RegisterServices();
+        //}
 
-        /// <summary>
-        /// Provides public access to the AudioManager instance.
-        /// </summary>
-        public AudioManager AudioManager => _audioManager;
-
-        /// <summary>
-        /// Provides public access to the ParticleManager instance.
-        /// </summary>
-        public ParticleManager ParticleManager => _particleManager;
-
-        /// <summary>
-        /// Provides public access to the TimeManager instance.
-        /// </summary>
-        public TimeManager TimeManager => _timeManager;
-
-        /// <summary>
-        /// Provides public access to the CarController instance.
-        /// </summary>
-        public CarController CarController => _carController;
-
-        /// <summary>
-        /// Provides public access to the CarDamageHandler instance.
-        /// </summary>
-        public CarDamageHandler CarDamageHandler => _carDamageHandler;
-
-        /// <summary>
-        /// Provides public access to the CarParkingChecker instance.
-        /// </summary>
-        public CarParkingChecker CarParkingChecker => _carParkingChecker;
-
-        /// <summary>
-        /// Provides public access to the UIManager instance.
-        /// </summary>
-        public UIManager UIManager => _uiManager;
+        ///// <summary>
+        ///// Registers all the services in the ServiceLocator.
+        ///// </summary>
+        //private void RegisterServices()
+        //{
+        //    ServiceLocator.Register(_audioManager);
+        //    ServiceLocator.Register(_particleManager);
+        //    ServiceLocator.Register(_timeManager);
+        //    ServiceLocator.Register(_carController);
+        //    ServiceLocator.Register(_carDamageHandler);
+        //    ServiceLocator.Register(_uiManager);
+        //}
     }
 }

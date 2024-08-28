@@ -4,6 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 using _Game.Scripts.Obstacles;
 using _Game.Scripts._helpers;
+using _Game.Scripts._helpers.Audios;
+using _Game.Scripts._helpers.Particles;
 
 namespace _Game.Scripts.LevelSystem
 {
@@ -74,6 +76,8 @@ namespace _Game.Scripts.LevelSystem
         private List<Transform> _nodes = new List<Transform>();
         private List<Vector3> _obstaclePositions = new List<Vector3>();
 
+        private AudioManager _audioManager;
+
         private void Awake()
         {
             InitializeNodes();
@@ -82,6 +86,8 @@ namespace _Game.Scripts.LevelSystem
 
         private void Start()
         {
+            _audioManager = ServiceLocator.Get<AudioManager>(); // Access AudioManager through ServiceLocator
+
             StartCoroutine(PlacePrefabsWithDelay());
         }
 
@@ -174,7 +180,7 @@ namespace _Game.Scripts.LevelSystem
                 .DOMove(position, _animationDuration)
                 .SetEase(_animationEase);
 
-            GlobalBinder.singleton.AudioManager.PlaySound(_spawnSoundKey);
+            _audioManager.PlaySound(_spawnSoundKey);
 
             // Wait for animation to complete
             yield return new WaitForSeconds(_spawnInterval);

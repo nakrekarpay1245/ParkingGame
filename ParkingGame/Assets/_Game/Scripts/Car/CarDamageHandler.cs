@@ -1,55 +1,51 @@
-using _Game.Scripts._Abstracts;
 using UnityEngine;
 
 namespace _Game.Scripts.Car
 {
     /// <summary>
-    /// Manages the health and damage system of a car. Inherits from AbstractDamageableBase to handle health management.
+    /// Manages the health system for the vehicle.
     /// </summary>
-    public class CarDamageHandler : AbstractDamageableBase
+    public class CarDamageHandler : MonoBehaviour
     {
-        /// <summary>
-        /// Sets the car's health to its maximum value.
-        /// </summary>
-        protected override void SetHealth()
+        public event System.Action<float, float> OnHealthChanged;
+
+        [SerializeField] private float _maxHealth = 100f;
+        private float _currentHealth;
+
+        public float MaxHealth => _maxHealth;
+
+        private void Awake()
         {
-            base.SetHealth(); // Initialize health using the base method
-            // Additional car-specific initialization if needed
+            ServiceLocator.Register(this);
         }
 
-        /// <summary>
-        /// Applies damage to the car and checks if it should die.
-        /// </summary>
-        /// <param name="damageAmount">The amount of damage to apply.</param>
-        public override void TakeDamage(float damageAmount)
+        private void Start()
         {
-            base.TakeDamage(damageAmount); // Handle damage using the base method
-            // Additional car-specific damage handling if needed
+            _currentHealth = _maxHealth;
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
 
-        /// <summary>
-        /// Triggers the object's death sequence.
-        /// </summary>
-        public override void Die()
+        public void TakeDamage(float damageAmount)
         {
-            base.Die();
-            FailParking();
+            _currentHealth -= damageAmount;
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+            if (_currentHealth <= 0)
+            {
+                Die();
+            }
         }
 
-        public void FailParking()
+        private void Die()
         {
-            Debug.Log("Parking Failed!");
-            //GlobalBinder.singleton.LevelManager.FailGame();
+            Debug.Log("Vehicle Destroyed");
+            // Handle death sequence
         }
 
-        /// <summary>
-        /// Heals the car by a certain amount, ensuring health does not exceed maximum health.
-        /// </summary>
-        /// <param name="healAmount">The amount of health to restore.</param>
-        public override void Heal(float healAmount)
+        public void Heal(float healAmount)
         {
-            base.Heal(healAmount); // Handle healing using the base method
-            // Additional car-specific healing if needed
+            _currentHealth = Mathf.Min(_currentHealth + healAmount, _maxHealth);
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
     }
 }

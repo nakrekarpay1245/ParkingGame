@@ -1,4 +1,6 @@
 using _Game.Scripts._helpers;
+using _Game.Scripts._helpers.Particles;
+using _Game.Scripts.Car;
 using UnityEngine;
 
 namespace _Game.Scripts
@@ -26,15 +28,21 @@ namespace _Game.Scripts
         private ParticleSystem _parkingAreaNoSuccessParticle;
         private ParticleSystem _parkingAreaSuccessParticle;
 
+        private ParticleManager _particleManager;
+        private CarParkingChecker _parkingChecker;
+
         /// <summary>
         /// Initializes and subscribes to parking-related events.
         /// </summary>
         private void Start()
         {
+            _particleManager = ServiceLocator.Get<ParticleManager>(); // Access ParticleManager through ServiceLocator
+            _parkingChecker = ServiceLocator.Get<CarParkingChecker>(); // Access CarParkingChecker through ServiceLocator
+
             SubscribeToParkingEvents();
 
             // Cache and play the initial particle for the parking area
-            _parkingAreaParticle = GlobalBinder.singleton.ParticleManager.PlayParticleAtPoint(_parkingAreaParticleKey,
+            _parkingAreaParticle = _particleManager.PlayParticleAtPoint(_parkingAreaParticleKey,
                 transform.position, Quaternion.identity, transform);
         }
 
@@ -43,10 +51,9 @@ namespace _Game.Scripts
         /// </summary>
         private void SubscribeToParkingEvents()
         {
-            var parkingChecker = GlobalBinder.singleton.CarParkingChecker;
-            parkingChecker.OnExitParkingArea += HandleExitParkingArea;
-            parkingChecker.OnEnterParkingAreaWithoutSuccess += HandleEnterParkingAreaWithoutSuccess;
-            parkingChecker.OnParkingSuccessful += HandleParkingSuccessful;
+            _parkingChecker.OnExitParkingArea += HandleExitParkingArea;
+            _parkingChecker.OnEnterParkingAreaWithoutSuccess += HandleEnterParkingAreaWithoutSuccess;
+            _parkingChecker.OnParkingSuccessful += HandleParkingSuccessful;
         }
 
         /// <summary>
@@ -90,7 +97,7 @@ namespace _Game.Scripts
             StopAllParticles();
             if (particle == null)
             {
-                particle = GlobalBinder.singleton.ParticleManager.PlayParticleAtPoint(particleKey,
+                particle = _particleManager.PlayParticleAtPoint(particleKey,
                     transform.position, Quaternion.identity, transform);
             }
             particle?.Play();

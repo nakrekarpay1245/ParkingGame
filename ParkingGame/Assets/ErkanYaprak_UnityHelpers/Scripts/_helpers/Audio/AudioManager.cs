@@ -35,6 +35,8 @@ namespace _Game.Scripts._helpers.Audios
 
         private void Awake()
         {
+            ServiceLocator.Register(this);
+
             InitializeAudioSources();
         }
 
