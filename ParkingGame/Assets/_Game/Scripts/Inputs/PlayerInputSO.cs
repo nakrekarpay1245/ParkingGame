@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Game.Scripts.Inputs
+namespace _Game.Inputs
 {
     [CreateAssetMenu(fileName = "PlayerInput", menuName = "Data/PlayerInput")]
     public class PlayerInputSO : ScriptableObject

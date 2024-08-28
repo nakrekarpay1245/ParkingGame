@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Game.Scripts.LevelSystem
+namespace _Game.LevelSystem
 {
     /// <summary>
     /// The Level class is responsible for initializing the CarController, LevelFrame, 

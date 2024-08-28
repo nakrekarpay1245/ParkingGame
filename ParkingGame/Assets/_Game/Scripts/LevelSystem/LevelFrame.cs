@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using _Game.Scripts.Obstacles;
-using _Game.Scripts._helpers;
-using _Game.Scripts._helpers.Audios;
-using _Game.Scripts._helpers.Particles;
+using _Game.Obstacles;
+using _Game._helpers;
+using _Game._helpers.Audios;
+using _Game._helpers.Particles;
 
-namespace _Game.Scripts.LevelSystem
+namespace _Game.LevelSystem
 {
     /// <summary>
     /// The LevelFrame class places prefabs at each node and between child nodes at specified intervals.

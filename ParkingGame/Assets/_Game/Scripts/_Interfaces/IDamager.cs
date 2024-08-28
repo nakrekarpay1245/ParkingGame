@@ -1,4 +1,4 @@
-namespace _Game.Scripts._Interfaces
+namespace _Game._Interfaces
 {
     /// <summary>
     /// Represents an object that can deal damage.

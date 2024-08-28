@@ -1,7 +1,7 @@
-using _Game.Scripts._Abstracts;
+using _Game._Abstracts;
 using UnityEngine;
 
-namespace _Game.Scripts.Car
+namespace _Game.Car
 {
     /// <summary>
     /// Manages the health system for the vehicle.

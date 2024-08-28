@@ -1,8 +1,8 @@
 using UnityEngine;
-using _Game.Scripts._Interfaces;
+using _Game._Interfaces;
 using UnityEngine.Events;
 
-namespace _Game.Scripts._Abstracts
+namespace _Game._Abstracts
 {
     /// <summary>
     /// Abstract base class for objects that can both take damage and deal damage.

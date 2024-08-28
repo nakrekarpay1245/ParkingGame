@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening; // DOTween for smooth transitions
 
-namespace _Game.Scripts.Cameras
+namespace _Game.Cameras
 {
     /// <summary>
     /// CarFollowCameraController manages the camera to smoothly follow and look at the target car.

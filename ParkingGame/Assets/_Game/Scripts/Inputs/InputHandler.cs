@@ -1,7 +1,7 @@
-using _Game.Scripts.UI;
+using _Game.UI;
 using UnityEngine;
 
-namespace _Game.Scripts.Inputs
+namespace _Game.Inputs
 {
     /// <summary>
     /// Handles player input and updates the PlayerInput ScriptableObject accordingly.

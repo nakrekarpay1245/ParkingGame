@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Game.Scripts.Car
+namespace _Game.Car
 {
     /// <summary>
     /// This class handles the logic for checking if the car is properly parked within a defined 

@@ -2,9 +2,9 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using System.Collections.Generic;
-using _Game.Scripts.Car;
+using _Game.Car;
 
-namespace _Game.Scripts.UI
+namespace _Game.UI
 {
     /// <summary>
     /// Manages UI elements like speed display and health bar for the vehicle.

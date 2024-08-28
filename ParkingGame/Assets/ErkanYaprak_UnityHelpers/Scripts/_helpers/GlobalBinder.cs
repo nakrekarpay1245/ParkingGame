@@ -1,11 +1,11 @@
-using _Game.Scripts._helpers.Audios;
-using _Game.Scripts._helpers.Particles;
-using _Game.Scripts._helpers.TimeManagement;
-using _Game.Scripts.Car;
-using _Game.Scripts.UI;
+using _Game._helpers.Audios;
+using _Game._helpers.Particles;
+using _Game._helpers.TimeManagement;
+using _Game.Car;
+using _Game.UI;
 using UnityEngine;
 
-namespace _Game.Scripts._helpers
+namespace _Game._helpers
 {
     /// <summary>
     /// GlobalBinder centralizes access to core game systems and registers them with the ServiceLocator.

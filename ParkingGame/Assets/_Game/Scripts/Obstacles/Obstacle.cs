@@ -1,8 +1,8 @@
-using _Game.Scripts._Abstracts;
-using _Game.Scripts._Interfaces;
+using _Game._Abstracts;
+using _Game._Interfaces;
 using UnityEngine;
 
-namespace _Game.Scripts.Obstacles
+namespace _Game.Obstacles
 {
     /// <summary>
     /// Represents an obstacle that can deal damage to other damageable objects upon collision.

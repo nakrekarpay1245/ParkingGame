@@ -2,7 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 
-namespace _Game.Scripts.UI
+namespace _Game.UI
 {
     /// <summary>
     /// CustomButton handles touch input, allowing for button press and release interactions.

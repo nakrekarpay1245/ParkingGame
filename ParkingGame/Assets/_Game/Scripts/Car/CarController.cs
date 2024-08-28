@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
-using _Game.Scripts.Inputs;
-using _Game.Scripts.Cameras;
-using _Game.Scripts._helpers.Audios;
+using _Game.Inputs;
+using _Game.Cameras;
+using _Game._helpers.Audios;
 
-namespace _Game.Scripts.Car
+namespace _Game.Car
 {
     public class CarController : MonoBehaviour
     {

@@ -1,6 +1,6 @@
-using _Game.Scripts._helpers;
-using _Game.Scripts._helpers.Particles;
-using _Game.Scripts.Car;
+using _Game._helpers;
+using _Game._helpers.Particles;
+using _Game.Car;
 using UnityEngine;
 
 namespace _Game.Scripts

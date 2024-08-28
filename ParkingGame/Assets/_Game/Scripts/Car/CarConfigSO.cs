@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Game.Scripts.Car
+namespace _Game.Car
 {
     /// <summary>
     /// Car configuration settings used for defining key car parameters
