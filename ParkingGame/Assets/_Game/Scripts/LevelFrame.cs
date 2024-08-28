@@ -78,14 +78,11 @@ namespace _Game.Scripts.LevelSystem
 
         private AudioManager _audioManager;
 
-        private void Awake()
+        public void Init()
         {
             InitializeNodes();
             CalculateObstaclePositions();
-        }
 
-        private void Start()
-        {
             _audioManager = ServiceLocator.Get<AudioManager>(); // Access AudioManager through ServiceLocator
 
             StartCoroutine(PlacePrefabsWithDelay());

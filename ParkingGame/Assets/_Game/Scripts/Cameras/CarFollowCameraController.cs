@@ -9,49 +9,51 @@ namespace _Game.Scripts.Cameras
     /// </summary>
     public class CarFollowCameraController : MonoBehaviour
     {
-        [Header("Target Settings")]
-        [Tooltip("The transform of the car that the camera will follow.")]
-        [SerializeField] private Transform carTransform;
-
         [Header("Camera Settings")]
         [Tooltip("Speed at which the camera follows the car.")]
         [Range(1f, 10f)]
-        [SerializeField] private float followSpeed = 2f;
+        [SerializeField] private float _followSpeed = 2f;
 
         [Tooltip("Speed at which the camera looks at the car.")]
         [Range(1f, 10f)]
-        [SerializeField] private float lookSpeed = 5f;
+        [SerializeField] private float _lookSpeed = 5f;
 
+        private Transform _carTransform;
         private Vector3 _initialCameraOffset;
         private Vector3 _initialCameraPosition;
 
         private void Awake()
         {
-            Initialize();
-        }
-
-        /// <summary>
-        /// Initializes camera position relative to the car.
-        /// </summary>
-        private void Initialize()
-        {
+            // Initialize camera position
             _initialCameraPosition = transform.position;
-            if (carTransform != null)
-            {
-                _initialCameraOffset = _initialCameraPosition - carTransform.position;
-            }
-            else
-            {
-                Debug.LogError("Car Transform is not assigned.");
-            }
+
+            ServiceLocator.Register(this);
         }
 
         private void FixedUpdate()
         {
-            if (carTransform != null)
+            if (_carTransform != null)
             {
                 FollowCar();
                 LookAtCar();
+            }
+        }
+
+        /// <summary>
+        /// Sets the car transform and initializes camera offset.
+        /// </summary>
+        /// <param name="carTransform">The transform of the car to follow.</param>
+        public void SetCarTransform(Transform carTransform)
+        {
+            _carTransform = carTransform;
+            if (_carTransform != null)
+            {
+                _initialCameraOffset = _initialCameraPosition - _carTransform.position;
+                Debug.Log("CarTransform set and initial camera offset calculated.");
+            }
+            else
+            {
+                Debug.LogError("Failed to set CarTransform: Transform is null.");
             }
         }
 
@@ -61,8 +63,8 @@ namespace _Game.Scripts.Cameras
         /// </summary>
         private void FollowCar()
         {
-            Vector3 targetPosition = carTransform.position + _initialCameraOffset;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
+            Vector3 targetPosition = _carTransform.position + _initialCameraOffset;
+            transform.position = Vector3.Lerp(transform.position, targetPosition, _followSpeed * Time.deltaTime);
         }
 
         /// <summary>
@@ -71,9 +73,9 @@ namespace _Game.Scripts.Cameras
         /// </summary>
         private void LookAtCar()
         {
-            Vector3 directionToLook = carTransform.position - transform.position;
+            Vector3 directionToLook = _carTransform.position - transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(directionToLook, Vector3.up);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lookSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _lookSpeed * Time.deltaTime);
         }
 
         /// <summary>
@@ -82,15 +84,21 @@ namespace _Game.Scripts.Cameras
         /// </summary>
         public void SmoothFollowWithDOTween()
         {
-            Vector3 targetPosition = carTransform.position + _initialCameraOffset;
-            transform.DOMove(targetPosition, 1f / followSpeed).SetEase(Ease.InOutQuad);
+            if (_carTransform != null)
+            {
+                Vector3 targetPosition = _carTransform.position + _initialCameraOffset;
+                transform.DOMove(targetPosition, 1f / _followSpeed).SetEase(Ease.InOutQuad);
+            }
         }
 
         public void SmoothLookAtWithDOTween()
         {
-            Vector3 directionToLook = carTransform.position - transform.position;
-            Quaternion targetRotation = Quaternion.LookRotation(directionToLook, Vector3.up);
-            transform.DORotateQuaternion(targetRotation, 1f / lookSpeed).SetEase(Ease.InOutQuad);
+            if (_carTransform != null)
+            {
+                Vector3 directionToLook = _carTransform.position - transform.position;
+                Quaternion targetRotation = Quaternion.LookRotation(directionToLook, Vector3.up);
+                transform.DORotateQuaternion(targetRotation, 1f / _lookSpeed).SetEase(Ease.InOutQuad);
+            }
         }
     }
 }

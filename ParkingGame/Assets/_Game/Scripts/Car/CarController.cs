@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using _Game.Scripts.Inputs;
+using _Game.Scripts.Cameras;
 
 namespace _Game.Scripts.Car
 {
@@ -103,6 +104,9 @@ namespace _Game.Scripts.Car
         // Start is called before the first frame update
         void Start()
         {
+            CarFollowCameraController carFollowCameraController = ServiceLocator.Get<CarFollowCameraController>();
+            carFollowCameraController.SetCarTransform(transform);
+
             //In this part, we set the 'carRigidbody' value with the Rigidbody attached to this
             //gameObject. Also, we define the center of mass of the car with the Vector3 given
             //in the inspector.
