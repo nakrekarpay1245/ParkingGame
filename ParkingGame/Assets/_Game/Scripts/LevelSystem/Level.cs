@@ -66,7 +66,7 @@ namespace _Game.LevelSystem
             if (_playerPoint != null)
             {
                 Instantiate(_carControllerPrefab, _playerPoint.position, _playerPoint.rotation);
-                Debug.Log("CarController instantiated at PlayerPoint.");
+                //Debug.Log("CarController instantiated at PlayerPoint.");
             }
             else
             {
@@ -82,7 +82,7 @@ namespace _Game.LevelSystem
             if (_parkingAreaPoint != null)
             {
                 Instantiate(_parkingAreaPrefab, _parkingAreaPoint.position, _parkingAreaPoint.rotation);
-                Debug.Log("ParkingArea generated at ParkingAreaPoint.");
+                //Debug.Log("ParkingArea generated at ParkingAreaPoint.");
             }
             else
             {

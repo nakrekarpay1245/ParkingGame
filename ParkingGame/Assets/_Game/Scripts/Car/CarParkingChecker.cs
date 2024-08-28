@@ -79,7 +79,7 @@ namespace _Game.Car
             if (other.CompareTag("ParkingArea") && !_isParkingSuccessful)
             {
                 _isInParkingArea = true;
-                Debug.Log("Entered parking area but parking not successful yet.");
+                //Debug.Log("Entered parking area but parking not successful yet.");
 
                 // Trigger the action for entering the parking area without success
                 OnEnterParkingAreaWithoutSuccess?.Invoke();
@@ -112,7 +112,7 @@ namespace _Game.Car
             if (other.CompareTag("ParkingArea"))
             {
                 _isInParkingArea = false;
-                Debug.Log("Exited parking area.");
+                //Debug.Log("Exited parking area.");
 
                 // Trigger the action for exiting the parking area
                 OnExitParkingArea?.Invoke();

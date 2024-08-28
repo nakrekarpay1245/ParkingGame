@@ -124,6 +124,8 @@ namespace _Game.Management
 
             _levelCompleted = true;
             ShowResultScreen(_levelCompleteMessage, true);
+
+            _gameData.CurrentLevelIndex++;
         }
 
         /// <summary>

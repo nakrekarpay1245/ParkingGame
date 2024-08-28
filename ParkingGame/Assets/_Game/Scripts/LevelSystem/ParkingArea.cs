@@ -66,7 +66,7 @@ namespace _Game.Scripts
         /// </summary>
         private void HandleExitParkingArea()
         {
-            Debug.Log("Car exited the parking area without successful parking.");
+            //Debug.Log("Car exited the parking area without successful parking.");
             PlayParticle(ref _parkingAreaParticle, _parkingAreaParticleKey);
         }
 
@@ -76,7 +76,7 @@ namespace _Game.Scripts
         /// </summary>
         private void HandleEnterParkingAreaWithoutSuccess()
         {
-            Debug.Log("Car entered the parking area but parking is not successful yet.");
+            //Debug.Log("Car entered the parking area but parking is not successful yet.");
             PlayParticle(ref _parkingAreaNoSuccessParticle, _parkingAreaWithoutSuccessParticleKey);
         }
 
@@ -86,7 +86,7 @@ namespace _Game.Scripts
         /// </summary>
         private void HandleParkingSuccessful()
         {
-            Debug.Log("Parking has been successfully completed!");
+            //Debug.Log("Parking has been successfully completed!");
             PlayParticle(ref _parkingAreaSuccessParticle, _parkingAreaSuccessParkingParticleKey);
             _levelManager.LevelComplete();
         }

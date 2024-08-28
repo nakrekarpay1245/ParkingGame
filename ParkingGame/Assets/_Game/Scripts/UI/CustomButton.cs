@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 
@@ -25,6 +26,13 @@ namespace _Game.UI
         [Tooltip("The duration of the scale animation in seconds.")]
         [Range(0.1f, 1f)]
         [SerializeField] private float scaleAnimationDuration = 0.2f;
+
+        [Header("Unity Events")]
+        [Tooltip("Event invoked when the button is pressed down.")]
+        public UnityEvent onButtonDown;
+
+        [Tooltip("Event invoked when the button is released.")]
+        public UnityEvent onButtonUp;
 
         [HideInInspector]
         public bool ButtonPressed { get; private set; } = false;
@@ -75,7 +83,8 @@ namespace _Game.UI
         }
 
         /// <summary>
-        /// Handles the button press interaction. Sets ButtonPressed to true and scales the button down if enabled.
+        /// Handles the button press interaction. Sets ButtonPressed to true, scales the button down if enabled,
+        /// and invokes the onButtonDown UnityEvent.
         /// </summary>
         public void OnButtonDown()
         {
@@ -85,10 +94,14 @@ namespace _Game.UI
                 // Use DOTween for smooth scaling animation with dynamic duration
                 _rectTransform.DOScale(_initialScale * scaleDownMultiplier, scaleAnimationDuration).SetEase(Ease.OutQuad);
             }
+
+            // Invoke the onButtonDown UnityEvent
+            onButtonDown?.Invoke();
         }
 
         /// <summary>
-        /// Handles the button release interaction. Sets ButtonPressed to false and resets the button scale if enabled.
+        /// Handles the button release interaction. Sets ButtonPressed to false, resets the button scale if enabled,
+        /// and invokes the onButtonUp UnityEvent.
         /// </summary>
         public void OnButtonUp()
         {
@@ -98,6 +111,9 @@ namespace _Game.UI
                 // Use DOTween for smooth scaling back animation with dynamic duration
                 _rectTransform.DOScale(_initialScale, scaleAnimationDuration).SetEase(Ease.OutQuad);
             }
+
+            // Invoke the onButtonUp UnityEvent
+            onButtonUp?.Invoke();
         }
     }
 }

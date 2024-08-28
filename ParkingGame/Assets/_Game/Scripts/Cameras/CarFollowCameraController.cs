@@ -49,7 +49,7 @@ namespace _Game.Cameras
             if (_carTransform != null)
             {
                 _initialCameraOffset = _initialCameraPosition - _carTransform.position;
-                Debug.Log("CarTransform set and initial camera offset calculated.");
+                //Debug.Log("CarTransform set and initial camera offset calculated.");
             }
             else
             {
