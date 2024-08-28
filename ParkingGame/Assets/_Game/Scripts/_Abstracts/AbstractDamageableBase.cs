@@ -12,16 +12,16 @@ namespace _Game.Scripts._Abstracts
     {
         [Header("Health Settings")]
         [Tooltip("Current health of the object.")]
-        [SerializeField] private float health = 5f;
+        [SerializeField] protected float _health = 5f;
 
         [Tooltip("Maximum health of the object.")]
-        [SerializeField] private float maxHealth = 5f;
+        [SerializeField] protected float _maxHealth = 5f;
 
         protected bool _isDead = false;
 
         public UnityAction<float, float> OnHealthChanged;
 
-        public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+        public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
         public virtual void Start()
         {
@@ -33,8 +33,8 @@ namespace _Game.Scripts._Abstracts
         /// </summary>
         protected virtual void SetHealth()
         {
-            health = maxHealth;
-            RaiseHealthChangedEvent(health, maxHealth);
+            _health = _maxHealth;
+            RaiseHealthChangedEvent(_health, _maxHealth);
         }
 
         /// <summary>
@@ -45,14 +45,14 @@ namespace _Game.Scripts._Abstracts
         {
             if (!_isDead)
             {
-                health -= damageAmount;
+                _health -= damageAmount;
 
-                if (health <= 0)
+                if (_health <= 0)
                 {
                     Die();
                 }
 
-                RaiseHealthChangedEvent(health, maxHealth);
+                RaiseHealthChangedEvent(_health, _maxHealth);
             }
         }
 
@@ -74,7 +74,7 @@ namespace _Game.Scripts._Abstracts
         /// <returns>True if the object is alive; otherwise, false.</returns>
         public bool IsAlive()
         {
-            return !_isDead && health > 0;
+            return !_isDead && _health > 0;
         }
 
         /// <summary>
@@ -99,13 +99,13 @@ namespace _Game.Scripts._Abstracts
                 return;
             }
 
-            health += healAmount;
-            if (health > maxHealth)
+            _health += healAmount;
+            if (_health > _maxHealth)
             {
-                health = maxHealth; // Ensure health does not exceed max health
+                _health = _maxHealth; // Ensure health does not exceed max health
             }
 
-            RaiseHealthChangedEvent(health, maxHealth);
+            RaiseHealthChangedEvent(_health, _maxHealth);
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using _Game.Scripts.Inputs;
 using _Game.Scripts.Cameras;
+using _Game.Scripts._helpers.Audios;
 
 namespace _Game.Scripts.Car
 {
@@ -146,11 +147,20 @@ namespace _Game.Scripts.Car
             _backRightWheelFriction.stiffness = _backRightWheelCollider.sidewaysFriction.stiffness;
 
             // We save the initial pitch of the car engine sound.
+            _carEngineSound = transform.Find("Sounds").transform.Find("CarEngineSound")
+                .GetComponent<AudioSource>();
+
+            _tireScreechSound = transform.Find("Sounds").transform.Find("TireScreechSound")
+                .GetComponent<AudioSource>();
+
             if (_carEngineSound != null)
             {
                 _initialCarEngineSoundPitch = _carEngineSound.pitch;
             }
-
+            else
+            {
+                Debug.Log("Sounds is null");
+            }
             // We invoke 2 methods inside this script. CarSpeedUI() changes the text of the UI object that stores
             // the speed of the car and CarSounds() controls the engine and drifting sounds. Both methods are invoked
             // in 0 seconds, and repeatedly called every 0.1 seconds.

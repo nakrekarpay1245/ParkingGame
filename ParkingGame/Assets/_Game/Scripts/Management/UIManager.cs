@@ -26,7 +26,7 @@ namespace _Game.Scripts.UI
         private float _speedVelocity = 0.0f;
         private CarDamageHandler _carDamageHandler;
 
-        private void OnEnable()
+        private void Start()
         {
             _carDamageHandler = ServiceLocator.Get<CarDamageHandler>();
 
