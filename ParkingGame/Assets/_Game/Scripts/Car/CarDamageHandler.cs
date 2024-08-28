@@ -1,4 +1,5 @@
 using _Game._Abstracts;
+using _Game.Management;
 using UnityEngine;
 
 namespace _Game.Car
@@ -8,6 +9,8 @@ namespace _Game.Car
     /// </summary>
     public class CarDamageHandler : AbstractDamageableBase
     {
+        private LevelManager _levelManager;
+
         private void Awake()
         {
             ServiceLocator.Register(this);
@@ -15,6 +18,8 @@ namespace _Game.Car
 
         public override void Start()
         {
+            _levelManager = ServiceLocator.Get<LevelManager>();
+
             _health = _maxHealth;
             OnHealthChanged?.Invoke(_health, _maxHealth);
         }
@@ -34,6 +39,7 @@ namespace _Game.Car
         {
             Debug.Log("Car Destroyed");
             // Handle death sequence
+            _levelManager.LevelFail();
         }
 
         public override void Heal(float healAmount)

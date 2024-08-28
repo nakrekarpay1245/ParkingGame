@@ -1,6 +1,7 @@
 using _Game._helpers;
 using _Game._helpers.Particles;
 using _Game.Car;
+using _Game.Management;
 using UnityEngine;
 
 namespace _Game.Scripts
@@ -28,6 +29,7 @@ namespace _Game.Scripts
         private ParticleSystem _parkingAreaNoSuccessParticle;
         private ParticleSystem _parkingAreaSuccessParticle;
 
+        private LevelManager _levelManager;
         private ParticleManager _particleManager;
         private CarParkingChecker _parkingChecker;
 
@@ -36,6 +38,8 @@ namespace _Game.Scripts
         /// </summary>
         private void Start()
         {
+            _levelManager = ServiceLocator.Get<LevelManager>();
+
             _particleManager = ServiceLocator.Get<ParticleManager>(); // Access ParticleManager through ServiceLocator
             _parkingChecker = ServiceLocator.Get<CarParkingChecker>(); // Access CarParkingChecker through ServiceLocator
 
@@ -84,6 +88,7 @@ namespace _Game.Scripts
         {
             Debug.Log("Parking has been successfully completed!");
             PlayParticle(ref _parkingAreaSuccessParticle, _parkingAreaSuccessParkingParticleKey);
+            _levelManager.LevelComplete();
         }
 
         /// <summary>
