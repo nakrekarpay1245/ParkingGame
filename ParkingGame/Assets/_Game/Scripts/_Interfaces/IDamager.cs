@@ -10,6 +10,6 @@ namespace _Game._Interfaces
         /// </summary>
         /// <param name="target">The target to damage.</param>
         /// <param name="damageAmount">The amount of damage to deal.</param>
-        void DealDamage(IDamageable target, float damageAmount);
+        void DealDamage(IDamageable target, int damageAmount);
     }
 }

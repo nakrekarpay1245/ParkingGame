@@ -10,6 +10,6 @@ namespace _Game._Abstracts
         /// </summary>
         /// <param name="target">The target to damage.</param>
         /// <param name="damageAmount">The amount of damage to deal.</param>
-        public abstract void DealDamage(IDamageable target, float damageAmount);
+        public abstract void DealDamage(IDamageable target, int damageAmount);
     }
 }

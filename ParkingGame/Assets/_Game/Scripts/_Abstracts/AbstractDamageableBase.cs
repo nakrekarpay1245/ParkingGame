@@ -12,16 +12,16 @@ namespace _Game._Abstracts
     {
         [Header("Health Settings")]
         [Tooltip("Current health of the object.")]
-        [SerializeField] protected float _health = 5f;
+        [SerializeField] protected int _health = 5;
 
         [Tooltip("Maximum health of the object.")]
-        [SerializeField] protected float _maxHealth = 5f;
+        [SerializeField] protected int _maxHealth = 5;
 
         protected bool _isDead = false;
 
-        public UnityAction<float, float> OnHealthChanged;
+        public UnityAction<int, int> OnHealthChanged;
 
-        public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+        public int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
         public virtual void Start()
         {
@@ -41,7 +41,7 @@ namespace _Game._Abstracts
         /// Applies damage to the object and checks if it should die.
         /// </summary>
         /// <param name="damageAmount">The amount of damage to apply.</param>
-        public virtual void TakeDamage(float damageAmount)
+        public virtual void TakeDamage(int damageAmount)
         {
             if (!_isDead)
             {
@@ -82,7 +82,7 @@ namespace _Game._Abstracts
         /// </summary>
         /// <param name="health">The current health of the object.</param>
         /// <param name="maxHealth">The maximum health of the object.</param>
-        protected virtual void RaiseHealthChangedEvent(float health, float maxHealth)
+        protected virtual void RaiseHealthChangedEvent(int health, int maxHealth)
         {
             OnHealthChanged?.Invoke(health, maxHealth);
         }
@@ -92,7 +92,7 @@ namespace _Game._Abstracts
         /// This method is implemented as part of the IDamageable interface.
         /// </summary>
         /// <param name="healAmount">The amount of health to restore.</param>
-        public virtual void Heal(float healAmount)
+        public virtual void Heal(int healAmount)
         {
             if (_isDead)
             {

@@ -2113,21 +2113,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameData: {fileID: 11400000, guid: 02f8fca05a284524488e8bf64fc44a11, type: 2}
-  _resultScreen: {fileID: 999083870}
-  _resultText: {fileID: 1011577557}
+  _sceneChangeDuration: 1
   _menuButton: {fileID: 984216602}
   _nextButton: {fileID: 1941965958}
   _restartButton: {fileID: 1742001337}
-  _carDisplayer: {fileID: 441306504}
-  _carHealthDisplayer: {fileID: 1300140524}
-  _controlButtons: {fileID: 58243174}
-  _speedDisplayer: {fileID: 551417853}
-  _levelCompleteMessage: Level Complete!
-  _levelFailMessage: Level Failed
-  _resultScreenAnimationDuration: 0.5
-  _elementAnimationDuration: 0.3
-  _resultScreenScale: {x: 1, y: 1, z: 1}
-  _resultScreenEase: 27
 --- !u!1 &1300140524
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,6 +2762,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97bb484a300fd6141be23077fe4afada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _resultScreen: {fileID: 999083870}
+  _resultText: {fileID: 1011577557}
+  _menuButton: {fileID: 984216602}
+  _nextButton: {fileID: 1941965958}
+  _restartButton: {fileID: 1742001337}
+  _carDisplayer: {fileID: 441306504}
+  _carHealthDisplayer: {fileID: 1300140524}
+  _controlButtons: {fileID: 58243174}
+  _speedDisplayer: {fileID: 551417853}
+  _levelCompleteMessage: Level Completed!
+  _levelFailMessage: Level Failed!
+  _elementAnimationDuration: 0.3
+  _openElementAnimationEase: 30
+  _closeElementAnimationEase: 29
   _speedText: {fileID: 13612615}
   _healthSegmentPrefab: {fileID: 5000110167449620958, guid: 389acbd43201c2c4999c6a50f1293e83,
     type: 3}

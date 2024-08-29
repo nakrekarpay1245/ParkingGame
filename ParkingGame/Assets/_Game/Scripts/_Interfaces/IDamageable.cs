@@ -9,7 +9,7 @@ namespace _Game._Interfaces
         /// Apply damage to the object.
         /// </summary>
         /// <param name="amount">The amount of damage to apply.</param>
-        void TakeDamage(float amount);
+        void TakeDamage(int amount);
 
         /// <summary>
         /// Triggers the object's death sequence.
@@ -26,6 +26,6 @@ namespace _Game._Interfaces
         /// Heals the object by a certain amount.
         /// </summary>
         /// <param name="amount">The amount of health to restore.</param>
-        void Heal(float amount);
+        void Heal(int amount);
     }
 }

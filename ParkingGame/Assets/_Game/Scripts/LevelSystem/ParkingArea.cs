@@ -88,7 +88,7 @@ namespace _Game.Scripts
         {
             //Debug.Log("Parking has been successfully completed!");
             PlayParticle(ref _parkingAreaSuccessParticle, _parkingAreaSuccessParkingParticleKey);
-            _levelManager.LevelComplete();
+            _levelManager.CompleteLevel();
         }
 
         /// <summary>

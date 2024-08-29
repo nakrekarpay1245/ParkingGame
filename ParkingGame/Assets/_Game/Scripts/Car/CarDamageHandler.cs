@@ -24,7 +24,7 @@ namespace _Game.Car
             OnHealthChanged?.Invoke(_health, _maxHealth);
         }
 
-        public override void TakeDamage(float damageAmount)
+        public override void TakeDamage(int damageAmount)
         {
             _health -= damageAmount;
             OnHealthChanged?.Invoke(_health, _maxHealth);
@@ -39,10 +39,10 @@ namespace _Game.Car
         {
             Debug.Log("Car Destroyed");
             // Handle death sequence
-            _levelManager.LevelFail();
+            _levelManager.FailLevel();
         }
 
-        public override void Heal(float healAmount)
+        public override void Heal(int healAmount)
         {
             _health = Mathf.Min(_health + healAmount, _maxHealth);
             OnHealthChanged?.Invoke(_health, _maxHealth);

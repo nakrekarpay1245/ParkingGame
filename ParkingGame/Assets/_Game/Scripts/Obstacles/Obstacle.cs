@@ -13,7 +13,7 @@ namespace _Game.Obstacles
         [Header("Damage Settings")]
         [Tooltip("The amount of damage this obstacle inflicts upon collision.")]
         [SerializeField, Range(0f, 100f)]
-        private float _damageAmount = 1f;
+        private int _damageAmount = 1;
 
         private void OnCollisionEnter(Collision collision)
         {

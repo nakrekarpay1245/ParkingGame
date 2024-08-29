@@ -39,7 +39,7 @@ namespace _Game._Abstracts
         /// Applies damage to the object and checks if it should die.
         /// </summary>
         /// <param name="damageAmount">The amount of damage to apply.</param>
-        public virtual void TakeDamage(float damageAmount)
+        public virtual void TakeDamage(int damageAmount)
         {
             if (!_isDead)
             {
@@ -90,7 +90,7 @@ namespace _Game._Abstracts
         /// This method is implemented as part of the IDamageable interface.
         /// </summary>
         /// <param name="healAmount">The amount of health to restore.</param>
-        public void Heal(float healAmount)
+        public void Heal(int healAmount)
         {
             if (_isDead)
             {
@@ -111,7 +111,7 @@ namespace _Game._Abstracts
         /// </summary>
         /// <param name="target">The target to damage.</param>
         /// <param name="damageAmount">The amount of damage to deal.</param>
-        public virtual void DealDamage(IDamageable target, float damageAmount)
+        public virtual void DealDamage(IDamageable target, int damageAmount)
         {
             target.TakeDamage(damageAmount);
         }
