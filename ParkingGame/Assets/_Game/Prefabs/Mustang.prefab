@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 2660699791208490598}
   - component: {fileID: 6830095175810926464}
   m_Layer: 0
-  m_Name: CarController
+  m_Name: Mustang
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1039,6 +1039,8 @@ MonoBehaviour:
   _backRightWheelTrail: {fileID: 7027037517097420403}
   _carEngineSound: {fileID: 0}
   _tireScreechSound: {fileID: 0}
+  _disposeTime: 0.5
+  _initTime: 0.5
 --- !u!114 &2660699791208490598
 MonoBehaviour:
   m_ObjectHideFlags: 0
