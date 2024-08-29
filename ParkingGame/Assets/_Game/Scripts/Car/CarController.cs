@@ -108,6 +108,7 @@ namespace _Game.Car
 
         private void Awake()
         {
+            ServiceLocator.Register(this);
             Init();
         }
 

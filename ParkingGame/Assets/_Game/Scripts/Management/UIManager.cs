@@ -130,6 +130,10 @@ namespace _Game.UI
                 _currentSpeed = Mathf.SmoothDamp(_currentSpeed, targetSpeed, ref _speedVelocity, 0.1f);
                 _speedText.text = $"{_currentSpeed:F0} km/h";
             }
+            else
+            {
+                Debug.Log("Car Controller is null");
+            }
         }
 
         /// <summary>

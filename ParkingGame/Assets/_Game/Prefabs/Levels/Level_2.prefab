@@ -116,7 +116,8 @@ MonoBehaviour:
   _animationDuration: 1
   _fallHeight: 5
   _spawnInterval: 0.1
-  _animationEase: 30
+  _initAnimationEase: 27
+  _disposeAnimationEase: 26
   _scaleFactor: 2
   _delayChangeRate: -0.1
   _nodeGizmoColor: {r: 0, g: 0, b: 1, a: 1}
@@ -234,9 +235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045d4f20f8df6f24aaba47f42bce941c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carControllerPrefab: {fileID: 6599607585799419881, guid: a5c8759393a8cb242b0f25ba225cd266,
+  _carControllerPrefab: {fileID: 771264442572285436, guid: 047d7099491fa4747bc3b3bf3560c18e,
     type: 3}
-  _parkingAreaPrefab: {fileID: 2724220136726899597, guid: af7b7d90a02a8204885103efcb8062ed,
+  _parkingAreaPrefab: {fileID: 296987039353231800, guid: af7b7d90a02a8204885103efcb8062ed,
     type: 3}
   _levelFrame: {fileID: 0}
   _parkingAreaPoint: {fileID: 0}
