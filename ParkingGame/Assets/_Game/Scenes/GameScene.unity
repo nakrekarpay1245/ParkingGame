@@ -2113,10 +2113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameData: {fileID: 11400000, guid: 02f8fca05a284524488e8bf64fc44a11, type: 2}
-  _sceneChangeDuration: 1
-  _menuButton: {fileID: 984216602}
-  _nextButton: {fileID: 1941965958}
-  _restartButton: {fileID: 1742001337}
+  _sceneChangeDuration: 2
 --- !u!1 &1300140524
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,9 +2770,9 @@ MonoBehaviour:
   _speedDisplayer: {fileID: 551417853}
   _levelCompleteMessage: Level Completed!
   _levelFailMessage: Level Failed!
-  _elementAnimationDuration: 0.3
-  _openElementAnimationEase: 30
-  _closeElementAnimationEase: 29
+  _elementAnimationDuration: 0.25
+  _openElementAnimationEase: 27
+  _closeElementAnimationEase: 26
   _speedText: {fileID: 13612615}
   _healthSegmentPrefab: {fileID: 5000110167449620958, guid: 389acbd43201c2c4999c6a50f1293e83,
     type: 3}

@@ -117,6 +117,11 @@ namespace _Game.UI
 
         private void Update()
         {
+            UpdateCarSpeedText();
+        }
+
+        private void UpdateCarSpeedText()
+        {
             var carController = ServiceLocator.Get<CarController>();
 
             if (carController != null)
@@ -160,11 +165,19 @@ namespace _Game.UI
         }
 
         /// <summary>
-        /// Shows game UI elements (e.g., car displayer, control buttons) with an animation.
+        /// Opens game UI elements with animations.
         /// </summary>
         private void OpenGameUIElements()
         {
-            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, true);
+            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, true, true);
+        }
+
+        /// <summary>
+        /// Closes game UI elements with animations.
+        /// </summary>
+        private void CloseGameUIElements()
+        {
+            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, false, true);
         }
 
         /// <summary>
@@ -172,8 +185,7 @@ namespace _Game.UI
         /// </summary>
         private void HideResultScreen()
         {
-            _resultScreen.SetActive(false);
-            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, true);
+            ToggleUIElements(new[] { _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject, _resultScreen }, false, true);
         }
 
         /// <summary>
@@ -181,7 +193,7 @@ namespace _Game.UI
         /// </summary>
         private void ShowFailResultScreen()
         {
-            DisplayResultScreen(_levelFailMessage);
+            DisplayResultScreen(false, _levelFailMessage);
         }
 
         /// <summary>
@@ -189,38 +201,69 @@ namespace _Game.UI
         /// </summary>
         private void ShowSuccessResultScreen()
         {
-            DisplayResultScreen(_levelCompleteMessage);
+            DisplayResultScreen(true, _levelCompleteMessage);
         }
 
         /// <summary>
         /// Displays the result screen with the given message and hides game UI elements.
         /// </summary>
+        /// <param name="success">Indicates whether the result is a success or failure.</param>
         /// <param name="message">The message to display on the result screen.</param>
-        private void DisplayResultScreen(string message)
+        private void DisplayResultScreen(bool success, string message)
         {
             _resultText.text = message;
-            _resultScreen.SetActive(true);
-            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, false);
+
+            CloseGameUIElements();
+
+            ToggleUIElements(new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject }, success, true);
         }
 
         /// <summary>
-        /// Toggles UI elements' active state with scale animations.
+        /// Toggles UI elements' active state with scale animations, either sequentially or simultaneously.
         /// </summary>
         /// <param name="elements">The UI elements to toggle.</param>
         /// <param name="isEnabled">Whether to enable or disable the UI elements.</param>
-        private void ToggleUIElements(GameObject[] elements, bool isEnabled)
+        /// <param name="sequential">Whether to animate elements sequentially (true) or simultaneously (false).</param>
+        private void ToggleUIElements(GameObject[] elements, bool isEnabled, bool sequential = false)
         {
-            foreach (var element in elements)
+            if (sequential)
             {
-                if (isEnabled)
+                var sequence = DOTween.Sequence();
+
+                foreach (var element in elements)
                 {
-                    element.SetActive(true);
-                    element.transform.DOScale(1, _elementAnimationDuration).SetEase(_openElementAnimationEase);
+                    if (isEnabled)
+                    {
+                        element.SetActive(true);
+                        sequence.Append(element.transform.DOScale(1, _elementAnimationDuration)
+                            .SetEase(_openElementAnimationEase));
+                    }
+                    else
+                    {
+                        sequence.Append(element.transform.DOScale(0, _elementAnimationDuration)
+                            .SetEase(_closeElementAnimationEase)
+                            .OnComplete(() => element.SetActive(false)));
+                    }
                 }
-                else
+
+                sequence.Play();
+            }
+            else
+            {
+                foreach (var element in elements)
                 {
-                    element.transform.DOScale(0, _elementAnimationDuration).SetEase(_closeElementAnimationEase)
-                        .OnComplete(() => element.SetActive(false));
+                    if (isEnabled)
+                    {
+                        element.SetActive(true);
+                        element.transform.DOScale(1, _elementAnimationDuration)
+                            .SetEase(_openElementAnimationEase);
+                    }
+                    else
+                    {
+                        element.transform.DOScale(0, _elementAnimationDuration)
+                            .SetEase(_closeElementAnimationEase)
+                            .OnComplete(() => element.SetActive(false));
+                    }
                 }
             }
         }
@@ -231,7 +274,26 @@ namespace _Game.UI
         private void InitializeUI()
         {
             _resultScreen.SetActive(false);
-            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, false);
+            _resultText.gameObject.SetActive(false);
+            _menuButton.gameObject.SetActive(false);
+            _restartButton.gameObject.SetActive(false);
+            _nextButton.gameObject.SetActive(false);
+
+            _resultScreen.transform.localScale = Vector3.zero;
+            _resultText.transform.localScale = Vector3.zero;
+            _menuButton.transform.localScale = Vector3.zero;
+            _restartButton.transform.localScale = Vector3.zero;
+            _nextButton.transform.localScale = Vector3.zero;
+
+            _carDisplayer.transform.localScale = Vector3.zero;
+            _carHealthDisplayer.transform.localScale = Vector3.zero;
+            _controlButtons.transform.localScale = Vector3.zero;
+            _speedDisplayer.transform.localScale = Vector3.zero;
+
+            _carDisplayer.SetActive(true);
+            _carHealthDisplayer.gameObject.SetActive(true);
+            _controlButtons.gameObject.SetActive(true);
+            _speedDisplayer.gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -240,6 +302,7 @@ namespace _Game.UI
         private void RestartLevel()
         {
             _levelManager.HandleRestartButtonPressed();
+            HideResultScreen();
         }
 
         /// <summary>
@@ -248,6 +311,7 @@ namespace _Game.UI
         private void NextLevel()
         {
             _levelManager.HandleNextButtonPressed();
+            HideResultScreen();
         }
 
         /// <summary>
@@ -256,6 +320,7 @@ namespace _Game.UI
         private void MenuScene()
         {
             _levelManager.HandleMenuButtonPressed();
+            HideResultScreen();
         }
     }
 }
