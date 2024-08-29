@@ -1,3 +1,6 @@
+using _Game.Car;
+using _Game.Management;
+using _Game.Scripts;
 using UnityEngine;
 
 namespace _Game.LevelSystem
@@ -10,11 +13,11 @@ namespace _Game.LevelSystem
     {
         [Header("Car Setup")]
         [Tooltip("Prefab for the CarController to be instantiated.")]
-        [SerializeField] private GameObject _carControllerPrefab;
+        [SerializeField] private CarController _carControllerPrefab;
 
         [Header("Parking Area Setup")]
         [Tooltip("Prefab for the Parking Area to be instantiated.")]
-        [SerializeField] private GameObject _parkingAreaPrefab;
+        [SerializeField] private ParkingArea _parkingAreaPrefab;
 
         [Header("Level Frame Setup")]
         [Tooltip("Reference to the LevelFrame component.")]
@@ -27,8 +30,20 @@ namespace _Game.LevelSystem
         [Tooltip("Transform for the Player point.")]
         [SerializeField] private Transform _playerPoint;
 
+        private CarController _carController;
+        private ParkingArea _parkingArea;
+        private LevelManager _levelManager;
+
+        private void Awake()
+        {
+            _levelManager = ServiceLocator.Get<LevelManager>();
+        }
+
         private void Start()
         {
+            _levelManager.OnLevelComplete += Dispose;
+            _levelManager.OnLevelFail += Dispose;
+
             // Ensure required prefabs and references are set
             if (_carControllerPrefab == null || _parkingAreaPrefab == null)
             {
@@ -49,45 +64,52 @@ namespace _Game.LevelSystem
             }
 
             // Instantiate the CarController
-            InstantiateCarController();
+            _carController = InstantiateCarController();
 
             // Initialize the LevelFrame
             _levelFrame.Init();
 
             // Generate the ParkingArea
-            GenerateParkingArea();
+            _parkingArea = GenerateParkingArea();
         }
 
         /// <summary>
         /// Instantiates the CarController at the PlayerPoint position.
         /// </summary>
-        private void InstantiateCarController()
+        private CarController InstantiateCarController()
         {
             if (_playerPoint != null)
             {
-                Instantiate(_carControllerPrefab, _playerPoint.position, _playerPoint.rotation);
+                CarController carController =
+                    Instantiate(_carControllerPrefab, _playerPoint.position, _playerPoint.rotation);
+
                 //Debug.Log("CarController instantiated at PlayerPoint.");
+                return carController;
             }
-            else
-            {
-                Debug.LogError("PlayerPoint is not assigned.");
-            }
+            Debug.LogError("PlayerPoint is not assigned.");
+            return null;
         }
 
         /// <summary>
         /// Generates the Parking Area at the ParkingAreaPoint position.
         /// </summary>
-        private void GenerateParkingArea()
+        private ParkingArea GenerateParkingArea()
         {
             if (_parkingAreaPoint != null)
             {
-                Instantiate(_parkingAreaPrefab, _parkingAreaPoint.position, _parkingAreaPoint.rotation);
+                ParkingArea parkingArea = Instantiate(_parkingAreaPrefab, _parkingAreaPoint.position, _parkingAreaPoint.rotation);
                 //Debug.Log("ParkingArea generated at ParkingAreaPoint.");
+                return parkingArea;
             }
-            else
-            {
-                Debug.LogError("ParkingAreaPoint is not assigned.");
-            }
+            Debug.LogError("ParkingAreaPoint is not assigned.");
+            return null;
+        }
+
+        private void Dispose()
+        {
+            _levelFrame.Dispose();
+            _parkingArea.Dispose();
+            _carController.Dispose();
         }
     }
 }

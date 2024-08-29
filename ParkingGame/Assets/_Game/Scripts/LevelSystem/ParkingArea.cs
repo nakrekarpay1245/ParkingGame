@@ -2,6 +2,7 @@ using _Game._helpers;
 using _Game._helpers.Particles;
 using _Game.Car;
 using _Game.Management;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.Scripts
@@ -32,6 +33,14 @@ namespace _Game.Scripts
         private LevelManager _levelManager;
         private ParticleManager _particleManager;
         private CarParkingChecker _parkingChecker;
+
+        public float _disposeTime = 0.5f;
+        public float _initTime = 0.5f;
+
+        private void Awake()
+        {
+            Init();
+        }
 
         /// <summary>
         /// Initializes and subscribes to parking-related events.
@@ -127,6 +136,16 @@ namespace _Game.Scripts
             Gizmos.color = new Color(255f, 125f, 0f, 0.5f);
             Gizmos.DrawWireCube(transform.GetChild(0).transform.position,
                 transform.GetChild(0).transform.lossyScale);
+        }
+
+        public void Dispose()
+        {
+            transform.DOScale(Vector3.zero, _disposeTime);
+        }
+
+        public void Init()
+        {
+            transform.DOScale(Vector3.one, _initTime);
         }
     }
 }

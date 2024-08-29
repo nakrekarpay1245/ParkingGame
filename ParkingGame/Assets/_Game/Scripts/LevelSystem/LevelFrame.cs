@@ -42,7 +42,8 @@ namespace _Game.LevelSystem
         [SerializeField] private float _spawnInterval = 0.05f;
 
         [Tooltip("The easing type for the prefab scaling and movement animations.")]
-        [SerializeField] private Ease _animationEase = Ease.OutBounce;
+        [SerializeField] private Ease _initAnimationEase = Ease.OutBack;
+        [SerializeField] private Ease _disposeAnimationEase = Ease.InBack;
 
         [Tooltip("Scaling factor for the instantiated prefabs.")]
         [Range(0.1f, 3f)]
@@ -70,11 +71,12 @@ namespace _Game.LevelSystem
 
         [Header("Effects")]
         [Header("Audio Effects")]
-        [Tooltip("The sound play when spawn an obtacle.")]
+        [Tooltip("The sound play when spawn an obstacle.")]
         [SerializeField] private string _spawnSoundKey = "spawn_obstacle";
 
         private List<Transform> _nodes = new List<Transform>();
         private List<Vector3> _obstaclePositions = new List<Vector3>();
+        private List<Obstacle> _instantiatedObstacles = new List<Obstacle>();
 
         private AudioManager _audioManager;
 
@@ -83,7 +85,8 @@ namespace _Game.LevelSystem
             InitializeNodes();
             CalculateObstaclePositions();
 
-            _audioManager = ServiceLocator.Get<AudioManager>(); // Access AudioManager through ServiceLocator
+            // Access AudioManager through ServiceLocator
+            _audioManager = ServiceLocator.Get<AudioManager>();
 
             StartCoroutine(PlacePrefabsWithDelay());
         }
@@ -168,14 +171,17 @@ namespace _Game.LevelSystem
             // Apply scale factor to the prefab
             instance.transform.localScale = Vector3.zero * _scaleFactor;
 
+            // Add instance to the list of instantiated obstacles
+            _instantiatedObstacles.Add(instance);
+
             // Animate scaling and moving using DOTween
             instance.transform
                 .DOScale(Vector3.one * _scaleFactor, _animationDuration)
-                .SetEase(_animationEase);
+                .SetEase(_initAnimationEase);
 
             instance.transform
                 .DOMove(position, _animationDuration)
-                .SetEase(_animationEase);
+                .SetEase(_initAnimationEase);
 
             _audioManager.PlaySound(_spawnSoundKey);
 
@@ -188,6 +194,47 @@ namespace _Game.LevelSystem
             {
                 rb.isKinematic = false;
             }
+        }
+
+        /// <summary>
+        /// Moves all instantiated obstacles to Vector3.zero with an animation.
+        /// </summary>
+        public void Dispose()
+        {
+            StartCoroutine(MoveObstaclesToZero());
+        }
+
+        /// <summary>
+        /// Coroutine to move obstacles to Vector3.zero with animation.
+        /// </summary>
+        private IEnumerator MoveObstaclesToZero()
+        {
+            Sequence sequence = DOTween.Sequence();
+
+            foreach (Obstacle obstacle in _instantiatedObstacles)
+            {
+                Vector3 initialPosition = obstacle.transform.position;
+
+                // Create the tween to move and scale the obstacle
+                Tween moveAndScaleTween = obstacle.transform
+                    .DOScale(Vector3.zero, _animationDuration)
+                    .SetEase(_disposeAnimationEase)
+                    .OnComplete(() => Destroy(obstacle.gameObject));
+
+                // Append the tween to the sequence
+                sequence.Append(moveAndScaleTween);
+
+                // Optionally add a delay between obstacle movements
+                sequence.AppendInterval(_spawnInterval);
+
+                yield return new WaitForSeconds(_spawnInterval);
+            }
+
+            // Play the sequence after all tweens have been appended
+            sequence.Play();
+
+            // Clear the list after disposing all obstacles
+            _instantiatedObstacles.Clear();
         }
 
         /// <summary>

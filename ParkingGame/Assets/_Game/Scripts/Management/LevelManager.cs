@@ -86,8 +86,9 @@ namespace _Game.Management
             if (_levelCompleted) return;
 
             _levelCompleted = true;
+            _gameData.CurrentLevelIndex++;
             Debug.Log("Level Completed!");
-            OnLevelComplete?.Invoke();  // Notify subscribers that the level is completed
+            OnLevelComplete?.Invoke();
         }
 
         /// <summary>
@@ -109,7 +110,6 @@ namespace _Game.Management
         public void HandleNextButtonPressed()
         {
             Debug.Log("Next button pressed.");
-            _gameData.CurrentLevelIndex++;
             TransitionToScene("GameScene");
         }
 

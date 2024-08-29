@@ -41,5 +41,24 @@ namespace _Game.Data
         /// Gets the configuration of the current level based on the index.
         /// </summary>
         public Level CurrentLevel => _levelList[CurrentLevelIndex];
+
+        /// <summary>
+        /// Gets the index of the previous level.
+        /// </summary>
+        public int PreviousLevelIndex
+        {
+            get
+            {
+                // If the current level index is greater than 0, return the previous index.
+                // Otherwise, return the last level's index in a circular manner.
+                int previousIndex = (CurrentLevelIndex - 1 + _levelList.Count) % _levelList.Count;
+                return previousIndex;
+            }
+        }
+
+        /// <summary>
+        /// Gets the configuration of the previous level based on the previous index.
+        /// </summary>
+        public Level PreviousLevel => _levelList[PreviousLevelIndex];
     }
 }

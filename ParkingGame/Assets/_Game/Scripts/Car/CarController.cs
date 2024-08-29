@@ -3,6 +3,7 @@ using UnityEngine;
 using _Game.Inputs;
 using _Game.Cameras;
 using _Game._helpers.Audios;
+using DG.Tweening;
 
 namespace _Game.Car
 {
@@ -101,6 +102,14 @@ namespace _Game.Car
         private float _backLeftWheelExtremumSlip;
         private WheelFrictionCurve _backRightWheelFriction;
         private float _backRightWheelExtremumSlip;
+
+        public float _disposeTime = 0.5f;
+        public float _initTime = 0.5f;
+
+        private void Awake()
+        {
+            Init();
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -692,6 +701,17 @@ namespace _Game.Car
 
                 driftingAxis = 0f;
             }
+        }
+
+        public void Dispose()
+        {
+            transform.DOScale(Vector3.zero, _disposeTime);
+        }
+
+        public void Init()
+        {
+            transform.localScale = Vector3.zero;
+            transform.DOScale(Vector3.one, _initTime);
         }
     }
 }
