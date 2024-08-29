@@ -113,10 +113,10 @@ MonoBehaviour:
   _prefab: {fileID: 5866919860247866148, guid: 5390d0477c15d8a49b61292c437a6d86, type: 3}
   _spacing: 2.5
   _loop: 1
-  _animationDuration: 1
+  _animationDuration: 0.35
   _fallHeight: 5
   _spawnInterval: 0.1
-  _initAnimationEase: 27
+  _initAnimationEase: 30
   _disposeAnimationEase: 26
   _scaleFactor: 2
   _delayChangeRate: -0.1
@@ -138,7 +138,7 @@ GameObject:
   m_Layer: 0
   m_Name: ParkingAreaPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -254,7 +254,7 @@ GameObject:
   m_Layer: 0
   m_Name: PlayerPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -267,7 +267,7 @@ Transform:
   m_GameObject: {fileID: 6890281612029816029}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

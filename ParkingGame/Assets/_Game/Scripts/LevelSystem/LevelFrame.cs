@@ -219,7 +219,7 @@ namespace _Game.LevelSystem
                 Tween moveAndScaleTween = obstacle.transform
                     .DOScale(Vector3.zero, _animationDuration)
                     .SetEase(_disposeAnimationEase)
-                    .OnComplete(() => Destroy(obstacle.gameObject));
+                    .OnComplete(() => obstacle.gameObject.SetActive(false));
 
                 // Append the tween to the sequence
                 sequence.Append(moveAndScaleTween);

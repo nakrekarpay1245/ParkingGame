@@ -706,7 +706,10 @@ namespace _Game.Car
 
         public void Dispose()
         {
-            transform.DOScale(Vector3.zero, _disposeTime);
+            transform.DOScale(Vector3.zero, _disposeTime).OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
         }
 
         public void Init()

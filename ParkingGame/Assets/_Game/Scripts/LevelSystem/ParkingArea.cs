@@ -140,7 +140,10 @@ namespace _Game.Scripts
 
         public void Dispose()
         {
-            transform.DOScale(Vector3.zero, _disposeTime);
+            transform.DOScale(Vector3.zero, _disposeTime).OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            });
         }
 
         public void Init()

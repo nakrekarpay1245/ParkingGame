@@ -5,6 +5,7 @@ using _Game.Management;
 using _Game.Car;
 using System.Collections;
 using System.Collections.Generic;
+using _Game._helpers.Audios;
 
 namespace _Game.UI
 {
@@ -59,12 +60,18 @@ namespace _Game.UI
         [Tooltip("Container for health segments.")]
         [SerializeField] private Transform _healthContainer;
 
+        [Header("Effects")]
+        [Header("Audio Effects")]
+        [Tooltip("The sound play when spawn an obstacle.")]
+        [SerializeField] private string _uiSoundKey = "ui";
+
         private List<GameObject> _healthSegments = new List<GameObject>();
         private float _currentSpeed;
         private float _speedVelocity = 0.0f;
 
         private CarDamageHandler _carDamageHandler;
         private LevelManager _levelManager;
+        private AudioManager _audioManager;
 
         private void Awake()
         {
@@ -73,6 +80,8 @@ namespace _Game.UI
 
         private void Start()
         {
+            _audioManager = ServiceLocator.Get<AudioManager>();
+
             InitializeUI();
             SetButtonEvents();
         }
@@ -241,12 +250,16 @@ namespace _Game.UI
                         element.SetActive(true);
                         sequence.Append(element.transform.DOScale(1, _elementAnimationDuration)
                             .SetEase(_openElementAnimationEase));
+
+                        sequence.AppendCallback(() => _audioManager.PlaySound(_uiSoundKey));
                     }
                     else
                     {
                         sequence.Append(element.transform.DOScale(0, _elementAnimationDuration)
                             .SetEase(_closeElementAnimationEase)
                             .OnComplete(() => element.SetActive(false)));
+
+                        sequence.AppendCallback(() => _audioManager.PlaySound(_uiSoundKey));
                     }
                 }
 
