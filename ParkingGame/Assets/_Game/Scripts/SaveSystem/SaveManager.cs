@@ -1,9 +1,11 @@
+using UnityEngine;
+
 namespace _Game.Save
 {
     /// <summary>
     /// SaveManager handles the saving and loading of the game's state,
-    /// including the current level index and the player's coins. 
-    /// It uses the SaveSystem for the actual persistence logic and follows SOLID principles.
+    /// including the current level index, player's coins, car purchase status, and selected car index.
+    /// It uses SaveSystem for the actual persistence logic and follows SOLID principles.
     /// </summary>
     public static class SaveManager
     {
@@ -54,6 +56,46 @@ namespace _Game.Save
         public static int LoadCoins()
         {
             return _currentSaveData.Coins;
+        }
+
+        /// <summary>
+        /// Saves the purchase status of a car to the SaveData.
+        /// </summary>
+        /// <param name="carIndex">The index of the car whose purchase status needs to be saved.</param>
+        /// <param name="isPurchased">Whether the car has been purchased or not.</param>
+        public static void SaveCarPurchase(int carIndex, bool isPurchased)
+        {
+            _currentSaveData.CarPurchases[carIndex] = isPurchased;
+            SaveSystem.SaveGame(_currentSaveData);
+        }
+
+        /// <summary>
+        /// Loads the purchase status of a car from SaveData.
+        /// </summary>
+        /// <param name="carIndex">The index of the car whose purchase status is to be loaded.</param>
+        /// <returns>True if the car has been purchased, otherwise false.</returns>
+        public static bool LoadCarPurchase(int carIndex)
+        {
+            return _currentSaveData.CarPurchases.TryGetValue(carIndex, out bool isPurchased) && isPurchased;
+        }
+
+        /// <summary>
+        /// Saves the index of the currently selected car.
+        /// </summary>
+        /// <param name="carIndex">The index of the selected car.</param>
+        public static void SaveSelectedCarIndex(int carIndex)
+        {
+            _currentSaveData.SelectedCarIndex = carIndex;
+            SaveSystem.SaveGame(_currentSaveData);
+        }
+
+        /// <summary>
+        /// Loads the index of the currently selected car.
+        /// </summary>
+        /// <returns>The index of the selected car.</returns>
+        public static int LoadSelectedCarIndex()
+        {
+            return _currentSaveData.SelectedCarIndex;
         }
     }
 }
