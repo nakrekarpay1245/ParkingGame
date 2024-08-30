@@ -211,8 +211,10 @@ namespace _Game.LevelSystem
         {
             Sequence sequence = DOTween.Sequence();
 
-            foreach (Obstacle obstacle in _instantiatedObstacles)
+            for (int i = _instantiatedObstacles.Count - 1; i >= 0; i--)
             {
+                Obstacle obstacle = _instantiatedObstacles[i];
+
                 Vector3 initialPosition = obstacle.transform.position;
 
                 // Create the tween to move and scale the obstacle

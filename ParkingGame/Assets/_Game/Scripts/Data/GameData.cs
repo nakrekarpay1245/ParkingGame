@@ -13,6 +13,11 @@ namespace _Game.Data
         [SerializeField]
         private List<Level> _levelList;
 
+        [Header("Economy Configuration")]
+        [Tooltip("The player's current amount of coins.")]
+        [SerializeField]
+        private int _coins;
+
         // Current level index in the game.
         private int _currentLevelIndex;
 
@@ -25,13 +30,11 @@ namespace _Game.Data
         {
             get
             {
-                // Load the level index from SaveManager
                 _currentLevelIndex = SaveManager.LoadLevelIndex();
                 return _currentLevelIndex % _levelList.Count;
             }
             set
             {
-                // Set the value and save it via SaveManager
                 _currentLevelIndex = value;
                 SaveManager.SaveLevelIndex(_currentLevelIndex);
             }
@@ -49,8 +52,6 @@ namespace _Game.Data
         {
             get
             {
-                // If the current level index is greater than 0, return the previous index.
-                // Otherwise, return the last level's index in a circular manner.
                 int previousIndex = (CurrentLevelIndex - 1 + _levelList.Count) % _levelList.Count;
                 return previousIndex;
             }
@@ -60,5 +61,23 @@ namespace _Game.Data
         /// Gets the configuration of the previous level based on the previous index.
         /// </summary>
         public Level PreviousLevel => _levelList[PreviousLevelIndex];
+
+        /// <summary>
+        /// Property to get or set the player's current coin count. 
+        /// When setting, it saves the new value via SaveManager.
+        /// </summary>
+        public int Coins
+        {
+            get
+            {
+                _coins = SaveManager.LoadCoins();
+                return _coins;
+            }
+            set
+            {
+                _coins = value;
+                SaveManager.SaveCoins(_coins);
+            }
+        }
     }
 }

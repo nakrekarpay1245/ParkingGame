@@ -5,6 +5,8 @@ using _Game.LevelSystem;
 using _Game.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using _Game.Car;
+using System.Collections;
 
 namespace _Game.Management
 {
@@ -22,6 +24,13 @@ namespace _Game.Management
         [Tooltip("Duration for scene transitions in seconds.")]
         [SerializeField, Range(0.1f, 5f)] private float _sceneChangeDuration = 1f;
 
+        [Header("Economy Settings")]
+        [SerializeField] private int completeFee = 100;  // Fee for completing a level
+        [SerializeField] private int failFee = 50;       // Fee for failing a level
+        [SerializeField] private int healthBonus = 10;   // Bonus per remaining health point
+
+        private int _currentReward;
+
         // Events for level state changes
         public UnityAction OnLevelStart;
         public UnityAction OnLevelFail;
@@ -29,15 +38,33 @@ namespace _Game.Management
 
         private Level _currentLevel;
         private bool _levelCompleted;
+        private int _currentStars;
+        public int CurrentStars { get => _currentStars; private set => _currentStars = value; }
+        public int CurrentReward { get => _currentReward; private set => _currentReward = value; }
+
+        private CarDamageHandler _carDamageHandler;
 
         private void Awake()
         {
             RegisterServices();
+            StartCoroutine(InitializeDependencies());
         }
 
         private void Start()
         {
             InitializeLevel();
+        }
+
+        /// <summary>
+        /// Coroutine that waits for dependencies to be registered before proceeding.
+        /// </summary>
+        private IEnumerator InitializeDependencies()
+        {
+            while (_carDamageHandler == null)
+            {
+                _carDamageHandler = ServiceLocator.Get<CarDamageHandler>();
+                yield return null;
+            }
         }
 
         /// <summary>
@@ -87,7 +114,20 @@ namespace _Game.Management
 
             _levelCompleted = true;
             _gameData.CurrentLevelIndex++;
-            Debug.Log("Level Completed!");
+
+            // Calculate the reward based on health
+            int remainingHealth = _carDamageHandler.Health;
+
+            _currentStars = CalculateStars();
+
+            // Add completion fee and health bonus
+            _currentReward = completeFee + (remainingHealth * healthBonus);
+
+            // Set the results in GameData
+            // Add the calculated coins to the total
+            _gameData.Coins += _currentReward;
+
+            Debug.Log("Level Completed! Coins: " + _currentReward);
             OnLevelComplete?.Invoke();
         }
 
@@ -100,8 +140,28 @@ namespace _Game.Management
             if (_levelCompleted) return;
 
             _levelCompleted = true;
-            Debug.Log("Level Failed!");
             OnLevelFail?.Invoke();  // Notify subscribers that the level has failed
+
+            // Set fail fee (No bonus for remaining health)
+            _currentReward = failFee;
+
+            // Set the results in GameData
+            _gameData.Coins += _currentReward;
+
+            Debug.Log("Level Failed! Coins: " + _currentReward);
+            OnLevelFail?.Invoke();
+        }
+
+        /// <summary>
+        /// Calculates stars based on remaining health.
+        /// </summary>
+        private int CalculateStars()
+        {
+            int health = _carDamageHandler.Health;
+            if (health == 5) return 3;
+            if (health >= 3) return 2;
+            if (health >= 1) return 1;
+            return 0;
         }
 
         /// <summary>

@@ -774,6 +774,51 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &400574318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400574319}
+  - component: {fileID: 400574320}
+  m_Layer: 0
+  m_Name: EconomyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400574319
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400574318}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 882700479}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &400574320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400574318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df402acabf9dbb4b9211c8ef72610c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameData: {fileID: 11400000, guid: 02f8fca05a284524488e8bf64fc44a11, type: 2}
 --- !u!1 &410860270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,6 +1767,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 727781569}
+  - {fileID: 400574319}
   - {fileID: 52675480}
   - {fileID: 1855773101}
   - {fileID: 1193028941}
@@ -2445,6 +2491,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameData: {fileID: 11400000, guid: 02f8fca05a284524488e8bf64fc44a11, type: 2}
   _sceneChangeDuration: 1.5
+  completeFee: 250
+  failFee: 100
+  healthBonus: 50
 --- !u!1 &1300140524
 GameObject:
   m_ObjectHideFlags: 0
@@ -3240,6 +3289,11 @@ MonoBehaviour:
   _openElementAnimationEase: 27
   _closeElementAnimationEase: 26
   _speedText: {fileID: 13612615}
+  _coinText: {fileID: 440900546}
+  _stars:
+  - {fileID: 2026072898}
+  - {fileID: 1052736114}
+  - {fileID: 225325943}
   _healthSegmentPrefab: {fileID: 5000110167449620958, guid: 389acbd43201c2c4999c6a50f1293e83,
     type: 3}
   _healthContainer: {fileID: 296522315}

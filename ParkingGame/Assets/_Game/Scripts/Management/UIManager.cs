@@ -6,6 +6,7 @@ using _Game.Car;
 using System.Collections;
 using System.Collections.Generic;
 using _Game._helpers.Audios;
+using _Game.Data;
 
 namespace _Game.UI
 {
@@ -53,6 +54,11 @@ namespace _Game.UI
         [Header("Speed Display")]
         [Tooltip("Text component to display the vehicle's speed.")]
         [SerializeField] private TextMeshProUGUI _speedText;
+
+        [Header("Coin Display")]
+        [Tooltip("Text component to display the coin's earned on level.")]
+        [SerializeField] private TextMeshProUGUI _coinText;
+        [SerializeField] private GameObject[] _stars;
 
         [Header("Health Display")]
         [Tooltip("Prefab for health segments.")]
@@ -214,6 +220,20 @@ namespace _Game.UI
         /// </summary>
         private void ShowSuccessResultScreen()
         {
+            // Get data from GameData
+            int earnedCoins = _levelManager.CurrentReward;
+            int starInLevel = _levelManager.CurrentStars;
+
+            // Display the earned coins
+            _coinText.text = $"Coins: {earnedCoins}";
+
+            // Display the earned stars
+            for (int i = 0; i < _stars.Length; i++)
+            {
+                _stars[i].SetActive(i < starInLevel);
+            }
+
+            // Show result UI
             DisplayResultScreen(true, _levelCompleteMessage);
         }
 

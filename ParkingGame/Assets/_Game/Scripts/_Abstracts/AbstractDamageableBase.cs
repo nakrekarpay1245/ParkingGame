@@ -21,6 +21,7 @@ namespace _Game._Abstracts
 
         public UnityAction<int, int> OnHealthChanged;
 
+        public int Health { get => _health; set => _health = value; }
         public int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
         public virtual void Start()
