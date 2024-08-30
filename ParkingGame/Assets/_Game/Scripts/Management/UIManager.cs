@@ -57,7 +57,7 @@ namespace _Game.UI
 
         [Header("Coin Display")]
         [Tooltip("Text component to display the coin's earned on level.")]
-        [SerializeField] private TextMeshProUGUI _coinText;
+        [SerializeField] private TextMeshProUGUI _coinCountText;
         [SerializeField] private GameObject[] _stars;
 
         [Header("Health Display")]
@@ -212,20 +212,11 @@ namespace _Game.UI
         /// </summary>
         private void ShowFailResultScreen()
         {
-            DisplayResultScreen(false, _levelFailMessage);
-        }
-
-        /// <summary>
-        /// Displays the success result screen with a message and hides game UI elements.
-        /// </summary>
-        private void ShowSuccessResultScreen()
-        {
-            // Get data from GameData
             int earnedCoins = _levelManager.CurrentReward;
             int starInLevel = _levelManager.CurrentStars;
 
             // Display the earned coins
-            _coinText.text = $"Coins: {earnedCoins}";
+            _coinCountText.text = $"{earnedCoins}";
 
             // Display the earned stars
             for (int i = 0; i < _stars.Length; i++)
@@ -233,22 +224,49 @@ namespace _Game.UI
                 _stars[i].SetActive(i < starInLevel);
             }
 
+            GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject,
+                _restartButton.gameObject };
+
             // Show result UI
-            DisplayResultScreen(true, _levelCompleteMessage);
+            DisplayResultScreen(elemets, true);
+        }
+
+        /// <summary>
+        /// Displays the success result screen with a message and hides game UI elements.
+        /// </summary>
+        private void ShowSuccessResultScreen()
+        {
+            int earnedCoins = _levelManager.CurrentReward;
+            int starInLevel = _levelManager.CurrentStars;
+
+            // Display the earned coins
+            _coinCountText.text = $"{earnedCoins}";
+
+            // Display the earned stars
+            for (int i = 0; i < _stars.Length; i++)
+            {
+                _stars[i].SetActive(i < starInLevel);
+            }
+
+            GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject };
+
+            // Show result UI
+            DisplayResultScreen(elemets, true);
         }
 
         /// <summary>
         /// Displays the result screen with the given message and hides game UI elements.
         /// </summary>
         /// <param name="success">Indicates whether the result is a success or failure.</param>
-        /// <param name="message">The message to display on the result screen.</param>
-        private void DisplayResultScreen(bool success, string message)
+        /// <param name="elements">The UI elements to toggle.</param>
+        private void DisplayResultScreen(GameObject[] elements, bool success)
         {
+            string message = success ? _levelCompleteMessage : _levelFailMessage;
             _resultText.text = message;
 
             CloseGameUIElements();
 
-            ToggleUIElements(new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject }, success, true);
+            ToggleUIElements(elements, success, true);
         }
 
         /// <summary>
