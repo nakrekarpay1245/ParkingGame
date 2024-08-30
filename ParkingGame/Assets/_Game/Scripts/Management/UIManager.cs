@@ -137,7 +137,7 @@ namespace _Game.UI
             {
                 float targetSpeed = carController.CarSpeed;
                 _currentSpeed = Mathf.SmoothDamp(_currentSpeed, targetSpeed, ref _speedVelocity, 0.1f);
-                _speedText.text = $"{_currentSpeed:F0} km/h";
+                _speedText.text = $"{_currentSpeed:F0}";
             }
             else
             {
