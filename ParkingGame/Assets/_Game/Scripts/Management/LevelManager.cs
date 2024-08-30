@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using _Game.Data;
 using _Game.LevelSystem;
-using _Game.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using _Game.Car;

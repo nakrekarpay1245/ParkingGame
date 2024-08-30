@@ -2491,7 +2491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameData: {fileID: 11400000, guid: 02f8fca05a284524488e8bf64fc44a11, type: 2}
-  _sceneChangeDuration: 1.5
+  _sceneChangeDuration: 1
   completeFee: 250
   failFee: 100
   healthBonus: 50
@@ -3351,9 +3351,11 @@ MonoBehaviour:
   _speedDisplayer: {fileID: 551417853}
   _levelCompleteMessage: Level Completed!
   _levelFailMessage: Level Failed!
-  _elementAnimationDuration: 0.125
+  _elementAnimationDuration: 0.5
+  _elementAnimationInterval: 0.1
   _openElementAnimationEase: 27
   _closeElementAnimationEase: 26
+  _resultScreenDelay: 1.5
   _speedText: {fileID: 13612615}
   _coinCountText: {fileID: 1609434791}
   _stars:

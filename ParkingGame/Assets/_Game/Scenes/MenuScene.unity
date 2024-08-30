@@ -629,7 +629,7 @@ MonoBehaviour:
   _menuButtons: {fileID: 999083870}
   _currentCarPoint: {fileID: 118211236}
   _gameNameText: {fileID: 1011577555}
-  _scaleDownDuration: 0.5
+  _scaleChangeDuration: 0.5
   _scaleDownEase: 26
   _scaleUpEase: 27
   _quitMenu: {fileID: 2078245874}

@@ -45,11 +45,16 @@ namespace _Game.UI
 
         [Header("DOTween Animation Settings")]
         [Tooltip("Duration for element animations.")]
-        [SerializeField, Range(0.1f, 2f)] private float _elementAnimationDuration = 0.3f;
+        [SerializeField, Range(0.1f, 2f)] private float _elementAnimationDuration = 0.5f;
+        [SerializeField, Range(0.1f, 2f)] private float _elementAnimationInterval = 0.1f;
         [Tooltip("Ease type for opening UI elements.")]
-        [SerializeField] private Ease _openElementAnimationEase = Ease.OutBounce;
+        [SerializeField] private Ease _openElementAnimationEase = Ease.OutBack;
         [Tooltip("Ease type for closing UI elements.")]
-        [SerializeField] private Ease _closeElementAnimationEase = Ease.InBounce;
+        [SerializeField] private Ease _closeElementAnimationEase = Ease.InBack;
+
+        [Header("Result Screen Delay")]
+        [Tooltip("Delay before showing the result screen.")]
+        [SerializeField, Range(0.1f, 5f)] private float _resultScreenDelay = 1f;
 
         [Header("Speed Display")]
         [Tooltip("Text component to display the vehicle's speed.")]
@@ -212,23 +217,26 @@ namespace _Game.UI
         /// </summary>
         private void ShowFailResultScreen()
         {
-            int earnedCoins = _levelManager.CurrentReward;
-            int starInLevel = _levelManager.CurrentStars;
-
-            // Display the earned coins
-            _coinCountText.text = $"{earnedCoins}";
-
-            // Display the earned stars
-            for (int i = 0; i < _stars.Length; i++)
+            DOVirtual.DelayedCall(_resultScreenDelay, () =>
             {
-                _stars[i].SetActive(i < starInLevel);
-            }
+                int earnedCoins = _levelManager.CurrentReward;
+                int starInLevel = _levelManager.CurrentStars;
 
-            GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject,
-                _restartButton.gameObject };
+                // Display the earned coins
+                _coinCountText.text = $"{earnedCoins}";
 
-            // Show result UI
-            DisplayResultScreen(elemets, true);
+                // Display the earned stars
+                for (int i = 0; i < _stars.Length; i++)
+                {
+                    _stars[i].SetActive(i < starInLevel);
+                }
+
+                GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject,
+                    _restartButton.gameObject };
+
+                // Show result UI
+                DisplayResultScreen(elemets, false);
+            });
         }
 
         /// <summary>
@@ -236,22 +244,25 @@ namespace _Game.UI
         /// </summary>
         private void ShowSuccessResultScreen()
         {
-            int earnedCoins = _levelManager.CurrentReward;
-            int starInLevel = _levelManager.CurrentStars;
-
-            // Display the earned coins
-            _coinCountText.text = $"{earnedCoins}";
-
-            // Display the earned stars
-            for (int i = 0; i < _stars.Length; i++)
+            DOVirtual.DelayedCall(_resultScreenDelay, () =>
             {
-                _stars[i].SetActive(i < starInLevel);
-            }
+                int earnedCoins = _levelManager.CurrentReward;
+                int starInLevel = _levelManager.CurrentStars;
 
-            GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject };
+                // Display the earned coins
+                _coinCountText.text = $"{earnedCoins}";
 
-            // Show result UI
-            DisplayResultScreen(elemets, true);
+                // Display the earned stars
+                for (int i = 0; i < _stars.Length; i++)
+                {
+                    _stars[i].SetActive(i < starInLevel);
+                }
+
+                GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject };
+
+                // Show result UI
+                DisplayResultScreen(elemets, true);
+            });
         }
 
         /// <summary>
@@ -279,29 +290,34 @@ namespace _Game.UI
         {
             if (sequential)
             {
-                var sequence = DOTween.Sequence();
-
-                foreach (var element in elements)
+                for (int i = 0; i < elements.Length; i++)
                 {
+                    var element = elements[i];
+                    float delay = i * _elementAnimationInterval; // Calculate delay based on index and interval
+
                     if (isEnabled)
                     {
                         element.SetActive(true);
-                        sequence.Append(element.transform.DOScale(1, _elementAnimationDuration)
-                            .SetEase(_openElementAnimationEase));
+                        element.transform.DOScale(1, _elementAnimationDuration)
+                            .SetEase(_openElementAnimationEase)
+                            .SetDelay(delay); // Apply delay for staggering
 
-                        sequence.AppendCallback(() => _audioManager.PlaySound(_uiSoundKey));
+                        DOTween.Sequence()
+                            .AppendInterval(delay)
+                            .AppendCallback(() => _audioManager.PlaySound(_uiSoundKey)); // Play sound at staggered time
                     }
                     else
                     {
-                        sequence.Append(element.transform.DOScale(0, _elementAnimationDuration)
+                        element.transform.DOScale(0, _elementAnimationDuration)
                             .SetEase(_closeElementAnimationEase)
-                            .OnComplete(() => element.SetActive(false)));
+                            .SetDelay(delay) // Apply delay for staggering
+                            .OnComplete(() => element.SetActive(false));
 
-                        sequence.AppendCallback(() => _audioManager.PlaySound(_uiSoundKey));
+                        DOTween.Sequence()
+                            .AppendInterval(delay)
+                            .AppendCallback(() => _audioManager.PlaySound(_uiSoundKey)); // Play sound at staggered time
                     }
                 }
-
-                sequence.Play();
             }
             else
             {
@@ -319,6 +335,8 @@ namespace _Game.UI
                             .SetEase(_closeElementAnimationEase)
                             .OnComplete(() => element.SetActive(false));
                     }
+
+                    _audioManager.PlaySound(_uiSoundKey);
                 }
             }
         }

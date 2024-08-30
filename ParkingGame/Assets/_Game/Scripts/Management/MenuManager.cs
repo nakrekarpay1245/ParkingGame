@@ -23,7 +23,7 @@ namespace _Game.Management
 
         [Header("Animation Settings")]
         [Tooltip("Duration for scaling down the UI elements.")]
-        [SerializeField, Range(0.1f, 2.0f)] private float _scaleDownDuration = 0.5f;
+        [SerializeField, Range(0.1f, 2.0f)] private float _scaleChangeDuration = 0.5f;
 
         [Tooltip("Ease type for the scale down animation.")]
         [SerializeField] private Ease _scaleDownEase = Ease.InBack;
@@ -74,9 +74,9 @@ namespace _Game.Management
             Sequence sequence = DOTween.Sequence();
 
             // Scale down the menu buttons, car point, and game name at the same time
-            sequence.Append(_menuButtons.transform.DOScale(Vector3.one, _scaleDownDuration).SetEase(_scaleDownEase));
-            sequence.Join(_currentCarPoint.transform.DOScale(Vector3.one, _scaleDownDuration).SetEase(_scaleDownEase));
-            sequence.Join(_gameNameText.transform.DOScale(Vector3.one, _scaleDownDuration).SetEase(_scaleDownEase));
+            sequence.Append(_menuButtons.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase));
+            sequence.Join(_currentCarPoint.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase));
+            sequence.Join(_gameNameText.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase));
         }
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace _Game.Management
             Sequence sequence = DOTween.Sequence();
 
             // Scale down the menu buttons, car point, and game name at the same time
-            sequence.Append(_menuButtons.transform.DOScale(Vector3.zero, _scaleDownDuration).SetEase(_scaleDownEase));
-            sequence.Join(_currentCarPoint.transform.DOScale(Vector3.zero, _scaleDownDuration).SetEase(_scaleDownEase));
-            sequence.Join(_gameNameText.transform.DOScale(Vector3.zero, _scaleDownDuration).SetEase(_scaleDownEase));
+            sequence.Append(_menuButtons.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
+            sequence.Join(_currentCarPoint.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
+            sequence.Join(_gameNameText.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
 
             // After the scaling down animation completes, load the game scene
             sequence.OnComplete(() => SceneManager.LoadScene("GameScene"));
@@ -120,9 +120,9 @@ namespace _Game.Management
                     .OnComplete(() => _quitMenu.SetActive(false));
 
                 // Show the menu buttons, car point, and game name text with scaling
-                closeSequence.Append(_menuButtons.transform.DOScale(Vector3.one, _scaleDownDuration).SetEase(_scaleUpEase));
-                closeSequence.Join(_currentCarPoint.transform.DOScale(Vector3.one, _scaleDownDuration).SetEase(_scaleUpEase));
-                closeSequence.Join(_gameNameText.transform.DOScale(Vector3.one, _scaleDownDuration).SetEase(_scaleUpEase));
+                closeSequence.Append(_menuButtons.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase));
+                closeSequence.Join(_currentCarPoint.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase));
+                closeSequence.Join(_gameNameText.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase));
 
                 _isQuitMenuOpen = false;
             }
@@ -130,9 +130,9 @@ namespace _Game.Management
             {
                 // Hide UI elements and open quit menu
                 Sequence openSequence = DOTween.Sequence();
-                openSequence.Append(_menuButtons.transform.DOScale(Vector3.zero, _scaleDownDuration).SetEase(_scaleDownEase));
-                openSequence.Join(_currentCarPoint.transform.DOScale(Vector3.zero, _scaleDownDuration).SetEase(_scaleDownEase));
-                openSequence.Join(_gameNameText.transform.DOScale(Vector3.zero, _scaleDownDuration).SetEase(_scaleDownEase));
+                openSequence.Append(_menuButtons.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
+                openSequence.Join(_currentCarPoint.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
+                openSequence.Join(_gameNameText.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
 
                 openSequence.AppendCallback(() => _quitMenu.SetActive(true));
                 openSequence.Append(_quitMenu.transform.DOScale(Vector3.one, _quitMenuAnimationDuration).SetEase(_scaleUpEase));

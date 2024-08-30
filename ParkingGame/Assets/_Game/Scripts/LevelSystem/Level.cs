@@ -1,13 +1,15 @@
 using _Game.Car;
 using _Game.Management;
 using _Game.Scripts;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.LevelSystem
 {
     /// <summary>
     /// The Level class is responsible for initializing the CarController, LevelFrame, 
-    /// and ParkingArea based on specific child object positions.
+    /// and ParkingArea based on specific child object positions. It also manages the 
+    /// cleanup process with a delay before disposing of the objects.
     /// </summary>
     public class Level : MonoBehaviour
     {
@@ -30,6 +32,10 @@ namespace _Game.LevelSystem
         [Tooltip("Transform for the Player point.")]
         [SerializeField] private Transform _playerPoint;
 
+        [Header("Dispose Settings")]
+        [Tooltip("Time delay before disposing of level objects.")]
+        [SerializeField, Range(0.1f, 5f)] private float _disposeDelay = 1f;
+
         private CarController _carController;
         private ParkingArea _parkingArea;
         private LevelManager _levelManager;
@@ -41,8 +47,8 @@ namespace _Game.LevelSystem
 
         private void Start()
         {
-            _levelManager.OnLevelComplete += Dispose;
-            _levelManager.OnLevelFail += Dispose;
+            _levelManager.OnLevelComplete += DelayedDispose;
+            _levelManager.OnLevelFail += DelayedDispose;
 
             // Ensure required prefabs and references are set
             if (_carControllerPrefab == null || _parkingAreaPrefab == null)
@@ -80,8 +86,11 @@ namespace _Game.LevelSystem
         {
             if (_playerPoint != null)
             {
-                CarController carController =
-                    Instantiate(_carControllerPrefab, _playerPoint.position, _playerPoint.rotation);
+                CarController carController = Instantiate(
+                    _carControllerPrefab,
+                    _playerPoint.position,
+                    _playerPoint.rotation
+                );
 
                 //Debug.Log("CarController instantiated at PlayerPoint.");
                 return carController;
@@ -97,7 +106,12 @@ namespace _Game.LevelSystem
         {
             if (_parkingAreaPoint != null)
             {
-                ParkingArea parkingArea = Instantiate(_parkingAreaPrefab, _parkingAreaPoint.position, _parkingAreaPoint.rotation);
+                ParkingArea parkingArea = Instantiate(
+                    _parkingAreaPrefab,
+                    _parkingAreaPoint.position,
+                    _parkingAreaPoint.rotation
+                );
+
                 //Debug.Log("ParkingArea generated at ParkingAreaPoint.");
                 return parkingArea;
             }
@@ -105,11 +119,23 @@ namespace _Game.LevelSystem
             return null;
         }
 
+        /// <summary>
+        /// Adds a delay before calling the Dispose function.
+        /// </summary>
+        private void DelayedDispose()
+        {
+            // Use DOTween to delay the call to Dispose
+            DOVirtual.DelayedCall(_disposeDelay, Dispose);
+        }
+
+        /// <summary>
+        /// Disposes of the level objects (CarController, LevelFrame, ParkingArea).
+        /// </summary>
         private void Dispose()
         {
-            _levelFrame.Dispose();
-            _parkingArea.Dispose();
-            _carController.Dispose();
+            _levelFrame?.Dispose();
+            _parkingArea?.Dispose();
+            _carController?.Dispose();
         }
     }
 }
