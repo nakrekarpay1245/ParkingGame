@@ -6,7 +6,6 @@ using _Game.Car;
 using System.Collections;
 using System.Collections.Generic;
 using _Game._helpers.Audios;
-using _Game.Data;
 
 namespace _Game.UI
 {
@@ -22,8 +21,6 @@ namespace _Game.UI
         [SerializeField] private TextMeshProUGUI _resultText;
         [Tooltip("Menu button.")]
         [SerializeField] private CustomButton _menuButton;
-        [Tooltip("Next level button.")]
-        [SerializeField] private CustomButton _nextButton;
         [Tooltip("Restart button.")]
         [SerializeField] private CustomButton _restartButton;
 
@@ -132,7 +129,6 @@ namespace _Game.UI
             _menuButton.onButtonDown.AddListener(HideResultScreen);
             _menuButton.onButtonDown.AddListener(MenuScene);
             _restartButton.onButtonDown.AddListener(RestartLevel);
-            _nextButton.onButtonDown.AddListener(NextLevel);
         }
 
         private void Update()
@@ -209,7 +205,7 @@ namespace _Game.UI
         /// </summary>
         private void HideResultScreen()
         {
-            ToggleUIElements(new[] { _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject, _resultScreen }, false, true);
+            ToggleUIElements(new[] { _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _resultScreen }, false, true);
         }
 
         /// <summary>
@@ -258,7 +254,7 @@ namespace _Game.UI
                     _stars[i].SetActive(i < starInLevel);
                 }
 
-                GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject, _nextButton.gameObject };
+                GameObject[] elemets = new[] { _resultScreen, _resultText.gameObject, _menuButton.gameObject, _restartButton.gameObject };
 
                 // Show result UI
                 DisplayResultScreen(elemets, true);
@@ -350,13 +346,11 @@ namespace _Game.UI
             _resultText.gameObject.SetActive(false);
             _menuButton.gameObject.SetActive(false);
             _restartButton.gameObject.SetActive(false);
-            _nextButton.gameObject.SetActive(false);
 
             _resultScreen.transform.localScale = Vector3.zero;
             _resultText.transform.localScale = Vector3.zero;
             _menuButton.transform.localScale = Vector3.zero;
             _restartButton.transform.localScale = Vector3.zero;
-            _nextButton.transform.localScale = Vector3.zero;
 
             _carDisplayer.transform.localScale = Vector3.zero;
             _carHealthDisplayer.transform.localScale = Vector3.zero;
@@ -375,15 +369,6 @@ namespace _Game.UI
         private void RestartLevel()
         {
             _levelManager.HandleRestartButtonPressed();
-            HideResultScreen();
-        }
-
-        /// <summary>
-        /// Loads the next level (button action).
-        /// </summary>
-        private void NextLevel()
-        {
-            _levelManager.HandleNextButtonPressed();
             HideResultScreen();
         }
 
