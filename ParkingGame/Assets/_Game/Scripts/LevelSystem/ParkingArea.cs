@@ -1,4 +1,3 @@
-using _Game._helpers;
 using _Game._helpers.Particles;
 using _Game.Car;
 using _Game.Management;
@@ -8,23 +7,28 @@ using UnityEngine;
 namespace _Game.Scripts
 {
     /// <summary>
-    /// Manages particle effects and logic for the parking area, reacting to parking-related events.
-    /// Uses a cached system for particle playback to enhance performance and ensures that only the required particle system is active at any given time.
+    /// Manages particle effects for the parking area, responding to parking events like 
+    /// entering and exiting the parking area, with and without success. Ensures only one 
+    /// particle system is active at any given time and uses DOTween for smooth transitions.
     /// </summary>
     public class ParkingArea : MonoBehaviour
     {
         [Header("Particle Keys")]
         [Tooltip("Key for the default parking area particle.")]
-        [SerializeField]
-        private string _parkingAreaParticleKey = "parking_area";
+        [SerializeField] private string _parkingAreaParticleKey = "parking_area";
 
         [Tooltip("Key for the particle played when parking is not successful.")]
-        [SerializeField]
-        private string _parkingAreaWithoutSuccessParticleKey = "parking_area_not_success";
+        [SerializeField] private string _parkingAreaWithoutSuccessParticleKey = "parking_area_not_success";
 
         [Tooltip("Key for the particle played when parking is successful.")]
-        [SerializeField]
-        private string _parkingAreaSuccessParkingParticleKey = "parking_area_success";
+        [SerializeField] private string _parkingAreaSuccessParkingParticleKey = "parking_area_success";
+
+        [Header("Dispose and Init Settings")]
+        [Tooltip("Time duration for scaling down before deactivating the object.")]
+        [SerializeField, Range(0.1f, 2f)] private float _disposeTime = 0.5f;
+
+        [Tooltip("Time duration for scaling up during initialization.")]
+        [SerializeField, Range(0.1f, 2f)] private float _initTime = 0.5f;
 
         private ParticleSystem _parkingAreaParticle;
         private ParticleSystem _parkingAreaNoSuccessParticle;
@@ -34,33 +38,42 @@ namespace _Game.Scripts
         private ParticleManager _particleManager;
         private CarParkingChecker _parkingChecker;
 
-        public float _disposeTime = 0.5f;
-        public float _initTime = 0.5f;
-
         private void Awake()
         {
-            Init();
+            Initialize();
         }
 
         /// <summary>
-        /// Initializes and subscribes to parking-related events.
+        /// Initializes and sets up the necessary components.
         /// </summary>
-        private void Start()
+        private void Initialize()
         {
             _levelManager = ServiceLocator.Get<LevelManager>();
+            _particleManager = ServiceLocator.Get<ParticleManager>();
+            _parkingChecker = ServiceLocator.Get<CarParkingChecker>();
 
-            _particleManager = ServiceLocator.Get<ParticleManager>(); // Access ParticleManager through ServiceLocator
-            _parkingChecker = ServiceLocator.Get<CarParkingChecker>(); // Access CarParkingChecker through ServiceLocator
+            if (_particleManager == null || _parkingChecker == null || _levelManager == null)
+            {
+                Debug.LogError("One or more required managers are missing from the ServiceLocator.");
+                return;
+            }
 
+            CacheInitialParticles();
             SubscribeToParkingEvents();
-
-            // Cache and play the initial particle for the parking area
-            _parkingAreaParticle = _particleManager.PlayParticleAtPoint(_parkingAreaParticleKey,
-                transform.position, Quaternion.identity, transform);
         }
 
         /// <summary>
-        /// Subscribes to events from the CarParkingChecker.
+        /// Caches the default parking area particle for immediate playback on start.
+        /// </summary>
+        private void CacheInitialParticles()
+        {
+            _parkingAreaParticle = _particleManager.PlayParticleAtPoint(
+                _parkingAreaParticleKey, transform.position, Quaternion.identity, transform
+            );
+        }
+
+        /// <summary>
+        /// Subscribes to parking-related events from the CarParkingChecker.
         /// </summary>
         private void SubscribeToParkingEvents()
         {
@@ -71,54 +84,54 @@ namespace _Game.Scripts
 
         /// <summary>
         /// Handles the event when the car exits the parking area without success.
-        /// Stops other particles and plays the default parking area particle.
+        /// Plays the default parking area particle.
         /// </summary>
         private void HandleExitParkingArea()
         {
-            //Debug.Log("Car exited the parking area without successful parking.");
             PlayParticle(ref _parkingAreaParticle, _parkingAreaParticleKey);
         }
 
         /// <summary>
-        /// Handles the event when the car enters the parking area but parking has not yet been successful.
-        /// Stops other particles and plays the 'no success' particle.
+        /// Handles the event when the car enters the parking area without success.
+        /// Plays the particle indicating unsuccessful parking.
         /// </summary>
         private void HandleEnterParkingAreaWithoutSuccess()
         {
-            //Debug.Log("Car entered the parking area but parking is not successful yet.");
             PlayParticle(ref _parkingAreaNoSuccessParticle, _parkingAreaWithoutSuccessParticleKey);
         }
 
         /// <summary>
-        /// Handles the event when parking is successfully completed.
-        /// Stops other particles and plays the success particle.
+        /// Handles the event when the car successfully parks.
+        /// Plays the success particle and triggers level completion.
         /// </summary>
         private void HandleParkingSuccessful()
         {
-            //Debug.Log("Parking has been successfully completed!");
             PlayParticle(ref _parkingAreaSuccessParticle, _parkingAreaSuccessParkingParticleKey);
             _levelManager.CompleteLevel();
         }
 
         /// <summary>
-        /// Stops any active particle systems and plays the specified particle.
-        /// Ensures only the correct particle is playing at a given time.
+        /// Stops all active particles and plays the specified particle.
+        /// This ensures only one particle is active at a time.
         /// </summary>
         /// <param name="particle">Reference to the ParticleSystem to be played.</param>
-        /// <param name="particleKey">The key for the particle to be retrieved and played.</param>
+        /// <param name="particleKey">The key used to retrieve and play the particle.</param>
         private void PlayParticle(ref ParticleSystem particle, string particleKey)
         {
             StopAllParticles();
+
             if (particle == null)
             {
-                particle = _particleManager.PlayParticleAtPoint(particleKey,
-                    transform.position, Quaternion.identity, transform);
+                particle = _particleManager.PlayParticleAtPoint(
+                    particleKey, transform.position, Quaternion.identity, transform
+                );
             }
-            particle?.Play();
+
+            particle.Play();
         }
 
         /// <summary>
-        /// Stops all currently active particle systems.
+        /// Stops all currently active particle systems to avoid conflicts.
         /// </summary>
         private void StopAllParticles()
         {
@@ -127,17 +140,9 @@ namespace _Game.Scripts
             _parkingAreaSuccessParticle?.Stop();
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = new Color(255f, 255f, 0f, 0.25f);
-            Gizmos.DrawCube(transform.GetChild(0).transform.position,
-                transform.GetChild(0).transform.lossyScale);
-
-            Gizmos.color = new Color(255f, 125f, 0f, 0.5f);
-            Gizmos.DrawWireCube(transform.GetChild(0).transform.position,
-                transform.GetChild(0).transform.lossyScale);
-        }
-
+        /// <summary>
+        /// Scales down the object and deactivates it after the specified dispose time.
+        /// </summary>
         public void Dispose()
         {
             transform.DOScale(Vector3.zero, _disposeTime).OnComplete(() =>
@@ -146,9 +151,41 @@ namespace _Game.Scripts
             });
         }
 
+        /// <summary>
+        /// Initializes the object by scaling it up over the specified init time.
+        /// </summary>
         public void Init()
         {
             transform.DOScale(Vector3.one, _initTime);
+        }
+
+        /// <summary>
+        /// Visualizes the parking area using Gizmos in the Scene view.
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            Transform parkingAreaTransform = transform.GetChild(0);
+            if (parkingAreaTransform != null)
+            {
+                Gizmos.color = new Color(1f, 1f, 0f, 0.25f);
+                Gizmos.DrawCube(parkingAreaTransform.position, parkingAreaTransform.lossyScale);
+
+                Gizmos.color = new Color(1f, 0.5f, 0f, 0.5f);
+                Gizmos.DrawWireCube(parkingAreaTransform.position, parkingAreaTransform.lossyScale);
+            }
+        }
+
+        /// <summary>
+        /// Unsubscribes from all events to avoid memory leaks when the object is destroyed.
+        /// </summary>
+        private void OnDestroy()
+        {
+            if (_parkingChecker != null)
+            {
+                _parkingChecker.OnExitParkingArea -= HandleExitParkingArea;
+                _parkingChecker.OnEnterParkingAreaWithoutSuccess -= HandleEnterParkingAreaWithoutSuccess;
+                _parkingChecker.OnParkingSuccess -= HandleParkingSuccessful;
+            }
         }
     }
 }
