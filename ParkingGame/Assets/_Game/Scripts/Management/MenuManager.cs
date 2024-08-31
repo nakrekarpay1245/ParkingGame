@@ -31,8 +31,8 @@ namespace _Game.Management
         [Tooltip("Gallery UI that will be opened/closed when the gallery buttons are pressed.")]
         [SerializeField] private GameObject _galleryUI;
 
-        [Tooltip("The gallery manager that will be activated/deactivated when the gallery is opened/closed.")]
-        [SerializeField] private GalleryManager _galleryManager;
+        //[Tooltip("The gallery manager that will be activated/deactivated when the gallery is opened/closed.")]
+        //[SerializeField] private GalleryManager _galleryManager;
 
         [Header("Animation Settings")]
         [Tooltip("Duration for scaling down the UI elements.")]
@@ -130,7 +130,7 @@ namespace _Game.Management
             _quitMenu.SetActive(false);
 
             _galleryUI.SetActive(false); // Ensure Gallery UI starts inactive
-            _galleryManager.gameObject.SetActive(false); // Ensure GalleryManager starts inactive
+            //_galleryManager.gameObject.SetActive(false); // Ensure GalleryManager starts inactive
 
             _gameNameText.transform.localScale = Vector3.zero;
             _menuButtons.transform.localScale = Vector3.zero;
@@ -165,6 +165,11 @@ namespace _Game.Management
         /// </summary>
         private void SetEvents()
         {
+            if (_economyManager == null)
+            {
+                _economyManager = ServiceLocator.Get<EconomyManager>();
+            }
+
             _economyManager.OnCoinAmountChanged += UpdateCoinDisplayer;
             _economyManager.OnCoinAmountInsufficient += ShowInsufficientFundsWarning;
         }
@@ -271,7 +276,7 @@ namespace _Game.Management
             sequence.OnComplete(() =>
             {
                 _galleryUI.SetActive(true);
-                _galleryManager.gameObject.SetActive(true);
+                //_galleryManager.gameObject.SetActive(true);
                 sequence.Append(_galleryUI.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase));
             });
         }
@@ -295,7 +300,7 @@ namespace _Game.Management
                 _gameNameText.transform.DOScale(Vector3.one, _scaleChangeDuration).SetEase(_scaleUpEase);
 
                 _galleryUI.SetActive(false);
-                _galleryManager.gameObject.SetActive(false);
+                //_galleryManager.gameObject.SetActive(false);
             });
         }
 

@@ -15,11 +15,6 @@ namespace _Game.Data
         private List<Level> _levelList;
         private int _currentLevelIndex;
 
-        /// <summary>
-        /// Property to get or set the current level index. 
-        /// When setting, it will save the new value using SaveManager.
-        /// When getting, it will load the value from SaveManager.
-        /// </summary>
         public int CurrentLevelIndex
         {
             get
@@ -34,9 +29,6 @@ namespace _Game.Data
             }
         }
 
-        /// <summary>
-        /// Gets the configuration of the current level based on the index.
-        /// </summary>
         public Level CurrentLevel => _levelList[CurrentLevelIndex];
 
         [Header("Economy Configuration")]
@@ -44,10 +36,6 @@ namespace _Game.Data
         [SerializeField]
         private int _coins;
 
-        /// <summary>
-        /// Property to get or set the player's current coin count. 
-        /// When setting, it saves the new value via SaveManager.
-        /// </summary>
         public int Coins
         {
             get
@@ -71,25 +59,25 @@ namespace _Game.Data
         [Tooltip("Index of the currently selected car.")]
         [SerializeField]
         private int _selectedCarIndex;
-        public int SelectedCarIndex { get => _selectedCarIndex; set => _selectedCarIndex = value; }
 
-        /// <summary>
-        /// Gets the prefab of the currently selected car.
-        /// </summary>
-        [Tooltip("Prefab of the selected car.")]
-        public CarController SelectedCarPrefab => _carList[_selectedCarIndex].CarPrefab;
+        public int SelectedCarIndex
+        {
+            get
+            {
+                _selectedCarIndex = SaveManager.LoadSelectedCarIndex();
+                return _selectedCarIndex;
+            }
+            set
+            {
+                _selectedCarIndex = value;
+                SaveManager.SaveSelectedCarIndex(_selectedCarIndex);
+            }
+        }
 
-        /// <summary>
-        /// Gets the model prefab of the currently selected car.
-        /// </summary>
-        [Tooltip("Model prefab of the selected car.")]
-        public GameObject SelectedCarModelPrefab => _carList[_selectedCarIndex].CarModelPrefab;
+        public CarController SelectedCarPrefab => _carList[SelectedCarIndex].CarPrefab;
+        public GameObject SelectedCarModelPrefab => _carList[SelectedCarIndex].CarModelPrefab;
+        public CarConfigSO SelectedCarConfig => _carList[SelectedCarIndex].CarConfig;
 
-        /// <summary>
-        /// Attempts to buy a car if the player has enough coins.
-        /// </summary>
-        /// <param name="carIndex">The index of the car to buy.</param>
-        /// <returns>True if the purchase was successful, false if not enough coins or car already purchased.</returns>
         public bool BuyCar(int carIndex)
         {
             if (carIndex < 0 || carIndex >= _carList.Count)
@@ -107,23 +95,15 @@ namespace _Game.Data
             return false;
         }
 
-        /// <summary>
-        /// Sets the selected car by index, provided the car is purchased.
-        /// </summary>
-        /// <param name="carIndex">The index of the car to select.</param>
         public void SelectCar(int carIndex)
         {
             if (carIndex >= 0 && carIndex < _carList.Count && _carList[carIndex].IsPurchased)
             {
-                _selectedCarIndex = carIndex;
-                SaveManager.SaveSelectedCarIndex(_selectedCarIndex);
+                SelectedCarIndex = carIndex;
             }
         }
     }
 
-    /// <summary>
-    /// Represents a car in the game, including its purchase status, price, and prefabs.
-    /// </summary>
     [System.Serializable]
     public class Car
     {

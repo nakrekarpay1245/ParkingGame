@@ -785,7 +785,6 @@ MonoBehaviour:
   _currentCarPoint: {fileID: 118211236}
   _gameNameText: {fileID: 1011577555}
   _galleryUI: {fileID: 182684624}
-  _galleryManager: {fileID: 1953228638}
   _scaleChangeDuration: 0.5
   _scaleDownEase: 26
   _scaleUpEase: 27
@@ -4348,7 +4347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1953228637
 Transform:
   m_ObjectHideFlags: 0
@@ -4403,7 +4402,6 @@ MonoBehaviour:
   _scaleChangeDuration: 0.5
   _scaleDownEase: 26
   _scaleUpEase: 27
-  _currentCarModelInstance: {fileID: 0}
 --- !u!114 &1963242717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2625245465947149426, guid: 8feacd05305de3f46815b6e507e6746a,

@@ -86,10 +86,7 @@ public class GalleryManager : MonoBehaviour
     public GameObject _currentCarModelInstance;
 
     private EconomyManager _economyManager;
-    private void OnEnable()
-    {
-        UpdateGallery();
-    }
+
     private void Awake()
     {
         StartCoroutine(InitializeDependencies());
@@ -98,6 +95,8 @@ public class GalleryManager : MonoBehaviour
     private void Start()
     {
         _currentCarIndex = _gameData.SelectedCarIndex;
+
+        UpdateGallery();
 
         _previousCarButton.onButtonDown.AddListener(ShowPreviousCar);
         _nextCarButton.onButtonDown.AddListener(ShowNextCar);
@@ -128,6 +127,10 @@ public class GalleryManager : MonoBehaviour
     private void UpdateGallery()
     {
         CarConfigSO carConfig = _gameData.CarList[_currentCarIndex].CarConfig;
+        GameObject carModelPrefab = _gameData.CarList[_currentCarIndex].CarModelPrefab;
+
+        Debug.Log("Config: " + carConfig.name);
+        Debug.Log("Config: " + carModelPrefab.name);
 
         if (_currentCarConfig != carConfig)
         {
@@ -136,18 +139,18 @@ public class GalleryManager : MonoBehaviour
             // Destroy previous car model if exists
             if (_currentCarModelInstance != null)
             {
-                Debug.Log("Destory previous");
                 GameObject previousCarModel = _currentCarModelInstance;
+                _currentCarModelInstance = null;
+                Debug.Log("Previous: " + previousCarModel.name);
 
                 Sequence sequence = DOTween.Sequence();
-                sequence.Append(_currentCarModelInstance.transform.DOScale(0, _scaleChangeDuration)
+                sequence.Append(previousCarModel.transform.DOScale(0, _scaleChangeDuration)
                     .SetEase(_scaleDownEase));
                 sequence.AppendCallback(() => Destroy(previousCarModel));
                 sequence.Play();
             }
 
             // Instantiate the new car model
-            GameObject carModelPrefab = _gameData.CarList[_currentCarIndex].CarModelPrefab;
             if (carModelPrefab != null)
             {
                 _currentCarModelInstance = Instantiate(carModelPrefab, _carDisplayPosition.position,
@@ -158,35 +161,36 @@ public class GalleryManager : MonoBehaviour
                 _currentCarModelInstance.transform.DOScale(1, _scaleChangeDuration)
                     .SetEase(_scaleUpEase);
 
-                Debug.Log("Instantiate carmodel: " + _currentCarModelInstance.name);
+                Debug.Log("Instantiate car model Index: " + _currentCarIndex);
+                Debug.Log("Instantiate car model: " + _currentCarModelInstance.name);
             }
-
-            // Update speed
-            UpdateBarAndText(_speedBar, _speedText, _currentCarConfig.MaxSpeed, _maxSpeed,
-                $"{_currentCarConfig.MaxSpeed} km/h");
-
-            // Update acceleration
-            UpdateBarAndText(_accelerationBar, _accelerationText, _currentCarConfig.AccelerationMultiplier,
-                _maxAcceleration, $"{_currentCarConfig.AccelerationMultiplier}");
-
-            // Update deceleration
-            UpdateBarAndText(_decelerationBar, _decelerationText, _currentCarConfig.DecelerationMultiplier,
-                _maxDeceleration, $"{_currentCarConfig.DecelerationMultiplier}");
-
-            // Update steering angle
-            UpdateBarAndText(_steeringBar, _steeringText, _currentCarConfig.MaxSteeringAngle, _maxSteering,
-                $"{_currentCarConfig.MaxSteeringAngle}°");
-
-            // Update brake force
-            UpdateBarAndText(_brakeBar, _brakeText, _currentCarConfig.BrakeForce, _maxBrakeForce,
-                $"{_currentCarConfig.BrakeForce} N");
-
-            // Update handbrake drift multiplier
-            UpdateBarAndText(_driftBar, _driftText, _currentCarConfig.HandbrakeDriftMultiplier,
-                _maxDriftMultiplier, $"{_currentCarConfig.HandbrakeDriftMultiplier}");
-
-            UpdateButtons();
         }
+
+        // Update speed
+        UpdateBarAndText(_speedBar, _speedText, _currentCarConfig.MaxSpeed, _maxSpeed,
+            $"{_currentCarConfig.MaxSpeed} km/h");
+
+        // Update acceleration
+        UpdateBarAndText(_accelerationBar, _accelerationText, _currentCarConfig.AccelerationMultiplier,
+            _maxAcceleration, $"{_currentCarConfig.AccelerationMultiplier}");
+
+        // Update deceleration
+        UpdateBarAndText(_decelerationBar, _decelerationText, _currentCarConfig.DecelerationMultiplier,
+            _maxDeceleration, $"{_currentCarConfig.DecelerationMultiplier}");
+
+        // Update steering angle
+        UpdateBarAndText(_steeringBar, _steeringText, _currentCarConfig.MaxSteeringAngle, _maxSteering,
+            $"{_currentCarConfig.MaxSteeringAngle}°");
+
+        // Update brake force
+        UpdateBarAndText(_brakeBar, _brakeText, _currentCarConfig.BrakeForce, _maxBrakeForce,
+            $"{_currentCarConfig.BrakeForce} N");
+
+        // Update handbrake drift multiplier
+        UpdateBarAndText(_driftBar, _driftText, _currentCarConfig.HandbrakeDriftMultiplier,
+            _maxDriftMultiplier, $"{_currentCarConfig.HandbrakeDriftMultiplier}");
+
+        UpdateButtons();
     }
 
     /// <summary>
@@ -227,12 +231,18 @@ public class GalleryManager : MonoBehaviour
     private void ShowPreviousCar()
     {
         _currentCarIndex = (_currentCarIndex - 1 + _gameData.CarList.Count) % _gameData.CarList.Count;
+
+        Debug.Log("previous: " + _currentCarIndex);
+
         UpdateGallery();
     }
 
     private void ShowNextCar()
     {
         _currentCarIndex = (_currentCarIndex + 1) % _gameData.CarList.Count;
+
+        Debug.Log("Next: " + _currentCarIndex);
+
         UpdateGallery();
     }
 
