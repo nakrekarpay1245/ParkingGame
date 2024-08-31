@@ -4,92 +4,78 @@ using UnityEngine;
 namespace _Game.Inputs
 {
     /// <summary>
-    /// Handles player input and updates the PlayerInput ScriptableObject accordingly.
+    /// Handles player input for both keyboard and touch controls and updates the PlayerInput ScriptableObject.
+    /// Ensures that the input system is modular and easy to extend.
     /// </summary>
     public class InputHandler : MonoBehaviour
     {
-        [Header("Player Input Scriptable Object")]
-        [Tooltip("Reference to the PlayerInput ScriptableObject that stores player input states.")]
+        [Header("Player Input Configuration")]
+        [Tooltip("ScriptableObject to store the player's input states.")]
         [SerializeField] private PlayerInputSO playerInput;
 
-        [Header("Touch Controls")]
-        [Tooltip("Check if touch controls are set up")]
+        [Header("Touch Controls Setup")]
+        [Tooltip("Indicates if touch controls are configured.")]
         [SerializeField] private bool _touchControlsSetup = false;
-        [SerializeField] private CustomButton _throttleButton;
-        [SerializeField] private CustomButton _reverseButton;
-        [SerializeField] private CustomButton _turnLeftButton;
-        [SerializeField] private CustomButton _turnRightButton;
-        [SerializeField] private CustomButton _handbrakeButton;
 
-        private bool _gamePaused;
+        [Tooltip("Button used for accelerating.")]
+        [SerializeField] private CustomButton _throttleButton;
+
+        [Tooltip("Button used for reversing.")]
+        [SerializeField] private CustomButton _reverseButton;
+
+        [Tooltip("Button used for turning left.")]
+        [SerializeField] private CustomButton _turnLeftButton;
+
+        [Tooltip("Button used for turning right.")]
+        [SerializeField] private CustomButton _turnRightButton;
+
+        [Tooltip("Button used for handbraking.")]
+        [SerializeField] private CustomButton _handbrakeButton;
 
         private void Start()
         {
-            if (_throttleButton != null && _reverseButton != null && _turnLeftButton != null &&
-                _turnRightButton != null && _handbrakeButton != null)
-            {
-                _touchControlsSetup = true;
-            }
-            else
-            {
-                _touchControlsSetup = false;
-                Debug.LogWarning("Some of the buttons are null");
-            }
+            _touchControlsSetup = AreTouchControlsConfigured();
         }
 
         private void Update()
         {
-            HandleInput();
+            UpdateInputStates();
         }
 
         /// <summary>
-        /// Processes player input and updates the PlayerInput ScriptableObject.
+        /// Verifies if all touch controls are properly configured.
         /// </summary>
-        private void HandleInput()
+        /// <returns>True if all touch controls are assigned; otherwise, false.</returns>
+        private bool AreTouchControlsConfigured()
         {
-            bool isAccelerating = Input.GetKey(KeyCode.W) || (_touchControlsSetup && _throttleButton.ButtonPressed);
-            bool isReversing = Input.GetKey(KeyCode.S) || (_touchControlsSetup && _reverseButton.ButtonPressed);
-            bool isTurningLeft = Input.GetKey(KeyCode.A) || (_touchControlsSetup && _turnLeftButton.ButtonPressed);
-            bool isTurningRight = Input.GetKey(KeyCode.D) || (_touchControlsSetup && _turnRightButton.ButtonPressed);
-            bool isHandbraking = Input.GetKey(KeyCode.Space) || (_touchControlsSetup && _handbrakeButton.ButtonPressed);
-
-            playerInput.IsAccelerating = isAccelerating /*&& !_gamePaused*/;
-            playerInput.IsReversing = isReversing /*&& !_gamePaused*/;
-            playerInput.IsTurningLeft = isTurningLeft /*&& !_gamePaused*/;
-            playerInput.IsTurningRight = isTurningRight /*&& !_gamePaused*/;
-            playerInput.IsHandbraking = isHandbraking /*&& !_gamePaused*/;
+            return _throttleButton != null &&
+                   _reverseButton != null &&
+                   _turnLeftButton != null &&
+                   _turnRightButton != null &&
+                   _handbrakeButton != null;
         }
 
-        //private void Pause()
-        //{
-        //    _gamePaused = true;
-        //}
+        /// <summary>
+        /// Updates the player's input states by checking both keyboard and touch inputs.
+        /// </summary>
+        private void UpdateInputStates()
+        {
+            playerInput.IsAccelerating = GetInput(KeyCode.W, _throttleButton);
+            playerInput.IsReversing = GetInput(KeyCode.S, _reverseButton);
+            playerInput.IsTurningLeft = GetInput(KeyCode.A, _turnLeftButton);
+            playerInput.IsTurningRight = GetInput(KeyCode.D, _turnRightButton);
+            playerInput.IsHandbraking = GetInput(KeyCode.Space, _handbrakeButton);
+        }
 
-        //private void Play()
-        //{
-        //    _gamePaused = false;
-        //}
-
-        //private void OnEnable()
-        //{
-        //    GameStateManager.Singleton.OnGameStateChanged += OnGameStateChanged;
-        //}
-
-        //private void OnDisable()
-        //{
-        //    GameStateManager.Singleton.OnGameStateChanged -= OnGameStateChanged;
-        //}
-
-        //public void OnGameStateChanged(GameState newGameState)
-        //{
-        //    if (newGameState == GameState.Gameplay)
-        //    {
-        //        Play();
-        //    }
-        //    else
-        //    {
-        //        Pause();
-        //    }
-        //}
+        /// <summary>
+        /// Checks if a specific keyboard key is pressed or if a touch control button is being pressed.
+        /// </summary>
+        /// <param name="key">The keyboard key to check.</param>
+        /// <param name="button">The corresponding touch control button.</param>
+        /// <returns>True if the key or button is pressed; otherwise, false.</returns>
+        private bool GetInput(KeyCode key, CustomButton button)
+        {
+            return Input.GetKey(key) || (_touchControlsSetup && button != null && button.ButtonPressed);
+        }
     }
 }
