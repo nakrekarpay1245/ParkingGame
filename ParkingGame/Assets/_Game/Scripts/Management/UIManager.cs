@@ -273,7 +273,7 @@ namespace _Game.UI
 
             CloseGameUIElements();
 
-            ToggleUIElements(elements, success, true);
+            ToggleUIElements(elements, true, true);
         }
 
         /// <summary>
