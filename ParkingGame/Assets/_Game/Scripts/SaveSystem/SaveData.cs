@@ -28,7 +28,7 @@ namespace _Game.Save
 
         [Tooltip("Index of the currently selected car.")]
         [SerializeField]
-        public int SelectedCarIndex = -1;
+        public int SelectedCarIndex = 0;
 
         // Future data fields can be added here
     }
