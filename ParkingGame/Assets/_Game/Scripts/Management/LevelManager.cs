@@ -24,9 +24,9 @@ namespace _Game.Management
         [SerializeField, Range(0.1f, 5f)] private float _sceneChangeDuration = 1f;
 
         [Header("Economy Settings")]
-        [SerializeField] private int completeFee = 100;  // Fee for completing a level
-        [SerializeField] private int failFee = 50;       // Fee for failing a level
-        [SerializeField] private int healthBonus = 10;   // Bonus per remaining health point
+        [SerializeField] private int _completeFee = 250;  // Fee for completing a level
+        [SerializeField] private int _failFee = 100;       // Fee for failing a level
+        [SerializeField] private int _healthBonus = 50;   // Bonus per remaining health point
 
         private int _currentReward;
 
@@ -42,6 +42,7 @@ namespace _Game.Management
         public int CurrentReward { get => _currentReward; private set => _currentReward = value; }
 
         private CarDamageHandler _carDamageHandler;
+        private EconomyManager _economyManager;
 
         private void Awake()
         {
@@ -62,6 +63,12 @@ namespace _Game.Management
             while (_carDamageHandler == null)
             {
                 _carDamageHandler = ServiceLocator.Get<CarDamageHandler>();
+                yield return null;
+            }
+
+            while (_economyManager == null)
+            {
+                _economyManager = ServiceLocator.Get<EconomyManager>();
                 yield return null;
             }
         }
@@ -120,11 +127,11 @@ namespace _Game.Management
             _currentStars = CalculateStars();
 
             // Add completion fee and health bonus
-            _currentReward = completeFee + (remainingHealth * healthBonus);
+            _currentReward = _completeFee + (remainingHealth * _healthBonus);
 
             // Set the results in GameData
             // Add the calculated coins to the total
-            _gameData.Coins += _currentReward;
+            _economyManager.EarnCoins(_currentReward);
 
             Debug.Log("Level Completed! Coins: " + _currentReward);
             OnLevelComplete?.Invoke();
@@ -142,10 +149,10 @@ namespace _Game.Management
             OnLevelFail?.Invoke();  // Notify subscribers that the level has failed
 
             // Set fail fee (No bonus for remaining health)
-            _currentReward = failFee;
+            _currentReward = _failFee;
 
             // Set the results in GameData
-            _gameData.Coins += _currentReward;
+            _economyManager.EarnCoins(_currentReward);
 
             Debug.Log("Level Failed! Coins: " + _currentReward);
             OnLevelFail?.Invoke();

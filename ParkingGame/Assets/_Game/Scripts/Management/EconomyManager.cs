@@ -1,7 +1,10 @@
 using UnityEngine;
 using _Game.Data;
+using UnityEngine.Events;
+using DG.Tweening;
+using TMPro;
 
-namespace _Game.Economy
+namespace _Game.Management
 {
     /// <summary>
     /// EconomyManager handles coin-related operations such as adding, spending, and checking coin balance.
@@ -14,14 +17,44 @@ namespace _Game.Economy
         [SerializeField]
         private GameData _gameData;
 
+        public UnityAction OnCoinAmountChanged;
+        public UnityAction OnCoinAmountInsufficient;
+
+        private void Awake()
+        {
+            RegisterServices();
+        }
+
+        ///TEST
+        ///
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                EarnCoins(1000);
+            }
+        }
+        ///
+        ///
+
+        /// <summary>
+        /// Registers the EconomyManager as a service using a Service Locator.
+        /// </summary>
+        private void RegisterServices()
+        {
+            ServiceLocator.Register(this);
+        }
+
         /// <summary>
         /// Adds coins to the player's balance.
         /// </summary>
         /// <param name="amount">The amount of coins to add.</param>
-        public void AddCoins(int amount)
+        public void EarnCoins(int amount)
         {
             _gameData.Coins += amount;
             Debug.Log($"Added {amount} coins. Current balance: {_gameData.Coins}");
+
+            OnCoinAmountChanged?.Invoke();
         }
 
         /// <summary>
@@ -35,8 +68,12 @@ namespace _Game.Economy
             {
                 _gameData.Coins -= amount;
                 Debug.Log($"Spent {amount} coins. Current balance: {_gameData.Coins}");
+
+                OnCoinAmountChanged?.Invoke();
                 return true;
             }
+
+            OnCoinAmountChanged?.Invoke();
             Debug.LogWarning("Not enough coins to complete the transaction.");
             return false;
         }
@@ -49,7 +86,11 @@ namespace _Game.Economy
         public bool CanAfford(int price)
         {
             bool canAfford = _gameData.Coins >= price;
-            Debug.Log(canAfford ? "Player can afford the item." : "Player cannot afford the item.");
+            if (!canAfford)
+            {
+                OnCoinAmountInsufficient?.Invoke();
+            }
+            Debug.Log(canAfford ? "Player can afford the item." + price : "Player cannot afford the item." + price);
             return canAfford;
         }
     }

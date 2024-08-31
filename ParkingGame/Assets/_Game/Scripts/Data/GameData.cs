@@ -97,9 +97,8 @@ namespace _Game.Data
 
             Car carToBuy = _carList[carIndex];
 
-            if (!carToBuy.IsPurchased && Coins >= carToBuy.Price)
+            if (!carToBuy.IsPurchased)
             {
-                Coins -= carToBuy.Price;
                 carToBuy.IsPurchased = true;
                 SaveManager.SaveCarPurchase(carIndex, carToBuy.IsPurchased);
                 return true;
@@ -119,14 +118,6 @@ namespace _Game.Data
                 _selectedCarIndex = carIndex;
                 SaveManager.SaveSelectedCarIndex(_selectedCarIndex);
             }
-        }
-
-        /// <summary>
-        /// Loads the previously selected car index from SaveManager.
-        /// </summary>
-        public void LoadSelectedCar()
-        {
-            _selectedCarIndex = SaveManager.LoadSelectedCarIndex();
         }
     }
 

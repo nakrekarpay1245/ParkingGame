@@ -2,6 +2,10 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using _Game.UI;
+using _Game.Car;
+using System.Collections;
+using _Game.Data;
+using TMPro;
 
 namespace _Game.Management
 {
@@ -10,6 +14,10 @@ namespace _Game.Management
     /// </summary>
     public class MenuManager : MonoBehaviour
     {
+        [Header("Game Data")]
+        [Tooltip("Reference to the game data ScriptableObject.")]
+        [SerializeField] private GameData _gameData;
+
         [Header("UI Elements")]
         [Tooltip("The menu buttons container that will be scaled down before scene transition.")]
         [SerializeField] private GameObject _menuButtons;
@@ -64,10 +72,53 @@ namespace _Game.Management
         [Tooltip("Button to close the gallery UI.")]
         [SerializeField] private CustomButton _closeGalleryButton;
 
+        [Header("Displayers")]
+        [Tooltip("The displayer displaying the coin amount.")]
+        [SerializeField] private TextMeshProUGUI _coinAmountText;
+
+        [Header("Insufficient Funds Warning")]
+        [Tooltip("Popup panel that shows a warning when funds are insufficient.")]
+        [SerializeField] private RectTransform _warningPanel;
+        [Tooltip("CanvasGroup component for fading the warning panel.")]
+        [SerializeField] private CanvasGroup _warningCanvasGroup;
+        [Header("Insufficient Funds Animation Settings")]
+        [Tooltip("Duration of the shake and color change animation when funds are insufficient.")]
+        [SerializeField, Range(0.1f, 2f)] private float _insufficientFundsDuration = 0.5f;
+        [Tooltip("Scale factor for the money text during the insufficient funds animation.")]
+        [SerializeField, Range(1f, 2f)] private float _textShakeScale = 1.2f;
+        [Tooltip("Duration of the warning popup scale animation.")]
+        [SerializeField, Range(0.1f, 2f)] private float _warningScaleDuration = 0.3f;
+        [Tooltip("Duration of the warning popup fade animation.")]
+        [SerializeField, Range(0.1f, 2f)] private float _warningFadeDuration = 0.5f;
+
+        // Private Variables
+        private EconomyManager _economyManager;
+
         private void Awake()
         {
+            StartCoroutine(InitializeDependencies());
+
             Initialize();
             SetupButtonListeners();
+
+            UpdateCoinDisplayer();
+        }
+
+        private void Start()
+        {
+            SetEvents();
+        }
+
+        /// <summary>
+        /// Coroutine that waits for dependencies to be registered before proceeding.
+        /// </summary>
+        private IEnumerator InitializeDependencies()
+        {
+            while (_economyManager == null)
+            {
+                _economyManager = ServiceLocator.Get<EconomyManager>();
+                yield return null;
+            }
         }
 
         /// <summary>
@@ -84,6 +135,9 @@ namespace _Game.Management
             _gameNameText.transform.localScale = Vector3.zero;
             _menuButtons.transform.localScale = Vector3.zero;
             _currentCarPoint.transform.localScale = Vector3.zero;
+
+            _warningPanel.transform.localScale = Vector3.zero;
+            _warningCanvasGroup.alpha = 0;
 
             Sequence sequence = DOTween.Sequence();
 
@@ -104,6 +158,50 @@ namespace _Game.Management
             _quitButton.onButtonDown.AddListener(ExitGame);
             _galleryButton.onButtonDown.AddListener(OpenGallery);
             _closeGalleryButton.onButtonDown.AddListener(CloseGallery); // Listener for closing gallery
+        }
+
+        /// <summary>
+        /// Sets up button event handlers.
+        /// </summary>
+        private void SetEvents()
+        {
+            _economyManager.OnCoinAmountChanged += UpdateCoinDisplayer;
+            _economyManager.OnCoinAmountInsufficient += ShowInsufficientFundsWarning;
+        }
+
+        private void UpdateCoinDisplayer()
+        {
+            _coinAmountText.text = _gameData.Coins.ToString();
+        }
+
+        /// <summary>
+        /// Displays a warning animation when the player has insufficient funds.
+        /// Ensures the animation restarts properly if called consecutively.
+        /// </summary>
+        public void ShowInsufficientFundsWarning()
+        {
+            // Kill any ongoing animations on the money text and warning panel
+            _coinAmountText.rectTransform.DOKill();
+            _coinAmountText.DOKill();
+            _warningPanel.DOKill();
+            _warningCanvasGroup.DOKill();
+
+            // Animate money text to shake and turn red
+            _coinAmountText.rectTransform.DOShakeScale(_insufficientFundsDuration, _textShakeScale - 1f)
+                .OnStart(() => _coinAmountText.color = Color.red)
+                .OnComplete(() => _coinAmountText.color = Color.yellow);
+
+            // Animate the warning panel with a scale and fade effect
+            _warningPanel.DOScale(Vector3.one, _warningScaleDuration).SetEase(Ease.OutBack);
+            _warningCanvasGroup.DOFade(1f, _warningFadeDuration).OnComplete(() =>
+            {
+                // Fade out after a delay
+                DOVirtual.DelayedCall(1f, () =>
+                {
+                    _warningCanvasGroup.DOFade(0f, _warningFadeDuration);
+                    _warningPanel.DOScale(Vector3.zero, _warningScaleDuration).SetEase(Ease.InBack);
+                });
+            });
         }
 
         /// <summary>

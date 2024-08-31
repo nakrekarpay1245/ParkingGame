@@ -5,6 +5,8 @@ using _Game.Car;
 using _Game.UI;
 using UnityEngine.UI;
 using DG.Tweening;
+using _Game.Management;
+using System.Collections;
 
 public class GalleryManager : MonoBehaviour
 {
@@ -83,9 +85,14 @@ public class GalleryManager : MonoBehaviour
     private int _currentCarIndex;
     public GameObject _currentCarModelInstance;
 
+    private EconomyManager _economyManager;
     private void OnEnable()
     {
         UpdateGallery();
+    }
+    private void Awake()
+    {
+        StartCoroutine(InitializeDependencies());
     }
 
     private void Start()
@@ -101,6 +108,18 @@ public class GalleryManager : MonoBehaviour
 
         _selectCarButton.onButtonDown.RemoveAllListeners();
         _selectCarButton.onButtonDown.AddListener(SelectCar);
+    }
+
+    /// <summary>
+    /// Coroutine that waits for dependencies to be registered before proceeding.
+    /// </summary>
+    private IEnumerator InitializeDependencies()
+    {
+        while (_economyManager == null)
+        {
+            _economyManager = ServiceLocator.Get<EconomyManager>();
+            yield return null;
+        }
     }
 
     /// <summary>
@@ -222,8 +241,12 @@ public class GalleryManager : MonoBehaviour
     /// </summary>
     private void PurchaseCar()
     {
-        if (_gameData.BuyCar(_currentCarIndex))
+        int carPrice = _gameData.CarList[_currentCarIndex].Price;
+        bool isCarCanBeAfford = _economyManager.CanAfford(carPrice);
+        if (isCarCanBeAfford)
         {
+            _economyManager.SpendCoins(carPrice);
+            _gameData.BuyCar(_currentCarIndex);
             UpdateButtons();
         }
     }

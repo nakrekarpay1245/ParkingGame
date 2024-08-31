@@ -15,7 +15,7 @@ MonoBehaviour:
   _levelList:
   - {fileID: 7254740929580589033, guid: 373d0de65fe48ba4e834e2b6419fba99, type: 3}
   - {fileID: 1411049409419393711, guid: c8aaf3b81786c4c4a883a57d51feeaea, type: 3}
-  _coins: 17150
+  _coins: 800
   _carList:
   - _name: Mustang
     _price: 100
@@ -31,4 +31,4 @@ MonoBehaviour:
       type: 3}
     _carModelPrefab: {fileID: 6599607585799419881, guid: 7c3284ad0956cfd4f92824b1d53c81f9,
       type: 3}
-  _selectedCarIndex: 0
+  _selectedCarIndex: 1
