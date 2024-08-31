@@ -15,3 +15,20 @@ MonoBehaviour:
   _levelList:
   - {fileID: 7254740929580589033, guid: 373d0de65fe48ba4e834e2b6419fba99, type: 3}
   - {fileID: 1411049409419393711, guid: c8aaf3b81786c4c4a883a57d51feeaea, type: 3}
+  _coins: 17150
+  _carList:
+  - _name: Mustang
+    _price: 100
+    _isPurchased: 1
+    _carPrefab: {fileID: 771264442572285436, guid: a5c8759393a8cb242b0f25ba225cd266,
+      type: 3}
+    _carModelPrefab: {fileID: 6599607585799419881, guid: 5781e7b821a65a947876090f722d7eaa,
+      type: 3}
+  - _name: Camaro
+    _price: 100
+    _isPurchased: 1
+    _carPrefab: {fileID: 771264442572285436, guid: 047d7099491fa4747bc3b3bf3560c18e,
+      type: 3}
+    _carModelPrefab: {fileID: 6599607585799419881, guid: 7c3284ad0956cfd4f92824b1d53c81f9,
+      type: 3}
+  _selectedCarIndex: 0

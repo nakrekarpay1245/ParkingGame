@@ -1023,7 +1023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c0a313c22b9db4cbc04b2b4d37af60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carConfig: {fileID: 11400000, guid: 3d834e4b6b6ccb44c8ea34fd4c79d51a, type: 2}
+  _carConfig: {fileID: 11400000, guid: ca0e4823c99620846a4a5e9cf1a303dc, type: 2}
   _playerInput: {fileID: 11400000, guid: e2dfa22de8dbba340b7014f8cd1f1211, type: 2}
   _frontLeftWheelMesh: {fileID: 5483918930105795399}
   _frontLeftWheelCollider: {fileID: 6014566202657997261}

@@ -14,6 +14,7 @@ namespace _Game.Car
         [Tooltip("Reference to the CarConfig ScriptableObject which contains all car parameters.")]
         [SerializeField]
         private CarConfigSO _carConfig;
+        public CarConfigSO CarConfig { get => _carConfig; set => _carConfig = value; }
 
         //CONTROLS
         [Header("Car Input Settings")]
@@ -73,6 +74,7 @@ namespace _Game.Car
         //CAR DATA
         private float _carSpeed; // Used to store the speed of the car.
         public float CarSpeed { get => _carSpeed; set => _carSpeed = value; }
+
         private bool _isDrifting; // Used to know whether the car is drifting or not.
         private bool _isTractionLocked; // Used to know whether the traction of the car is locked or not.
 

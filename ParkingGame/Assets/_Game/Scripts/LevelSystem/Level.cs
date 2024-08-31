@@ -1,4 +1,5 @@
 using _Game.Car;
+using _Game.Data;
 using _Game.Management;
 using _Game.Scripts;
 using DG.Tweening;
@@ -13,9 +14,9 @@ namespace _Game.LevelSystem
     /// </summary>
     public class Level : MonoBehaviour
     {
-        [Header("Car Setup")]
-        [Tooltip("Prefab for the CarController to be instantiated.")]
-        [SerializeField] private CarController _carControllerPrefab;
+        [Header("Game Data")]
+        [Tooltip("Reference to the game data ScriptableObject.")]
+        [SerializeField] private GameData _gameData;
 
         [Header("Parking Area Setup")]
         [Tooltip("Prefab for the Parking Area to be instantiated.")]
@@ -51,7 +52,7 @@ namespace _Game.LevelSystem
             _levelManager.OnLevelFail += DelayedDispose;
 
             // Ensure required prefabs and references are set
-            if (_carControllerPrefab == null || _parkingAreaPrefab == null)
+            if (_parkingAreaPrefab == null)
             {
                 Debug.LogError("One or more references are missing in the Level component.");
                 return;
@@ -84,10 +85,12 @@ namespace _Game.LevelSystem
         /// </summary>
         private CarController InstantiateCarController()
         {
+            CarController carControllerPrefab = _gameData.SelectedCarPrefab;
+
             if (_playerPoint != null)
             {
                 CarController carController = Instantiate(
-                    _carControllerPrefab,
+                    carControllerPrefab,
                     _playerPoint.position,
                     _playerPoint.rotation
                 );

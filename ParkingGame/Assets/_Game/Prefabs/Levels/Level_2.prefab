@@ -235,13 +235,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 045d4f20f8df6f24aaba47f42bce941c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carControllerPrefab: {fileID: 771264442572285436, guid: 047d7099491fa4747bc3b3bf3560c18e,
-    type: 3}
+  _gameData: {fileID: 11400000, guid: 02f8fca05a284524488e8bf64fc44a11, type: 2}
   _parkingAreaPrefab: {fileID: 296987039353231800, guid: af7b7d90a02a8204885103efcb8062ed,
     type: 3}
   _levelFrame: {fileID: 0}
   _parkingAreaPoint: {fileID: 0}
   _playerPoint: {fileID: 0}
+  _disposeDelay: 1
 --- !u!1 &6890281612029816029
 GameObject:
   m_ObjectHideFlags: 0

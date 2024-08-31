@@ -1,3 +1,4 @@
+using _Game.Car;
 using _Game.LevelSystem;
 using _Game.Save;
 using System.Collections.Generic;
@@ -12,34 +13,7 @@ namespace _Game.Data
         [Tooltip("List of levels in the game.")]
         [SerializeField]
         private List<Level> _levelList;
-
-        [Header("Economy Configuration")]
-        [Tooltip("The player's current amount of coins.")]
-        [SerializeField]
-        private int _coins;
-
-        [Header("Car System")]
-        [Tooltip("List of all available cars in the game.")]
-        [SerializeField]
-        private List<Car> _carList;
-
-        [Tooltip("Index of the currently selected car.")]
-        [SerializeField]
-        private int _selectedCarIndex;
-
         private int _currentLevelIndex;
-
-        /// <summary>
-        /// Gets the prefab of the currently selected car.
-        /// </summary>
-        [Tooltip("Prefab of the selected car.")]
-        public GameObject SelectedCarPrefab => _carList[_selectedCarIndex].CarPrefab;
-
-        /// <summary>
-        /// Gets the model prefab of the currently selected car.
-        /// </summary>
-        [Tooltip("Model prefab of the selected car.")]
-        public GameObject SelectedCarModelPrefab => _carList[_selectedCarIndex].CarModelPrefab;
 
         /// <summary>
         /// Property to get or set the current level index. 
@@ -65,6 +39,11 @@ namespace _Game.Data
         /// </summary>
         public Level CurrentLevel => _levelList[CurrentLevelIndex];
 
+        [Header("Economy Configuration")]
+        [Tooltip("The player's current amount of coins.")]
+        [SerializeField]
+        private int _coins;
+
         /// <summary>
         /// Property to get or set the player's current coin count. 
         /// When setting, it saves the new value via SaveManager.
@@ -82,6 +61,29 @@ namespace _Game.Data
                 SaveManager.SaveCoins(_coins);
             }
         }
+
+        [Header("Car System")]
+        [Tooltip("List of all available cars in the game.")]
+        [SerializeField]
+        private List<Car> _carList;
+        public List<Car> CarList { get => _carList; set => _carList = value; }
+
+        [Tooltip("Index of the currently selected car.")]
+        [SerializeField]
+        private int _selectedCarIndex;
+        public int SelectedCarIndex { get => _selectedCarIndex; set => _selectedCarIndex = value; }
+
+        /// <summary>
+        /// Gets the prefab of the currently selected car.
+        /// </summary>
+        [Tooltip("Prefab of the selected car.")]
+        public CarController SelectedCarPrefab => _carList[_selectedCarIndex].CarPrefab;
+
+        /// <summary>
+        /// Gets the model prefab of the currently selected car.
+        /// </summary>
+        [Tooltip("Model prefab of the selected car.")]
+        public GameObject SelectedCarModelPrefab => _carList[_selectedCarIndex].CarModelPrefab;
 
         /// <summary>
         /// Attempts to buy a car if the player has enough coins.
@@ -150,7 +152,7 @@ namespace _Game.Data
         [Header("Car Prefabs")]
         [Tooltip("The main prefab representing the car.")]
         [SerializeField]
-        private GameObject _carPrefab;
+        private CarController _carPrefab;
 
         [Tooltip("The model prefab used for displaying the car in menus or previews.")]
         [SerializeField]
@@ -163,7 +165,9 @@ namespace _Game.Data
             get => _isPurchased;
             set => _isPurchased = value;
         }
-        public GameObject CarPrefab => _carPrefab;
+
+        public CarController CarPrefab => _carPrefab;
+        public CarConfigSO CarConfig => CarPrefab.CarConfig;
         public GameObject CarModelPrefab => _carModelPrefab;
     }
 }
