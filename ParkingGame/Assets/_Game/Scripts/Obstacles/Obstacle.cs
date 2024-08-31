@@ -24,18 +24,5 @@ namespace _Game.Obstacles
                 DealDamage(damageable, _damageAmount);
             }
         }
-
-        //#if UNITY_EDITOR
-        //        /// <summary>
-        //        /// Draws a Gizmo in the Scene view to visualize the obstacle's damage radius.
-        //        /// </summary>
-        //        private void OnDrawGizmos()
-        //        {
-        //            // Draw a wireframe sphere to represent the damage radius
-        //            Gizmos.color = Color.red;
-        //            Mesh mesh = GetComponent<MeshFilter>().mesh;
-        //            Gizmos.DrawWireMesh(mesh, transform.position, transform.rotation, transform.localScale);
-        //        }
-        //#endif
     }
 }
