@@ -122,6 +122,7 @@ public class GalleryManager : MonoBehaviour
 
         if (_currentCarConfig != carConfig)
         {
+            Debug.Log("Current car config is not equal to car config!");
             _currentCarConfig = carConfig;
             HandleCarModelSwitch(carModelPrefab);
         }

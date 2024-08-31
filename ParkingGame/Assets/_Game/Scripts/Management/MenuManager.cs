@@ -269,7 +269,6 @@ namespace _Game.Management
 
             // Scale down the menu buttons, car point, and game name
             sequence.Append(_menuButtons.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
-            sequence.Join(_currentCarPoint.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
             sequence.Join(_gameNameText.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
 
             // After the scaling down animation completes, show the gallery UI
