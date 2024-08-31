@@ -1,95 +1,87 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening; // For animations with DOTween
 
 namespace _Game.Car
 {
     /// <summary>
-    /// This class handles the logic for checking if the car is properly parked within a defined 
-    /// parking area. It ensures that no obstacles are present and the car's velocity is below a 
-    /// threshold for successful parking.
+    /// Handles logic for detecting if the car is correctly parked within a designated parking area.
+    /// Ensures the car's velocity is below a threshold and there are no obstacles in the parking area.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class CarParkingChecker : MonoBehaviour
     {
-        [Header("Parking Controller Parameters")]
-        [Tooltip("List of obstacles detected within the parking area.")]
+        [Header("Parking Configuration")]
+        [Tooltip("Minimum velocity for the car to be considered parked.")]
+        [Range(0f, 1f)]
         [SerializeField]
-        private List<GameObject> _parkingObstacleList = new List<GameObject>();
+        private float _minimumVelocityForParking = 0.01f;
 
         [Tooltip("The Rigidbody component of the car.")]
         [SerializeField]
         private Rigidbody _carRigidbody;
 
-        [Tooltip("Minimum velocity at which the car can be considered as parked.")]
-        [Range(0f, 1f)]
-        [SerializeField]
-        private float _minimumVelocityForParking = 0.01f;
+        [Header("Obstacle Detection")]
+        [Tooltip("List of obstacles detected in the parking area.")]
+        [SerializeField, HideInInspector]
+        private HashSet<GameObject> _parkingObstacles = new HashSet<GameObject>();
 
         private bool _isParkingSuccessful = false;
         private bool _isInParkingArea = false;
 
-        // Actions for external event handling
+        // Events for external handling
+        public Action OnParkingSuccess;
         public Action OnEnterParkingAreaWithoutSuccess;
-        public Action OnParkingSuccessful;
         public Action OnExitParkingArea;
 
         /// <summary>
-        /// Initializes the required components.
+        /// Initializes the required components and services.
         /// </summary>
         private void Awake()
         {
-            if (_carRigidbody == null)
-            {
-                _carRigidbody = GetComponent<Rigidbody>();
-            }
+            _carRigidbody = GetComponent<Rigidbody>();
 
+            // Register the service (optional)
             ServiceLocator.Register(this);
         }
 
         /// <summary>
-        /// Handles the logic for successful parking.
+        /// Handles parking success logic.
         /// </summary>
         private void SuccessParking()
         {
-            if (!_isParkingSuccessful)
-            {
-                _isParkingSuccessful = true;
-                Debug.Log("Parking Successful!");
+            if (_isParkingSuccessful) return;
 
-                // Trigger the parking success action
-                OnParkingSuccessful?.Invoke();
+            _isParkingSuccessful = true;
+            Debug.Log("Parking Successful!");
 
-                // Example of further game logic
-                //GlobalBinder.singleton.LevelManager.CompleteGame();
-            }
+            // Trigger success event
+            OnParkingSuccess?.Invoke();
+
+            // Optional: Apply animation when parking is successful (e.g., car smoothly settles)
+            transform.DOLocalMoveY(0.2f, 1f).SetEase(Ease.OutBounce);
         }
 
         /// <summary>
-        /// Called when a collider enters the trigger area. Detects obstacles within the parking frame.
+        /// Detects when an object enters the parking trigger area and handles obstacle and area entry logic.
         /// </summary>
-        /// <param name="other">The collider that entered the trigger.</param>
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("ParkingFrame"))
             {
                 AddObstacle(other.gameObject);
             }
-
-            if (other.CompareTag("ParkingArea") && !_isParkingSuccessful)
+            else if (other.CompareTag("ParkingArea") && !_isParkingSuccessful)
             {
                 _isInParkingArea = true;
-                //Debug.Log("Entered parking area but parking not successful yet.");
-
-                // Trigger the action for entering the parking area without success
                 OnEnterParkingAreaWithoutSuccess?.Invoke();
             }
         }
 
         /// <summary>
-        /// Called while a collider stays in the trigger area. Checks for successful parking conditions.
+        /// Continuously checks for parking conditions when an object remains in the parking area trigger.
         /// </summary>
-        /// <param name="other">The collider staying in the trigger.</param>
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("ParkingArea") && CanPark())
@@ -99,59 +91,47 @@ namespace _Game.Car
         }
 
         /// <summary>
-        /// Called when a collider exits the trigger area. Removes obstacles when they leave the parking frame.
+        /// Detects when an object exits the parking trigger area and handles obstacle and area exit logic.
         /// </summary>
-        /// <param name="other">The collider that exited the trigger.</param>
         private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("ParkingFrame"))
             {
                 RemoveObstacle(other.gameObject);
             }
-
-            if (other.CompareTag("ParkingArea"))
+            else if (other.CompareTag("ParkingArea"))
             {
                 _isInParkingArea = false;
-                //Debug.Log("Exited parking area.");
-
-                // Trigger the action for exiting the parking area
                 OnExitParkingArea?.Invoke();
             }
         }
 
         /// <summary>
-        /// Adds an obstacle to the parking obstacle list if it's not already there.
+        /// Adds an obstacle to the detected obstacle list if it hasn't already been added.
         /// </summary>
-        /// <param name="obstacle">The obstacle to add.</param>
         private void AddObstacle(GameObject obstacle)
         {
-            if (!_parkingObstacleList.Contains(obstacle))
-            {
-                _parkingObstacleList.Add(obstacle);
-            }
+            _parkingObstacles.Add(obstacle);
         }
 
         /// <summary>
-        /// Removes an obstacle from the parking obstacle list if it's present.
+        /// Removes an obstacle from the detected obstacle list if it's present.
         /// </summary>
-        /// <param name="obstacle">The obstacle to remove.</param>
         private void RemoveObstacle(GameObject obstacle)
         {
-            if (_parkingObstacleList.Contains(obstacle))
-            {
-                _parkingObstacleList.Remove(obstacle);
-            }
+            _parkingObstacles.Remove(obstacle);
         }
 
         /// <summary>
-        /// Determines whether the car can park successfully by checking for obstacles and velocity.
+        /// Determines whether the car can be considered parked based on the absence of obstacles, 
+        /// low velocity, and being within the parking area.
         /// </summary>
-        /// <returns>True if the car can park successfully; otherwise, false.</returns>
+        /// <returns>True if the car can be parked; otherwise, false.</returns>
         private bool CanPark()
         {
-            return _parkingObstacleList.Count == 0 &&
-                _carRigidbody.velocity.magnitude <= _minimumVelocityForParking &&
-                _isInParkingArea;
+            return _parkingObstacles.Count == 0 &&
+                   _carRigidbody.velocity.magnitude <= _minimumVelocityForParking &&
+                   _isInParkingArea;
         }
     }
 }

@@ -66,7 +66,7 @@ namespace _Game.Scripts
         {
             _parkingChecker.OnExitParkingArea += HandleExitParkingArea;
             _parkingChecker.OnEnterParkingAreaWithoutSuccess += HandleEnterParkingAreaWithoutSuccess;
-            _parkingChecker.OnParkingSuccessful += HandleParkingSuccessful;
+            _parkingChecker.OnParkingSuccess += HandleParkingSuccessful;
         }
 
         /// <summary>
