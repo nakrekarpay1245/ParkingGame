@@ -2,12 +2,24 @@
 
 **Parking Perfect!** is an arcade-style car parking game built with **Unity Engine** for **WebGL** and **Android** platforms. The goal of the game is to park the car in the designated parking area without hitting any traffic cones. The game features intuitive controls, smooth animations, and a dynamic economy system. The project follows **SOLID** and **OOP** principles with a strong focus on performance and clean code.
 
+## 🎥 Gameplay Video
+
+[![Parking Perfect! Gameplay](https://img.youtube.com/vi/WfJcOrbDuKw/0.jpg)](https://www.youtube.com/watch?v=WfJcOrbDuKw)
+
+Click the image to watch the gameplay video.
+
 ## 🎮 Gameplay Overview
 
 In **Parking Perfect!**, players control a car using either keyboard or on-screen controls:
 
 - **Web Controls**: `W`, `A`, `S`, `D` for movement and `Space` for the handbrake.
 - **Mobile Controls**: On-screen buttons for forward, reverse, left, right, and handbrake.
+
+## 🖼️ Screenshots
+
+| Menu Scene        | Gameplay Scene     |
+|-------------------|--------------------|
+| ![Menu](screenshots/menu_scene.png) | ![Gameplay](screenshots/game_scene.png) |
 
 ### Objective:
 - Park the car perfectly without hitting any traffic cones.
@@ -20,7 +32,7 @@ In **Parking Perfect!**, players control a car using either keyboard or on-scree
 
 - **Arcade Car Controls**: Realistic and responsive controls that are easy to pick up but challenging to master.
 - **Smooth Camera Follow**: The camera dynamically follows the player's car, ensuring smooth and isometric transitions.
-- **Dynamic Level Management**: Each level is loaded dynamically with randomized obstacles and parking areas.
+- **Dynamic Level Management**: Each level is loaded dynamically with obstacles and parking areas.
 - **Damage & Health System**: Real-time health updates based on collisions with obstacles like traffic cones.
 - **Car Selection & Economy**: Unlock new cars and manage your in-game currency through our gallery system.
 - **2 Playable Cars & 10 Test Levels**: Start with two different cars, each with unique handling, and test your skills across ten challenging levels.
@@ -34,15 +46,9 @@ In **Parking Perfect!**, players control a car using either keyboard or on-scree
 - **Singleton Pattern**: Efficient management of game managers and critical systems.
 - **JSON Data Saving**: Game progress and player data are saved in JSON format via PlayerPrefs for persistence.
 
-## 🖼️ Screenshots
-
-| Menu Scene        | Gameplay Scene     |
-|-------------------|--------------------|
-| ![Menu](screenshots/menu_scene.png) | ![Gameplay](screenshots/game_scene.png) |
-
 ## 🌐 WebGL Demo
 
-[Play the demo online](https://yourgameurl.com) - Try **Parking Perfect!** directly in your browser.
+[Play the demo online](https://erkanyaprak.itch.io/parking-perfect) - Try **Parking Perfect!** directly in your browser.
 
 ## 📚 Architecture & Design
 
@@ -69,9 +75,9 @@ In **Parking Perfect!**, players control a car using either keyboard or on-scree
 
 ## 📦 Asset Credits
 
-- **Car Models**: [Unity Asset Store](https://assetstore.unity.com)
-- **Environment & Props**: [Unity Asset Store](https://assetstore.unity.com)
-- **Sound Effects**: [Freesound](https://freesound.org)
+- **Car Controller**: [PROMETEO: Car Controller](https://assetstore.unity.com/packages/tools/physics/prometeo-car-controller-209444)
+- **Car Model**: [ARCADE: FREE Racing Car from Mena](https://assetstore.unity.com/packages/3d/vehicles/land/arcade-free-racing-car-161085?srsltid=AfmBOooox9FEisp0149uLYhA5dXPn1doXpfyu6_bshLimV5c4zNrcMiI)
+- **Traffic Cone Prop**: [Polypizza](https://poly.pizza/m/OlveRhO9Ha)
 
 ## 💻 Installation
 
@@ -79,17 +85,9 @@ To get the game up and running locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YourUsername/ParkingPerfect.git
-2. Open the project in Unity (Version 2022.3 or later recommended).
+   git clone https://github.com/nakrekarpay1245/ParkingPerfect.git
+2. Open the project in Unity (Version 2020 or later recommended).
 3. Switch the build target to either WebGL or Android.
 4. Play in the editor or build and deploy the game to your platform of choice.
 
-## 📜 License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
-
-## 🙌 Acknowledgments
-Special thanks to all the contributors and the Unity community for the amazing resources and support!
-
-Made with 💙 by YourName
-
-This README.md file contains an overview of your game, gameplay mechanics, technologies used, a brief explanation of the architecture, screenshots, installation instructions, and license information. It serves as a comprehensive guide for both players and developers to understand and contribute to the project.
+Made with 💙 by Erkan Yaprak
