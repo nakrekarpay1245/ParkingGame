@@ -19,7 +19,7 @@ In **Parking Perfect!**, players control a car using either keyboard or on-scree
 
 | Menu Scene        | Gameplay Scene     |
 |-------------------|--------------------|
-| ![Menu](screenshots/menu_scene.png) | ![Gameplay](screenshots/game_scene.png) |
+| ![Menu](Assets/Screenshots/menu_scene.png) | ![Gameplay](Assets/Screenshots/game_scene.png) |
 
 ### Objective:
 - Park the car perfectly without hitting any traffic cones.
