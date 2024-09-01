@@ -5,6 +5,11 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: In-Game_Collectables_Color_Palette_01.001
+    second: {fileID: 2100000, guid: 79e46a360bc9ce34f8abfb940c7e9188, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: In-Game_Collectables_Color_Palette_01
