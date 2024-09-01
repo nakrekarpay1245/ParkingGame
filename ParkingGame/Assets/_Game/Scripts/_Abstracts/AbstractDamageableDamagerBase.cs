@@ -12,12 +12,17 @@ namespace _Game._Abstracts
     {
         [Header("Health Settings")]
         [Tooltip("Current health of the object.")]
-        [SerializeField] private float _health = 5f;
+        [SerializeField]
+        protected int _health = 1;
 
         [Tooltip("Maximum health of the object.")]
-        [SerializeField] private float _maxHealth = 5f;
+        [SerializeField]
+        protected int _maxHealth = 1;
 
         protected bool _isDead = false;
+
+        public int Health { get => _health; set => _health = value; }
+        public int MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
         public UnityAction<float, float> OnHealthChanged;
 

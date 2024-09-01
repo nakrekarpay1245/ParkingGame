@@ -187,13 +187,6 @@ namespace _Game.LevelSystem
 
             // Wait for animation to complete
             yield return new WaitForSeconds(_spawnInterval);
-
-            // Enable physics after animation
-            Rigidbody rb = instance.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-            }
         }
 
         /// <summary>
