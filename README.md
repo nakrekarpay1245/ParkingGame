@@ -79,6 +79,15 @@ In **Parking Perfect!**, players control a car using either keyboard or on-scree
 - **Car Model**: [ARCADE: FREE Racing Car from Mena](https://assetstore.unity.com/packages/3d/vehicles/land/arcade-free-racing-car-161085?srsltid=AfmBOooox9FEisp0149uLYhA5dXPn1doXpfyu6_bshLimV5c4zNrcMiI)
 - **Traffic Cone Prop**: [Polypizza](https://poly.pizza/m/OlveRhO9Ha)
 
+## Contact Information
+- **Developer:** Erkan Yaprak
+- **GitHub Profile:** [nakrekarpay1245](https://github.com/nakrekarpay1245)
+- **Personal Website:** [erkanyaprak.w3spaces.com](https://erkanyaprak.w3spaces.com)
+- **Old Clone Projects:** [All Games](https://erkanyaprak.w3spaces.com/allgames.html)
+- **Upcoming Project Promotion Page:** *Hard Deliver* (Upcoming on Steam)
+- **Email:** [rknyprk79@gmail.com](mailto:rknyprk79@gmail.com)
+- **LinkedIn:** [Erkan Yaprak](https://www.linkedin.com/in/erkan-yaprak)
+
 ## 💻 Installation
 
 To get the game up and running locally:
