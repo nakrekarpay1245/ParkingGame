@@ -74,6 +74,26 @@ namespace _Game._helpers.Particles
         }
 
         /// <summary>
+        /// Plays a particle effect at the specified position with the given rotation and parent transform.
+        /// </summary>
+        /// <param name="particleName">The name of the particle effect to play.</param>
+        /// <param name="position">The position to play the particle at.</param>
+        /// <param name="rotation">The rotation to apply to the particle.</param>
+        /// <param name="parent">The parent transform to attach the particle to (optional).</param>
+        public ParticleSystem PlayParticleAtPoint(string particleName, Vector3 position, Vector3 rotation, Transform parent = null)
+        {
+            var particle = GetAvailableParticle(particleName);
+            if (particle != null)
+            {
+                Debug.Log("Rot: " + rotation);
+
+                ActivateParticle(particle, position, rotation, parent);
+            }
+
+            return particle;
+        }
+
+        /// <summary>
         /// Plays a particle effect at the specified position with an optional parent transform.
         /// </summary>
         /// <param name="particleName">The name of the particle effect to play.</param>
@@ -121,6 +141,34 @@ namespace _Game._helpers.Particles
             particle.transform.rotation = rotation;
             particle.gameObject.SetActive(true);
             particle.Play();
+
+            if (!particle.main.loop)
+            {
+                //Debug.Log($"{particle.name} is not looping");
+                StartCoroutine(DeactivateAfterTime(particle, particle.main.duration));
+            }
+            else
+            {
+                //Debug.Log($"{particle.name} is looping");
+            }
+        }
+
+        /// <summary>
+        /// Activates and plays a particle system at the specified position, rotation, and parent.
+        /// </summary>
+        /// <param name="particle">The particle system to activate and play.</param>
+        /// <param name="position">The position to set for the particle.</param>
+        /// <param name="rotation">The rotation to set for the particle.</param>
+        /// <param name="parent">The parent transform to attach the particle to (optional).</param>
+        private void ActivateParticle(ParticleSystem particle, Vector3 position, Vector3 rotation, Transform parent)
+        {
+            particle.transform.SetParent(parent);
+            particle.transform.position = position;
+            particle.transform.eulerAngles = rotation;
+            particle.gameObject.SetActive(true);
+            particle.Play();
+
+            Debug.Log("Rot: " + rotation);
 
             if (!particle.main.loop)
             {

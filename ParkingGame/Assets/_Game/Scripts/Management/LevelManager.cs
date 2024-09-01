@@ -36,10 +36,12 @@ namespace _Game.Management
         public UnityAction OnLevelComplete;
 
         private Level _currentLevel;
+        private Level _generatedLevel;
         private bool _levelCompleted;
         private int _currentStars;
         public int CurrentStars { get => _currentStars; private set => _currentStars = value; }
         public int CurrentReward { get => _currentReward; private set => _currentReward = value; }
+        public int LevelIndex => _gameData.CurrentLevelIndex;
 
         private CarDamageHandler _carDamageHandler;
         private EconomyManager _economyManager;
@@ -86,8 +88,19 @@ namespace _Game.Management
         /// </summary>
         private void InitializeLevel()
         {
-            LoadCurrentLevel();
-            StartLevel();
+            Level existingLevel = FindObjectOfType<Level>();
+
+            if (existingLevel != null)
+            {
+                Debug.Log("LEvel not existing ");
+                _generatedLevel = existingLevel;
+                StartLevel();
+            }
+            else
+            {
+                LoadCurrentLevel();
+                StartLevel();
+            }
         }
 
         /// <summary>
@@ -104,9 +117,17 @@ namespace _Game.Management
         /// </summary>
         private void StartLevel()
         {
-            Instantiate(_currentLevel, Vector3.zero, Quaternion.identity);
+            if (!_generatedLevel)
+            {
+                _generatedLevel = Instantiate(_currentLevel, Vector3.zero, Quaternion.identity);
+                _generatedLevel.Init();
+            }
+            else
+            {
+                _generatedLevel.Init();
+            }
             _levelCompleted = false;
-            Debug.Log($"Level {_currentLevel.name} started.");
+            Debug.Log($"Level {_generatedLevel.name} started.");
             OnLevelStart?.Invoke();  // Notify subscribers that the level has started
         }
 

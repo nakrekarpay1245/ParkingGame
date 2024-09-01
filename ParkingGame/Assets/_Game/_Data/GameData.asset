@@ -15,10 +15,18 @@ MonoBehaviour:
   _levelList:
   - {fileID: 7254740929580589033, guid: 373d0de65fe48ba4e834e2b6419fba99, type: 3}
   - {fileID: 1411049409419393711, guid: c8aaf3b81786c4c4a883a57d51feeaea, type: 3}
-  _coins: 2300
+  - {fileID: 7254740929580589033, guid: 056ef75b1bdf89d4e885e47dc5fa1102, type: 3}
+  - {fileID: 5247966336786987515, guid: a76047f9c223c81458345090849a9a50, type: 3}
+  - {fileID: 7254740929580589033, guid: 6d336e4b2e9339a4c8378f303e4a25a4, type: 3}
+  - {fileID: 5247966336786987515, guid: 50fae974b5af3524ebf4a3fdfcf23171, type: 3}
+  - {fileID: 7254740929580589033, guid: 321ced45957f63346b0b9166477de716, type: 3}
+  - {fileID: 7254740929580589033, guid: 9eda9b1474126c14fa0a330928d24f14, type: 3}
+  - {fileID: 7254740929580589033, guid: 98e9414005ffc924abcfe7ea52d48246, type: 3}
+  - {fileID: 5701812171857678560, guid: c25d3aac6f71d5b4a92da50dc559a638, type: 3}
+  _coins: 3300
   _carList:
   - _name: Mustang
-    _price: 100
+    _price: 0
     _isPurchased: 1
     _carPrefab: {fileID: 771264442572285436, guid: a5c8759393a8cb242b0f25ba225cd266,
       type: 3}

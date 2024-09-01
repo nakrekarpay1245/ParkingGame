@@ -111,7 +111,6 @@ namespace _Game.Car
         private void Awake()
         {
             ServiceLocator.Register(this);
-            Init();
         }
 
         // Start is called before the first frame update

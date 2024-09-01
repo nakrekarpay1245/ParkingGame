@@ -25,8 +25,8 @@ namespace _Game.UI
         [SerializeField] private CustomButton _restartButton;
 
         [Header("Game UI Elements")]
-        [Tooltip("Car displayer UI element.")]
-        [SerializeField] private GameObject _carDisplayer;
+        [Tooltip("")]
+        [SerializeField] private TextMeshProUGUI _levelIndexText;
         [Tooltip("Car health displayer UI element.")]
         [SerializeField] private GameObject _carHealthDisplayer;
         [Tooltip("Control buttons UI element.")]
@@ -189,7 +189,7 @@ namespace _Game.UI
         /// </summary>
         private void OpenGameUIElements()
         {
-            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, true, true);
+            ToggleUIElements(new[] { _levelIndexText.gameObject, _carHealthDisplayer, _controlButtons, _speedDisplayer }, true, true);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace _Game.UI
         /// </summary>
         private void CloseGameUIElements()
         {
-            ToggleUIElements(new[] { _carDisplayer, _carHealthDisplayer, _controlButtons, _speedDisplayer }, false, true);
+            ToggleUIElements(new[] { _levelIndexText.gameObject, _carHealthDisplayer, _controlButtons, _speedDisplayer }, false, true);
         }
 
         /// <summary>
@@ -352,15 +352,22 @@ namespace _Game.UI
             _menuButton.transform.localScale = Vector3.zero;
             _restartButton.transform.localScale = Vector3.zero;
 
-            _carDisplayer.transform.localScale = Vector3.zero;
+            _levelIndexText.transform.localScale = Vector3.zero;
             _carHealthDisplayer.transform.localScale = Vector3.zero;
             _controlButtons.transform.localScale = Vector3.zero;
             _speedDisplayer.transform.localScale = Vector3.zero;
 
-            _carDisplayer.SetActive(true);
+            _levelIndexText.gameObject.SetActive(true);
             _carHealthDisplayer.gameObject.SetActive(true);
             _controlButtons.gameObject.SetActive(true);
             _speedDisplayer.gameObject.SetActive(true);
+
+            DisplayLevelIndex();
+        }
+
+        private void DisplayLevelIndex()
+        {
+            _levelIndexText.text = (_levelManager.LevelIndex + 1).ToString();
         }
 
         /// <summary>

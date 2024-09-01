@@ -3,6 +3,7 @@ using _Game.Data;
 using _Game.Management;
 using _Game.Scripts;
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 namespace _Game.LevelSystem
@@ -43,25 +44,18 @@ namespace _Game.LevelSystem
 
         private void Awake()
         {
-            InitializeLevelManager();
-        }
-
-        private void Start()
-        {
-            ValidateInitialReferences();
-            InitializeLevelComponents();
-            SubscribeToEvents();
+            StartCoroutine(InitializeDependencies());
         }
 
         /// <summary>
-        /// Initializes the LevelManager reference.
+        /// Coroutine that waits for dependencies to be registered before proceeding.
         /// </summary>
-        private void InitializeLevelManager()
+        private IEnumerator InitializeDependencies()
         {
-            _levelManager = ServiceLocator.Get<LevelManager>();
-            if (_levelManager == null)
+            while (_levelManager == null)
             {
-                Debug.LogError("LevelManager is not found via ServiceLocator.");
+                _levelManager = ServiceLocator.Get<LevelManager>();
+                yield return null;
             }
         }
 
@@ -70,6 +64,10 @@ namespace _Game.LevelSystem
         /// </summary>
         private void SubscribeToEvents()
         {
+            if (!_levelManager)
+            {
+                _levelManager = ServiceLocator.Get<LevelManager>();
+            }
             _levelManager.OnLevelComplete += HandleLevelEnd;
             _levelManager.OnLevelFail += HandleLevelEnd;
         }
@@ -110,7 +108,6 @@ namespace _Game.LevelSystem
         {
             _carController = InstantiateCarController();
             _parkingArea = InstantiateParkingArea();
-            _levelFrame?.Init();
         }
 
         /// <summary>
@@ -166,6 +163,18 @@ namespace _Game.LevelSystem
             _carController?.Dispose();
             _parkingArea?.Dispose();
             _levelFrame?.Dispose();
+        }
+
+        public void Init()
+        {
+            ValidateInitialReferences();
+            InitializeLevelComponents();
+
+            _carController?.Init();
+            _parkingArea?.Init();
+            _levelFrame?.Init();
+
+            SubscribeToEvents();
         }
 
         private void OnDestroy()

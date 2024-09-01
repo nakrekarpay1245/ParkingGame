@@ -3,6 +3,7 @@ using _Game.Car;
 using _Game.Management;
 using DG.Tweening;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 namespace _Game.Scripts
 {
@@ -68,7 +69,7 @@ namespace _Game.Scripts
         private void CacheInitialParticles()
         {
             _parkingAreaParticle = _particleManager.PlayParticleAtPoint(
-                _parkingAreaParticleKey, transform.position, Quaternion.identity, transform
+                _parkingAreaParticleKey, transform.position, transform.eulerAngles, transform
             );
         }
 
@@ -122,8 +123,10 @@ namespace _Game.Scripts
 
             if (particle == null)
             {
+                Debug.Log("Rot: " + transform.eulerAngles);
+
                 particle = _particleManager.PlayParticleAtPoint(
-                    particleKey, transform.position, Quaternion.identity, transform
+                    particleKey, transform.position, transform.eulerAngles, transform
                 );
             }
 
