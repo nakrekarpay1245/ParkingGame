@@ -118,7 +118,7 @@ namespace _Game.Data
 
         [Tooltip("Indicates whether the car has been purchased.")]
         [SerializeField]
-        private bool _isPurchased;
+        private bool _isPurchased = false;
 
         [Header("Car Prefabs")]
         [Tooltip("The main prefab representing the car.")]
