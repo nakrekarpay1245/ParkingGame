@@ -3,7 +3,6 @@ using _Game.Car;
 using _Game.Management;
 using DG.Tweening;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 namespace _Game.Scripts
 {
