@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: ab6587ca67c97be44ac689443e08cf56, type: 3}
       propertyPath: m_Name
-      value: Champion_GreenDark_A
+      value: Samurai_GreenDark_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -235,7 +235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: c57e462ca0057b84ea3c4803ca58eadb, type: 3}
       propertyPath: m_Name
-      value: Champion_BlueDark_B
+      value: Samurai_BlueDark_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -297,7 +297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: f3b109a5b4abb3e4185dd26641ba5049, type: 3}
       propertyPath: m_Name
-      value: Champion_Black_A
+      value: Samurai_Black_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -359,7 +359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: aab421362f293dd4db2871de5c8029c4, type: 3}
       propertyPath: m_Name
-      value: Champion_Green_B
+      value: Samurai_Green_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -454,7 +454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 5c2dae08a90c27b4fb04d401da666b6b, type: 3}
       propertyPath: m_Name
-      value: Champion_Yellow_A
+      value: Samurai_Yellow_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 36a41c90a034dc34ca9cac8f5f00f1d6, type: 3}
       propertyPath: m_Name
-      value: Champion_Red_A
+      value: Samurai_Red_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -578,7 +578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 21a93a4bb4984ee4497a05d368fba51d, type: 3}
       propertyPath: m_Name
-      value: Champion_Blue_B
+      value: Samurai_Blue_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -640,7 +640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 4f30989ac1c4fae4f83badf11a255f26, type: 3}
       propertyPath: m_Name
-      value: Champion_Red_B
+      value: Samurai_Red_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -676,14 +676,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666966042}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.19337817, z: 0, w: 0.9811243}
-  m_LocalPosition: {x: -2.63, y: -4, z: 2.31}
+  m_LocalRotation: {x: 0, y: -0.3987491, z: 0, w: 0.91706014}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 22.3, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -47, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,7 +828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 698b509d7eadf074483d13e527c8921d, type: 3}
       propertyPath: m_Name
-      value: Champion_White_B
+      value: Samurai_White_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -931,7 +931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 3ef51ecb9756ffd4e9e7b41b5a304836, type: 3}
       propertyPath: m_Name
-      value: Champion_GreenDark_B
+      value: Samurai_GreenDark_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -993,7 +993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: cf4ae20e8e56b1444bdc10984b972dbb, type: 3}
       propertyPath: m_Name
-      value: Champion_Grey_B
+      value: Samurai_Grey_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1091,7 +1091,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
-  m_LocalPosition: {x: 0, y: 12, z: -14.8}
+  m_LocalPosition: {x: 0, y: 12, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1147,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 3018f6139c18ed84c82059d47cfeeb40, type: 3}
       propertyPath: m_Name
-      value: Champion_Yellow_B
+      value: Samurai_Yellow_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1209,7 +1209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 0476ef45f5a869d4e9c1580f077c56f2, type: 3}
       propertyPath: m_Name
-      value: Champion_Grey_A
+      value: Samurai_Grey_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1271,7 +1271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: cc554bb0f22767647bda06fe2e58d259, type: 3}
       propertyPath: m_Name
-      value: Champion_BlueDark_A
+      value: Samurai_BlueDark_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1479,7 +1479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: d8dc3a92ba4237b4ba8174ff97447788, type: 3}
       propertyPath: m_Name
-      value: Champion_Black_B
+      value: Samurai_Black_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1635,7 +1635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: c87bdd9df1c4f8140b45149753d7fe51, type: 3}
       propertyPath: m_Name
-      value: Champion_White_A
+      value: Samurai_White_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1697,7 +1697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 2473c0ed16869b644a97c004d8b04e32, type: 3}
       propertyPath: m_Name
-      value: Champion_Blue_A
+      value: Samurai_Blue_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1759,7 +1759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 9c17d5d38fdc27647981beb33c1401fa, type: 3}
       propertyPath: m_Name
-      value: Champion_RedDark_A
+      value: Samurai_RedDark_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1821,7 +1821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 39b5c4f3d87de6744bb7a220d2b7882c, type: 3}
       propertyPath: m_Name
-      value: Champion_RedDark_B
+      value: Samurai_RedDark_B
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1883,7 +1883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3225874551983908691, guid: 9eab1de4da5c9c944b88735b82397297, type: 3}
       propertyPath: m_Name
-      value: Champion_Green_A
+      value: Samurai_Green_A
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
