@@ -23,7 +23,7 @@ MonoBehaviour:
   - {fileID: 7254740929580589033, guid: 9eda9b1474126c14fa0a330928d24f14, type: 3}
   - {fileID: 7254740929580589033, guid: 98e9414005ffc924abcfe7ea52d48246, type: 3}
   - {fileID: 5701812171857678560, guid: c25d3aac6f71d5b4a92da50dc559a638, type: 3}
-  _coins: 2900
+  _coins: 4600
   _carList:
   - _name: Mustang
     _price: 0
@@ -60,4 +60,11 @@ MonoBehaviour:
       type: 3}
     _carModelPrefab: {fileID: 6599607585799419881, guid: a820fbd8e99e3104b82e24bc94a359d7,
       type: 3}
-  _selectedCarIndex: 4
+  - _name: Supra Plus
+    _price: 100
+    _isPurchased: 1
+    _carPrefab: {fileID: 771264442572285436, guid: e6bda56f8c05ce24a966b38dc142d3e2,
+      type: 3}
+    _carModelPrefab: {fileID: 6599607585799419881, guid: 779b2a05e038e444689bf609de5f8d87,
+      type: 3}
+  _selectedCarIndex: 5

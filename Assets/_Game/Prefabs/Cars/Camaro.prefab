@@ -1030,6 +1030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 5
   _maxHealth: 5
+  _levelManager: {fileID: 0}
 --- !u!114 &6830095175810926464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1042,9 +1043,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66715633639750446948e05c9a7b0364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parkingObstacleList: []
-  _carRigidbody: {fileID: 0}
   _minimumVelocityForParking: 0.05
+  _carRigidbody: {fileID: 0}
 --- !u!1 &7311202613905145597
 GameObject:
   m_ObjectHideFlags: 0

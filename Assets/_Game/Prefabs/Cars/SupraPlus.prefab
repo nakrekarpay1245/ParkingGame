@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0fb600d9212808d4489bc3006620cdd3, type: 2}
+  - {fileID: 2100000, guid: 611f09369ac4cf044bea92e65e2c8d95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0fb600d9212808d4489bc3006620cdd3, type: 2}
+  - {fileID: 2100000, guid: 611f09369ac4cf044bea92e65e2c8d95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -768,7 +768,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76c50bb8c28370246aad7da18cc130a0, type: 2}
+  - {fileID: 2100000, guid: 10d4d8a7fb5321c4c8005c2e8cb10559, type: 2}
   - {fileID: 2100000, guid: 22bfbc40f092cd04bbd859540e87ce23, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -923,7 +923,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0fb600d9212808d4489bc3006620cdd3, type: 2}
+  - {fileID: 2100000, guid: 611f09369ac4cf044bea92e65e2c8d95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 2660699791208490598}
   - component: {fileID: 6830095175810926464}
   m_Layer: 0
-  m_Name: Supra
+  m_Name: SupraPlus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1023,7 +1023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c0a313c22b9db4cbc04b2b4d37af60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carConfig: {fileID: 11400000, guid: f24ebf67902bffe47bfb71ef5a2bd2a6, type: 2}
+  _carConfig: {fileID: 11400000, guid: 6cc764ba20152e44ab32b07d1321096d, type: 2}
   _playerInput: {fileID: 11400000, guid: e2dfa22de8dbba340b7014f8cd1f1211, type: 2}
   _frontLeftWheelMesh: {fileID: 8003941320713993284}
   _frontLeftWheelCollider: {fileID: 573178013964486660}
@@ -1166,7 +1166,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0fb600d9212808d4489bc3006620cdd3, type: 2}
+  - {fileID: 2100000, guid: 611f09369ac4cf044bea92e65e2c8d95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
