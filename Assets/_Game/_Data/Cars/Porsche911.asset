@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6838c7175ee754e4297f54181a933bec, type: 3}
-  m_Name: Camaro
+  m_Name: Porsche911
   m_EditorClassIdentifier: 
-  _maxSpeed: 100
-  _maxReverseSpeed: 35
-  _accelerationMultiplier: 6
-  _maxSteeringAngle: 30
+  _maxSpeed: 105
+  _maxReverseSpeed: 40
+  _accelerationMultiplier: 7
+  _maxSteeringAngle: 35
   _steeringSpeed: 1
-  _brakeForce: 500
-  _decelerationMultiplier: 9
-  _handbrakeDriftMultiplier: 8
+  _brakeForce: 525
+  _decelerationMultiplier: 8
+  _handbrakeDriftMultiplier: 7
   _bodyMassCenter: {x: 0, y: 0, z: 0}

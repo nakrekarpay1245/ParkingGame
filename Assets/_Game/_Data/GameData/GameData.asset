@@ -23,7 +23,7 @@ MonoBehaviour:
   - {fileID: 7254740929580589033, guid: 9eda9b1474126c14fa0a330928d24f14, type: 3}
   - {fileID: 7254740929580589033, guid: 98e9414005ffc924abcfe7ea52d48246, type: 3}
   - {fileID: 5701812171857678560, guid: c25d3aac6f71d5b4a92da50dc559a638, type: 3}
-  _coins: 5700
+  _coins: 800
   _carList:
   - _name: Mustang
     _price: 0
@@ -39,4 +39,11 @@ MonoBehaviour:
       type: 3}
     _carModelPrefab: {fileID: 6599607585799419881, guid: 7c3284ad0956cfd4f92824b1d53c81f9,
       type: 3}
-  _selectedCarIndex: 1
+  - _name: Porsche 911
+    _price: 100
+    _isPurchased: 1
+    _carPrefab: {fileID: 771264442572285436, guid: caaf00086fca4904dbbdd86678c1df4b,
+      type: 3}
+    _carModelPrefab: {fileID: 7639823504297750016, guid: 6c5b37cf616e2ba46a3ccd9421c30653,
+      type: 3}
+  _selectedCarIndex: 2
