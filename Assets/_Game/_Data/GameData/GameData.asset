@@ -23,48 +23,36 @@ MonoBehaviour:
   - {fileID: 7254740929580589033, guid: 9eda9b1474126c14fa0a330928d24f14, type: 3}
   - {fileID: 7254740929580589033, guid: 98e9414005ffc924abcfe7ea52d48246, type: 3}
   - {fileID: 5701812171857678560, guid: c25d3aac6f71d5b4a92da50dc559a638, type: 3}
-  _coins: 1150
+  _coins: 0
   _carList:
   - _name: Mustang
     _price: 0
     _isPurchased: 1
-    _carPrefab: {fileID: 771264442572285436, guid: a5c8759393a8cb242b0f25ba225cd266,
-      type: 3}
-    _carModelPrefab: {fileID: 6599607585799419881, guid: 5781e7b821a65a947876090f722d7eaa,
-      type: 3}
+    _carPrefabKey: Mustang
+    _carModelPrefabKey: MustangModel
   - _name: Camaro
     _price: 450
     _isPurchased: 0
-    _carPrefab: {fileID: 771264442572285436, guid: 047d7099491fa4747bc3b3bf3560c18e,
-      type: 3}
-    _carModelPrefab: {fileID: 6599607585799419881, guid: 7c3284ad0956cfd4f92824b1d53c81f9,
-      type: 3}
+    _carPrefabKey: Camaro
+    _carModelPrefabKey: CamaroModel
   - _name: Porsche 911
     _price: 700
     _isPurchased: 0
-    _carPrefab: {fileID: 771264442572285436, guid: caaf00086fca4904dbbdd86678c1df4b,
-      type: 3}
-    _carModelPrefab: {fileID: 7639823504297750016, guid: 6c5b37cf616e2ba46a3ccd9421c30653,
-      type: 3}
+    _carPrefabKey: Porsche911
+    _carModelPrefabKey: Porsche911Model
   - _name: Porsche 911 Plus
     _price: 950
     _isPurchased: 0
-    _carPrefab: {fileID: 771264442572285436, guid: e7c8fd3cf43c3eb4f96725eef4d5d55d,
-      type: 3}
-    _carModelPrefab: {fileID: 7639823504297750016, guid: 055aeb243b859774f9510f03a98c0cdb,
-      type: 3}
+    _carPrefabKey: Porsche911Plus
+    _carModelPrefabKey: Porsche911PlusModel
   - _name: Supra
     _price: 1200
     _isPurchased: 0
-    _carPrefab: {fileID: 771264442572285436, guid: f105b8e06a05f9647b3e6bfccf0c2b69,
-      type: 3}
-    _carModelPrefab: {fileID: 6599607585799419881, guid: a820fbd8e99e3104b82e24bc94a359d7,
-      type: 3}
+    _carPrefabKey: Supra
+    _carModelPrefabKey: SupraModel
   - _name: Supra Plus
     _price: 1450
     _isPurchased: 0
-    _carPrefab: {fileID: 771264442572285436, guid: e6bda56f8c05ce24a966b38dc142d3e2,
-      type: 3}
-    _carModelPrefab: {fileID: 6599607585799419881, guid: 779b2a05e038e444689bf609de5f8d87,
-      type: 3}
-  _selectedCarIndex: 4
+    _carPrefabKey: SupraPlus
+    _carModelPrefabKey: SupraPlusModel
+  _selectedCarIndex: 0

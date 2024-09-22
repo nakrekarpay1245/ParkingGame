@@ -17,8 +17,10 @@ namespace _Game.LevelSystem
     public class LevelFrame : MonoBehaviour
     {
         [Header("Prefab Settings")]
-        [Tooltip("The prefab to instantiate between child points and at the points themselves.")]
-        [SerializeField] private Obstacle _prefab;
+        [Tooltip("The string key to load the obstacle prefab from Resources.")]
+        [SerializeField] private string _obstaclePrefabKey = "DefaultObstacle";
+
+        private Obstacle _prefab;
 
         [Header("Spacing Settings")]
         [Tooltip("The desired interval at which prefabs should be placed. This value will be adjusted to fit the distance.")]
@@ -82,6 +84,14 @@ namespace _Game.LevelSystem
 
         public void Init()
         {
+            // Load the Obstacle prefab from Resources using the key
+            _prefab = Resources.Load<Obstacle>(_obstaclePrefabKey);
+            if (_prefab == null)
+            {
+                Debug.LogError($"Failed to load Obstacle prefab with key: {_obstaclePrefabKey}");
+                return;
+            }
+
             InitializeNodes();
             CalculateObstaclePositions();
 
@@ -164,6 +174,12 @@ namespace _Game.LevelSystem
         /// </summary>
         private IEnumerator InstantiateAndAnimatePrefab(Vector3 position)
         {
+            if (_prefab == null)
+            {
+                Debug.LogError("Prefab is not loaded correctly.");
+                yield break;
+            }
+
             // Calculate start position for prefab to animate from
             Vector3 startPosition = position + Vector3.up * _fallHeight;
             Obstacle instance = Instantiate(_prefab, startPosition, Quaternion.identity, transform);
@@ -240,15 +256,15 @@ namespace _Game.LevelSystem
             InitializeNodes();
             CalculateObstaclePositions();
 
-            Gizmos.color = _nodeGizmoColor;
+            Gizmos.color = Color.blue; // Node color
             foreach (Transform node in _nodes)
             {
-                Gizmos.DrawSphere(node.position, _nodeGizmoSize);
+                Gizmos.DrawSphere(node.position, 0.2f); // Fixed size for readability
             }
 
             if (_nodes.Count < 2) return;
 
-            Gizmos.color = _lineGizmoColor;
+            Gizmos.color = Color.green; // Line color between nodes
             for (int i = 0; i < _nodes.Count; i++)
             {
                 Transform startPoint = _nodes[i];
@@ -256,10 +272,10 @@ namespace _Game.LevelSystem
                 Gizmos.DrawLine(startPoint.position, endPoint.position);
             }
 
-            Gizmos.color = _obstacleGizmoColor;
+            Gizmos.color = Color.red; // Obstacle color
             foreach (Vector3 obstaclePosition in _obstaclePositions)
             {
-                Gizmos.DrawSphere(obstaclePosition, _obstacleGizmoSize);
+                Gizmos.DrawSphere(obstaclePosition, 0.1f); // Smaller obstacle gizmo
             }
         }
     }

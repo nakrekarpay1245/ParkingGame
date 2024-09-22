@@ -110,8 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameData: {fileID: 11400000, guid: 02f8fca05a284524488e8bf64fc44a11, type: 2}
-  _parkingAreaPrefab: {fileID: 296987039353231800, guid: af7b7d90a02a8204885103efcb8062ed,
-    type: 3}
+  _parkingAreaPrefabPath: ParkingArea
   _levelFrame: {fileID: 0}
   _parkingAreaPoint: {fileID: 0}
   _playerPoint: {fileID: 0}
@@ -197,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a5a277b60fed2f47a991a57ba1f20c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 5866919860247866148, guid: 5390d0477c15d8a49b61292c437a6d86, type: 3}
+  _obstaclePrefabKey: TrafficCone
   _spacing: 2.5
   _loop: 1
   _animationDuration: 0.35

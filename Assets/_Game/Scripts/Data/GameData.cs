@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace _Game.Data
 {
+    /// <summary>
+    /// Holds game data including levels, economy, and car system.
+    /// Ensures data is loaded from and saved to persistent storage using SaveManager.
+    /// </summary>
     [CreateAssetMenu(fileName = "GameData", menuName = "Data/GameData")]
     public class GameData : ScriptableObject
     {
@@ -15,6 +19,9 @@ namespace _Game.Data
         private List<Level> _levelList;
         private int _currentLevelIndex;
 
+        /// <summary>
+        /// Gets or sets the current level index, loading/saving it from/to persistent storage.
+        /// </summary>
         public int CurrentLevelIndex
         {
             get
@@ -29,6 +36,9 @@ namespace _Game.Data
             }
         }
 
+        /// <summary>
+        /// Gets the current level based on the level index.
+        /// </summary>
         public Level CurrentLevel => _levelList[CurrentLevelIndex];
 
         [Header("Economy Configuration")]
@@ -36,6 +46,9 @@ namespace _Game.Data
         [SerializeField]
         private int _coins;
 
+        /// <summary>
+        /// Gets or sets the player's coin count, loading/saving it from/to persistent storage.
+        /// </summary>
         public int Coins
         {
             get
@@ -54,12 +67,16 @@ namespace _Game.Data
         [Tooltip("List of all available cars in the game.")]
         [SerializeField]
         private List<Car> _carList;
+
         public List<Car> CarList { get => _carList; set => _carList = value; }
 
         [Tooltip("Index of the currently selected car.")]
         [SerializeField]
         private int _selectedCarIndex;
 
+        /// <summary>
+        /// Gets or sets the index of the currently selected car, loading/saving it from/to persistent storage.
+        /// </summary>
         public int SelectedCarIndex
         {
             get
@@ -74,10 +91,37 @@ namespace _Game.Data
             }
         }
 
-        public CarController SelectedCarPrefab => _carList[SelectedCarIndex].CarPrefab;
-        public GameObject SelectedCarModelPrefab => _carList[SelectedCarIndex].CarModelPrefab;
-        public CarConfigSO SelectedCarConfig => _carList[SelectedCarIndex].CarConfig;
+        /// <summary>
+        /// Retrieves the key for the selected car's prefab to load it dynamically.
+        /// </summary>
+        public string SelectedCarPrefabKey => _carList[SelectedCarIndex].CarPrefabKey;
 
+        /// <summary>
+        /// Retrieves the key for the selected car's model prefab.
+        /// </summary>
+        public string SelectedCarModelPrefabKey => _carList[SelectedCarIndex].CarModelPrefabKey;
+
+        /// <summary>
+        /// Retrieves the selected car's configuration object.
+        /// </summary>
+        public CarConfigSO SelectedCarConfig
+        {
+            get
+            {
+                if (_selectedCarIndex >= 0 && _selectedCarIndex < _carList.Count)
+                {
+                    return _carList[_selectedCarIndex].CarConfig;
+                }
+                Debug.LogWarning("SelectedCarIndex is out of range. Returning null.");
+                return null; // Or handle appropriately
+            }
+        }
+
+        /// <summary>
+        /// Purchases a car if it has not been purchased already.
+        /// </summary>
+        /// <param name="carIndex">The index of the car to purchase.</param>
+        /// <returns>True if the car was purchased successfully, false otherwise.</returns>
         public bool BuyCar(int carIndex)
         {
             if (carIndex < 0 || carIndex >= _carList.Count)
@@ -95,6 +139,10 @@ namespace _Game.Data
             return false;
         }
 
+        /// <summary>
+        /// Selects a car if it has been purchased.
+        /// </summary>
+        /// <param name="carIndex">The index of the car to select.</param>
         public void SelectCar(int carIndex)
         {
             if (carIndex >= 0 && carIndex < _carList.Count && _carList[carIndex].IsPurchased)
@@ -120,25 +168,64 @@ namespace _Game.Data
         [SerializeField]
         private bool _isPurchased = false;
 
-        [Header("Car Prefabs")]
-        [Tooltip("The main prefab representing the car.")]
+        [Header("Car Prefabs (Using String Keys)")]
+        [Tooltip("The key used to load the car's prefab dynamically.")]
         [SerializeField]
-        private CarController _carPrefab;
+        private string _carPrefabKey;
 
-        [Tooltip("The model prefab used for displaying the car in menus or previews.")]
+        [Tooltip("The key used to load the car's model prefab dynamically.")]
         [SerializeField]
-        private GameObject _carModelPrefab;
+        private string _carModelPrefabKey;
 
+        /// <summary>
+        /// Gets the car's name.
+        /// </summary>
         public string Name => _name;
+
+        /// <summary>
+        /// Gets the car's price in coins.
+        /// </summary>
         public int Price => _price;
+
+        /// <summary>
+        /// Indicates if the car has been purchased.
+        /// </summary>
         public bool IsPurchased
         {
             get => _isPurchased;
             set => _isPurchased = value;
         }
 
-        public CarController CarPrefab => _carPrefab;
-        public CarConfigSO CarConfig => CarPrefab.CarConfig;
-        public GameObject CarModelPrefab => _carModelPrefab;
+        /// <summary>
+        /// The string key for loading the car's prefab dynamically.
+        /// </summary>
+        public string CarPrefabKey => _carPrefabKey;
+
+        /// <summary>
+        /// The string key for loading the car's model prefab dynamically.
+        /// </summary>
+        public string CarModelPrefabKey => _carModelPrefabKey;
+
+        /// <summary>
+        /// Retrieves the car's configuration object.
+        /// </summary>
+        public CarConfigSO CarConfig
+        {
+            get
+            {
+                // Load the car prefab using the key
+                CarController carPrefab = Resources.Load<CarController>(_carPrefabKey);
+
+                // Check if the prefab was loaded successfully
+                if (carPrefab == null)
+                {
+                    Debug.LogError($"Car prefab not found for key: {_carPrefabKey}");
+                    return null; // Or handle appropriately, e.g., return a default configuration
+                }
+
+                // Return the car's configuration if available
+                return carPrefab.CarConfig;
+            }
+        }
     }
 }

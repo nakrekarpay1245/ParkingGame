@@ -112,22 +112,35 @@ public class GalleryManager : MonoBehaviour
 
     /// <summary>
     /// Updates the gallery based on the currently selected car configuration and displays the appropriate UI data.
+    /// Car model is now dynamically loaded using Resources.Load to optimize memory usage and prevent loading unused assets.
     /// </summary>
     private void UpdateGallery()
     {
+        // Get the car configuration and price data for the current car index
         var carConfig = _gameData.CarList[_currentCarIndex].CarConfig;
-        var carModelPrefab = _gameData.CarList[_currentCarIndex].CarModelPrefab;
         var isPurchased = _gameData.CarList[_currentCarIndex].IsPurchased;
         var carPrice = _gameData.CarList[_currentCarIndex].Price;
 
+        // Dynamically load the car model using Resources.Load to reduce memory footprint
+        string carPrefabPath = _gameData.CarList[_currentCarIndex].CarModelPrefabKey;
+        GameObject carModelPrefab = Resources.Load<GameObject>(carPrefabPath);
+
+        // Check if the current car configuration has changed before updating the UI and model
         if (_currentCarConfig != carConfig)
         {
-            Debug.Log("Current car config is not equal to car config!");
+            Debug.Log("Car config has changed, updating model and UI.");
+
+            // Update the current car configuration reference
             _currentCarConfig = carConfig;
+
+            // Handle car model switching with smooth animations using DOTween
             HandleCarModelSwitch(carModelPrefab);
         }
 
+        // Update car stats and UI elements
         UpdateCarStatsUI();
+
+        // Update buttons based on car purchase state and price
         UpdateButtons(isPurchased, carPrice);
     }
 
@@ -136,8 +149,11 @@ public class GalleryManager : MonoBehaviour
     /// </summary>
     private void HandleCarModelSwitch(GameObject newCarModelPrefab)
     {
+        Debug.Log("HandleCarModelSwitch!");
         if (_currentCarModelInstance != null)
         {
+            Debug.Log("_currentCarModelInstance is not null!");
+
             var previousCarModel = _currentCarModelInstance;
             _currentCarModelInstance = null;
 
@@ -146,13 +162,23 @@ public class GalleryManager : MonoBehaviour
             sequence.AppendCallback(() => Destroy(previousCarModel));
             sequence.Play();
         }
+        else
+        {
+            Debug.Log("_currentCarModelInstance is null!");
+        }
 
         if (newCarModelPrefab != null)
         {
+            Debug.Log("newCarModelPrefab is not null!");
+
             _currentCarModelInstance = Instantiate(newCarModelPrefab, _carPoint.position, _carPoint.rotation);
             _currentCarModelInstance.transform.localScale = Vector3.zero;
             _currentCarModelInstance.transform.DOScale(1, _scaleChangeDuration).SetEase(_scaleUpEase);
             _currentCarModelInstance.transform.parent = _carPoint;
+        }
+        else
+        {
+            Debug.Log("newCarModelPrefab is null!");
         }
     }
 

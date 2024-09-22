@@ -21,7 +21,8 @@ namespace _Game.LevelSystem
 
         [Header("Parking Area Setup")]
         [Tooltip("Prefab for the Parking Area to be instantiated.")]
-        [SerializeField] private ParkingArea _parkingAreaPrefab;
+        [SerializeField] private string _parkingAreaPrefabPath = "ParkingArea";
+
 
         [Header("Level Frame Setup")]
         [Tooltip("Reference to the LevelFrame component.")]
@@ -77,7 +78,7 @@ namespace _Game.LevelSystem
         /// </summary>
         private void ValidateInitialReferences()
         {
-            if (_parkingAreaPrefab == null)
+            if (_parkingAreaPrefabPath == null)
             {
                 Debug.LogError("ParkingAreaPrefab is missing.");
                 return;
@@ -111,33 +112,70 @@ namespace _Game.LevelSystem
         }
 
         /// <summary>
-        /// Instantiates the CarController at the PlayerPoint position.
+        /// Instantiates the CarController at the PlayerPoint position using Resources.Load to load the prefab.
+        /// The prefab is loaded based on the string key stored in the SelectedCarConfig.
         /// </summary>
         /// <returns>Returns the instantiated CarController object.</returns>
         private CarController InstantiateCarController()
         {
-            if (_playerPoint != null && _gameData.SelectedCarPrefab != null)
+            if (_playerPoint == null)
             {
-                return Instantiate(_gameData.SelectedCarPrefab, _playerPoint.position, _playerPoint.rotation);
+                Debug.LogError("Failed to instantiate CarController: PlayerPoint is missing.");
+                return null;
             }
 
-            Debug.LogError("Failed to instantiate CarController: Missing PlayerPoint or SelectedCarPrefab.");
+            // Check if the selected car has a valid config and prefab key
+            string carPrefabKey = _gameData.SelectedCarPrefabKey;
+            if (!string.IsNullOrEmpty(carPrefabKey))
+            {
+                // Load the car prefab using Resources.Load with the key/path
+                CarController carPrefab = Resources.Load<CarController>(carPrefabKey);
+
+                if (carPrefab != null)
+                {
+                    // Instantiate the car prefab at the player point
+                    return Instantiate(carPrefab, _playerPoint.position, _playerPoint.rotation);
+                }
+                else
+                {
+                    Debug.LogError($"Failed to load CarController prefab: No prefab found at path '{carPrefabKey}'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to instantiate CarController: SelectedCarConfig does not contain a valid prefab key.");
+            }
+
             return null;
         }
 
         /// <summary>
-        /// Instantiates the ParkingArea at the ParkingAreaPoint position.
+        /// Instantiates the ParkingArea at the ParkingAreaPoint position by loading the prefab 
+        /// via Resources.Load. This ensures flexibility in loading assets at runtime while maintaining 
+        /// good performance.
         /// </summary>
         /// <returns>Returns the instantiated ParkingArea object.</returns>
         private ParkingArea InstantiateParkingArea()
         {
-            if (_parkingAreaPoint != null)
+            if (_parkingAreaPoint == null)
             {
-                return Instantiate(_parkingAreaPrefab, _parkingAreaPoint.position, _parkingAreaPoint.rotation);
+                Debug.LogError("Failed to instantiate ParkingArea: ParkingAreaPoint is missing.");
+                return null;
             }
 
-            Debug.LogError("Failed to instantiate ParkingArea: Missing ParkingAreaPoint.");
-            return null;
+            // Check if the parking area prefab exists in Resources with the expected path
+            ParkingArea parkingAreaPrefab = Resources.Load<ParkingArea>(_parkingAreaPrefabPath);
+
+            if (parkingAreaPrefab != null)
+            {
+                // Instantiate the parking area at the specified spawn point
+                return Instantiate(parkingAreaPrefab, _parkingAreaPoint.position, _parkingAreaPoint.rotation);
+            }
+            else
+            {
+                Debug.LogError($"Failed to load ParkingArea prefab: No prefab found at path '{_parkingAreaPrefabPath}'.");
+                return null;
+            }
         }
 
         /// <summary>
