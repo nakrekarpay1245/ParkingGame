@@ -6,6 +6,7 @@ using _Game.Car;
 using System.Collections;
 using _Game.Data;
 using TMPro;
+using MaskTransitions;
 
 namespace _Game.Management
 {
@@ -217,8 +218,17 @@ namespace _Game.Management
             sequence.Join(_currentCarPoint.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
             sequence.Join(_gameNameText.transform.DOScale(Vector3.zero, _scaleChangeDuration).SetEase(_scaleDownEase));
 
-            // After the scaling down animation completes, load the game scene
-            sequence.OnComplete(() => SceneManager.LoadScene("GameScene"));
+            // Play the start transition
+            sequence.AppendCallback(() => TransitionManager.Instance.PlayStartHalfTransition(1f, 0f));
+
+            // Wait for 1 second before loading the scene
+            sequence.AppendInterval(1f);
+
+            // Load the game scene
+            sequence.AppendCallback(() => SceneManager.LoadScene("GameScene"));
+
+            // Play the end transition
+            sequence.AppendCallback(() => TransitionManager.Instance.PlayEndHalfTransition(1f, 0f));
         }
 
         /// <summary>

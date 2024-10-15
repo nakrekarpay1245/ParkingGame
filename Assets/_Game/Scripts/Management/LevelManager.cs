@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using _Game.Car;
 using System.Collections;
+using MaskTransitions;
 
 namespace _Game.Management
 {
@@ -215,7 +216,18 @@ namespace _Game.Management
         public void HandleMenuButtonPressed()
         {
             Debug.Log("Menu button pressed.");
-            TransitionToScene("MenuScene");
+
+            Sequence sequence = DOTween.Sequence();
+
+            // Play the start transition
+            sequence.AppendCallback(() => TransitionManager.Instance.PlayStartHalfTransition(_sceneChangeDuration, 0f));
+
+            // Load the game scene
+            sequence.AppendCallback(() => TransitionToScene("MenuScene"));
+
+            // Play the end transition
+            sequence.AppendCallback(() => TransitionManager.Instance.PlayEndHalfTransition(_sceneChangeDuration,
+                _sceneChangeDuration));
         }
 
         /// <summary>
