@@ -40,12 +40,22 @@ namespace _Game._helpers.Audios
                 Debug.LogWarning("AudioPlayer: AudioMixerGroup is null. Audio will not be routed through a mixer.");
             }
 
+            // Extra safety: Check clip length and set position safely
+            if (clip.length <= 0)
+            {
+                Debug.LogWarning("AudioPlayer: Clip length is zero or negative. Skipping playback.");
+                return;
+            }
+
             _audioSource.outputAudioMixerGroup = mixerGroup;
             _audioSource.clip = clip;
             _audioSource.volume = Mathf.Clamp01(volume);
             _audioSource.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
             _audioSource.loop = loop;
             _audioSource.mute = isMuted;
+
+            _audioSource.time = Mathf.Clamp(_audioSource.time, 0, clip.length); // Prevent invalid position
+
             _audioSource.Play();
 
             if (!loop)
@@ -56,7 +66,7 @@ namespace _Game._helpers.Audios
 
         private IEnumerator DeactivateAfterPlayback()
         {
-            yield return new WaitForSeconds(_audioSource.clip.length / _audioSource.pitch);
+            yield return new WaitForSeconds(_audioSource.clip.length / Mathf.Max(_audioSource.pitch, 0.1f));
             _audioSource.Stop();
             gameObject.SetActive(false);
         }
