@@ -1358,9 +1358,9 @@ MonoBehaviour:
     Volume: 1
     Pitch: 1
     Loop: 0
-  _maximumAudioCount: 10
+  _maximumPlayerCount: 10
   _masterVolume: 1
-  _isAudioSourceMuted: 0
+  _isAudioMuted: 0
   _soundMixerGroup: {fileID: 0}
 --- !u!1 &732695309
 GameObject:

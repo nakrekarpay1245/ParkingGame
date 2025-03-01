@@ -2,9 +2,6 @@ using UnityEngine;
 
 namespace _Game._helpers.Audios
 {
-    /// <summary>
-    /// Represents an audio configuration with multiple clips, volume, pitch, and loop settings.
-    /// </summary>
     [System.Serializable]
     public class Audio
     {
