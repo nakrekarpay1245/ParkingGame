@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using _Game.Management;
 using System.Collections;
+using System;
 
 /// <summary>
 /// Manages the car gallery, updates UI elements based on car stats, and handles car selection and purchasing logic.
@@ -41,6 +42,9 @@ public class GalleryManager : MonoBehaviour
     [Tooltip("Handbrake drift multiplier bar and text displaying the selected car's drift factor.")]
     [SerializeField] private Image _driftBar;
     [SerializeField] private TextMeshProUGUI _driftText;
+
+    [SerializeField] private Image _carPriceTextBG;
+    [SerializeField] private TextMeshProUGUI _carPriceText;
 
     [Header("Car Change Buttons")]
     [Tooltip("Button for selecting the previous car.")]
@@ -142,6 +146,16 @@ public class GalleryManager : MonoBehaviour
 
         // Update buttons based on car purchase state and price
         UpdateButtons(isPurchased, carPrice);
+
+        UpdateCarPrice(isPurchased, carPrice);
+    }
+
+    private void UpdateCarPrice(bool isPurchased, int carPrice)
+    {
+        _carPriceText.gameObject.SetActive(!isPurchased);
+        _carPriceTextBG.gameObject.SetActive(!isPurchased);
+        if (!isPurchased)
+            _carPriceText.text = carPrice.ToString();
     }
 
     /// <summary>
@@ -267,6 +281,7 @@ public class GalleryManager : MonoBehaviour
             _economyManager.SpendCoins(carPrice);
             _gameData.BuyCar(_currentCarIndex);
             UpdateButtons(true, carPrice);
+            UpdateCarPrice(true, carPrice);
         }
     }
 
@@ -277,5 +292,6 @@ public class GalleryManager : MonoBehaviour
     {
         _gameData.SelectCar(_currentCarIndex);
         UpdateButtons(true, 0);
+        UpdateCarPrice(true, 0);
     }
 }
